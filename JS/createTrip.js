@@ -8,9 +8,8 @@ const login = JSON.parse(window.localStorage.getItem("login"));
 
 const destinationInput = $(".diemden");
 const destinationSuggestList = $(".destination-location-suggestion");
-const currentLocationInupt = $('.diemxuatphat')
-const currentLocationSuggestList = $('.current-location-suggestion')
-
+const currentLocationInupt = $(".diemxuatphat");
+const currentLocationSuggestList = $(".current-location-suggestion");
 
 const createTourState = {
   name: "",
@@ -22,14 +21,15 @@ const createTourState = {
   lon: "",
   from_where: "",
   to_where: "",
-  room_id: ""
-}
+  room_id: "",
+};
 
 const mapDOM = $(".form-map");
 const map = L.map(mapDOM).setView([51.505, -0.09], 13);
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
   maxZoom: 10,
-  attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+  attribution:
+    '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
 }).addTo(map);
 
 map.on("click", (e) => {
@@ -43,42 +43,38 @@ map.on("click", (e) => {
 let listPlace = [];
 
 const handleDestinationSuggestItemClick = (doms, parent) => {
-  doms.forEach(item => {
+  doms.forEach((item) => {
     item.onclick = () => {
-      const { lat, lon } = item.dataset
+      const { lat, lon } = item.dataset;
       // gán lat, lon cho biến bất kỳ để có thể ném vào trong call api create-tour, ví dụ: a = lat; b = lon
-      const marker = L.marker([lat, lon], { draggable: true }).addTo(map)
-      map.flyTo([lat, lon], 10)
-      marker.on('dragend', (e) => {
+      const marker = L.marker([lat, lon], { draggable: true }).addTo(map);
+      map.flyTo([lat, lon], 10);
+      marker.on("dragend", (e) => {});
+      parent.innerHTML = null;
+    };
+  });
+};
 
-      })
-      parent.innerHTML = null
-    }
-  })
-}
-
-const handleCurrentLocationSuggestItemClick = (doms,parent) => {
-  doms.forEach(item => {
+const handleCurrentLocationSuggestItemClick = (doms, parent) => {
+  doms.forEach((item) => {
     item.onclick = () => {
-      const { lat, lon } = item.dataset
-      const name = item.innerText
-      console.log(name)
+      const { lat, lon } = item.dataset;
+      const name = item.innerText;
+      console.log(name);
       // gán name của điểm xuất phát, ví dụ: a = name
-      const marker = L.marker([lat, lon], { draggable: true }).addTo(map)
-      map.flyTo([lat, lon], 10)
-      marker.on('dragend', (e) => {
-
-      })
-      parent.innerHTML = null
-    }
-  })
-}
-let aborter = null
+      const marker = L.marker([lat, lon], { draggable: true }).addTo(map);
+      map.flyTo([lat, lon], 10);
+      marker.on("dragend", (e) => {});
+      parent.innerHTML = null;
+    };
+  });
+};
+let aborter = null;
 const searching = (value, listdom, itemclass, func) => {
   // if (aborter) {
   //   aborter.abort()
   // }
-  aborter = new AbortController()
+  aborter = new AbortController();
   const NOMINATIM_BASE_URL = "https://nominatim.openstreetmap.org/search?";
   const params = {
     q: value,
@@ -95,12 +91,17 @@ const searching = (value, listdom, itemclass, func) => {
     .then((response) => response.text())
     .then((result) => {
       listPlace = JSON.parse(result);
-      const places = listPlace.map((place) => `<li data-lat="${place.lat}" data-lon="${place.lon}" class="destination-item"><p>${place.display_name}</p></li>`).join("");
+      const places = listPlace
+        .map(
+          (place) =>
+            `<li data-lat="${place.lat}" data-lon="${place.lon}" class="destination-item"><p>${place.display_name}</p></li>`
+        )
+        .join("");
       listdom.innerHTML = places;
-      const itemdoms = listdom.querySelectorAll(`.${itemclass}`)
-      func(itemdoms, listdom)
+      const itemdoms = listdom.querySelectorAll(`.${itemclass}`);
+      func(itemdoms, listdom);
     })
-    .catch(error => console.log(error))
+    .catch((error) => console.log(error));
 };
 
 const debounce = (func, timeout = 300) => {
@@ -114,12 +115,30 @@ const debounce = (func, timeout = 300) => {
 };
 
 destinationInput.onkeydown = (e) => {
-  debounce(() => searching(e.target.value, destinationSuggestList, 'destination-item', handleDestinationSuggestItemClick), 0)();
+  debounce(
+    () =>
+      searching(
+        e.target.value,
+        destinationSuggestList,
+        "destination-item",
+        handleDestinationSuggestItemClick
+      ),
+    0
+  )();
 };
 
 currentLocationInupt.onkeydown = (e) => {
-  debounce(() => searching(e.target.value, currentLocationSuggestList, 'destination-item', handleCurrentLocationSuggestItemClick), 0)()
-}
+  debounce(
+    () =>
+      searching(
+        e.target.value,
+        currentLocationSuggestList,
+        "destination-item",
+        handleCurrentLocationSuggestItemClick
+      ),
+    0
+  )();
+};
 
 // ------------------------------------------------------------------------------
 
@@ -145,23 +164,23 @@ currentLocationInupt.onkeydown = (e) => {
 //     };
 // }
 
-const logout = $('.form-logout');
+const logout = $(".form-logout");
 logout.onclick = () => {
-  alert('Bạn chắc chắn muốn thoát ?')
+  alert("Bạn chắc chắn muốn thoát ?");
   window.localStorage.clear();
   window.location.reload(true);
-  window.location.href = 'http://127.0.0.1:5500/CAPSTONE2/FrontEnd/HTML/home.html';
-}
-
+  window.location.href =
+    "http://127.0.0.1:5500/CAPSTONE2/FrontEnd/HTML/home.html";
+};
 
 const names = $(".header-name1");
 const avatarUser = $("#avatar_user");
 if (login?.msg === "Đăng nhập thành công") {
-    names.innerText = login?.user_info.name;
-    avatarUser.src = login?.user_info.user_profile[0].avatar;
+  names.innerText = login?.user_info.name;
+  avatarUser.src = login?.user_info.user_profile[0].avatar;
 } else {
-    names.innerText = login?.user_info.name;
-    avatarUser.src = login?.user_info.user_profile[0].avatar;
+  names.innerText = login?.user_info.name;
+  avatarUser.src = login?.user_info.user_profile[0].avatar;
 }
 
 if (login) {
@@ -187,7 +206,6 @@ if (login) {
     }
   };
 }
-
 
 // ---------------create trip --------------------
 
@@ -232,55 +250,54 @@ if (login) {
 //   tab1.style.marginTop = "102px";
 // };
 
-
 const notifications = document.querySelector(".notifications"),
-    buttons = document.querySelectorAll(".buttons .btn");
+  buttons = document.querySelectorAll(".buttons .btn");
 // Object containing details for different types of toasts
 const toastDetails = {
-    timer: 5000,
-    success: {
-        icon: 'fa-circle-check',
-        text: 'Success: Create Group Chat Success...',
-    },
-    error: {
-        icon: 'fa-circle-xmark',
-        text: 'Error: Create Group Chat....',
-    },
-    warning: {
-        icon: 'fa-triangle-exclamation',
-        text: 'Warning: This is a warning toast.',
-    },
-    info: {
-        icon: 'fa-circle-info',
-        text: 'Info: This is an information toast.',
-    }
-}
+  timer: 5000,
+  success: {
+    icon: "fa-circle-check",
+    text: "Success: Create Group Chat Success...",
+  },
+  error: {
+    icon: "fa-circle-xmark",
+    text: "Error: Create Group Chat....",
+  },
+  warning: {
+    icon: "fa-triangle-exclamation",
+    text: "Warning: This is a warning toast.",
+  },
+  info: {
+    icon: "fa-circle-info",
+    text: "Info: This is an information toast.",
+  },
+};
 const removeToast = (toast) => {
-    toast.classList.add("hide");
-    if (toast.timeoutId) clearTimeout(toast.timeoutId); // Clearing the timeout for the toast
-    setTimeout(() => toast.remove(), 500); // Removing the toast after 500ms
-}
+  toast.classList.add("hide");
+  if (toast.timeoutId) clearTimeout(toast.timeoutId); // Clearing the timeout for the toast
+  setTimeout(() => toast.remove(), 500); // Removing the toast after 500ms
+};
 const createToast = (id) => {
-    // Getting the icon and text for the toast based on the id passed
-    const { icon, text } = toastDetails[id];
-    const toast = document.createElement("li"); // Creating a new 'li' element for the toast
-    toast.className = `toast ${id}`; // Setting the classes for the toast
-    // Setting the inner HTML for the toast
-    toast.innerHTML = `<div class="column">
+  // Getting the icon and text for the toast based on the id passed
+  const { icon, text } = toastDetails[id];
+  const toast = document.createElement("li"); // Creating a new 'li' element for the toast
+  toast.className = `toast ${id}`; // Setting the classes for the toast
+  // Setting the inner HTML for the toast
+  toast.innerHTML = `<div class="column">
                          <i class="fa-solid ${icon}"></i>
                          <span>${text}</span>
                       </div>
                       <i class="fa-solid fa-xmark" onclick="removeToast(this.parentElement)"></i>`;
-    notifications.appendChild(toast); // Append the toast to the notification ul
-    // Setting a timeout to remove the toast after the specified duration
-    toast.timeoutId = setTimeout(() => removeToast(toast), toastDetails.timer);
-}
+  notifications.appendChild(toast); // Append the toast to the notification ul
+  // Setting a timeout to remove the toast after the specified duration
+  toast.timeoutId = setTimeout(() => removeToast(toast), toastDetails.timer);
+};
 // // Adding a click event listener to each button to create a toast when clicked
-buttons.forEach(btn => {
-    btn.addEventListener("click", () => {
-        createToast(btn.id)
-        console.log(btn.id);
-    });
+buttons.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    createToast(btn.id);
+    console.log(btn.id);
+  });
 });
 
 const button1 = document.querySelector(".button1 button");
@@ -303,62 +320,59 @@ const motachuyendi = $(".description");
 
 motachuyendi.onchange = (e) => {
   console.log(e.target.value);
-}
-
+};
 
 const btnCreateTrip = $(".create-trip");
 console.log(btnCreateTrip);
 btnCreateTrip.onclick = () => {
-    fetch("http://127.0.0.1:8000/api/personal/tour/create", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            name: tenchuyendi.value,
-            owner_id: login.user_info.user_profile[0].user_id,
-            from_date: tungay.value,
-            to_date: denngay.value,
-            lat: 234723, //vido.value,
-            lon: 234324,//kinhdo.value,
-            from_where: diemxuatphat.value,
-            to_where: diemden.value,
-            room_id: login.user_info.user_profile[0].user_id,
-            description:motachuyendi.value, 
-        }),
-        data: {
-            name: tenchuyendi.value,
-            owner_id: login.user_info.user_profile[0].user_id,
-            from_date: tungay.value,
-            to_date: denngay.value,
-            lat: 234723,//vido.value,
-            lon: 234324,//kinhdo.value,
-            from_where: diemxuatphat.value,
-            to_where: diemden.value,
-            room_id: login.user_info.user_profile[0].user_id,
-            description:motachuyendi.value, 
-        },
+  fetch("http://127.0.0.1:8000/api/personal/tour/create", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name: tenchuyendi.value,
+      owner_id: login.user_info.user_profile[0].user_id,
+      from_date: tungay.value,
+      to_date: denngay.value,
+      lat: 234723, //vido.value,
+      lon: 234324, //kinhdo.value,
+      from_where: diemxuatphat.value,
+      to_where: diemden.value,
+      room_id: login.user_info.user_profile[0].user_id,
+      description: motachuyendi.value,
+    }),
+    data: {
+      name: tenchuyendi.value,
+      owner_id: login.user_info.user_profile[0].user_id,
+      from_date: tungay.value,
+      to_date: denngay.value,
+      lat: 234723, //vido.value,
+      lon: 234324, //kinhdo.value,
+      from_where: diemxuatphat.value,
+      to_where: diemden.value,
+      room_id: login.user_info.user_profile[0].user_id,
+      description: motachuyendi.value,
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      createToast("success");
+      setTimeout(() => {
+        window.location.reload(true);
+      }, 5000);
     })
-        .then((response) => response.json())
-        .then(data => {
-          createToast("success");
-          setTimeout(()=>{
-              window.location.reload(true);
-          },5000);
-      })
-      .catch(error => {
-          createToast("error")
-
-      })
-
+    .catch((error) => {
+      console.log(error);
+      createToast("error");
+    });
 };
-
 
 // ------------------------------- image -----------------------
 
 const uploadImage = $(".upload_image");
-console.log(uploadImage); 
-const importImage = $(".input_image")
+console.log(uploadImage);
+const importImage = $(".input_image");
 
 let objImage;
 uploadImage.onclick = () => {
@@ -369,14 +383,11 @@ uploadImage.onclick = () => {
   };
 };
 
-setTimeout(()=>{
+setTimeout(() => {
   console.log(objImage);
-},10000)
+}, 10000);
 
-
-
-if(!login)
-{
+if (!login) {
   btnCreateTrip.disabled = true;
   console.log(1);
 } else {
