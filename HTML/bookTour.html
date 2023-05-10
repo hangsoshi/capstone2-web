@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <link rel="stylesheet" href="../CSS/bookTour.css">
+    <title>CJB</title>
+</head>
+
+<body>
+    <div class="main">
+        <div class="wrapper-header">
+            <div class="detail-header">
+                <a href="./home.html" class="logo"> <img src="../IMAGES/logo/logo-removebg-preview.png" alt=""> </a>
+                <ul class="nav-menu">
+                    <li> <a href="./home.html" class="nav-link">Home</a> </li>
+                    <li> <a href="./bookTour.html" class="nav-link">Tours</a> </li>
+                    <li> <a href="./createTrip.html" class="nav-link">Tạo chuyến đi</a> </li>
+                    <li> <a href="./group.html" class="nav-link">Group</a> </li>
+                    <li> <a href="./TS-home.html" class="nav-link">Trở thành nhà cung cấp</a> </li>
+                    <li><i class="fa-solid fa-bell"></i>
+                        <div style="display: none;" class="container-notification">
+                            <div class="wrap-notification">
+                                <div class="header-notification">
+                                    <p>Thông báo</p>
+                                </div>
+                                <div class="content-notification">
+                                    <div class="content-notification-empty">
+                                        <img src="https://static.boosty.to/assets/images/bell-light.gNKz9.svg" alt="">
+                                        <div class="empty-title">
+                                            <h3>Chưa có thông báo nào</h3>
+                                            <p>Tất cả thông báo sẽ có ở đây</p>
+                                        </div>
+                                    </div>
+                                    <div class="content-notication-show">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <div class="header-nav-form">
+                        <div class="header-nav-icon">
+                            <i class="fa-solid fa-user user-icon"></i>
+                            <i class="fa-solid fa-bars"></i>
+                        </div>
+                        <div class="header-form">
+                            <div class="header-form-login">
+                                <ul>
+                                    <li><a href="./login-register.html">Đăng nhập</a></li>
+                                    <li><a href="./login-register.html">Đăng ký</a></li>
+                                </ul>
+                            </div>
+                            <div style="display: none;" class="header-form-logout">
+                                <div class="content-logout">
+                                    <a href="./profile.html" class="avatar-login">
+                                        <div class="header-form-avatar">
+                                            <img src="" alt="" id="avatar_user">
+                                            <div class="header-name">
+                                                <span class="header-name1">NguyenHoangVu</span>
+                                                <p>Xem hồ sơ</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <span class="drop-line"></span>
+                                    <div class="header-form-booked">
+                                        <i class="fa-sharp fa-solid fa-clock-rotate-left"></i>
+                                        <span>Chuyến đi của tôi</span>
+                                    </div>
+                                    <div class="header-form-loved">
+                                        <i class="fa-regular fa-heart"></i>
+                                        <span>Lịch sử chuyến đi</span>
+                                    </div>
+                                    <div class="form-logout">Đăng xuất</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ul>
+            </div>
+        </div>
+
+        <div class="book-tour-container">
+            <div class="book-tour-intro">
+                <div class="book-intro-title">
+                    <h1>Dare to live the life you've always wanted.</h1>
+                    <p>Life is short and the world is wide. So, better get started.</p>
+                    <div class="book-intro-search">
+                        <div class="input-box">
+                            <label>Location</label>
+                            <input type="input" placeholder="Chọn điểm đến" class="input-location">
+                        </div>
+                        <div class="input-box">
+                            <label>Check-in</label>
+                            <input type="date" placeholder="Check-in-Date">
+                        </div>
+                        <div class="input-box">
+                            <label>Check-out</label>
+                            <input type="date" placeholder="Check-out-Date">
+                        </div>
+                        <div class="input-box">
+                            <label>Guests</label> <br>
+                            <input type="number" placeholder="0" class="input-guests">
+                        </div>
+                        <div class="search">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="book-intro-image">
+                    <img src="../IMAGES/background/bg1.png" alt="">
+                </div>
+            </div>
+
+            <div class="book-tour-places">
+                <div class="book-places-title">
+                    <p>TOUR PACKAGES</p>
+                    <div class="book-text">
+                        <h1>Những địa điểm tuyệt vời trên khắp Việt Nam</h1>
+                        <div class="book-control">
+                            <i class="fa-solid fa-chevron-left find-slick-left"></i>
+                            <i class="fa-solid fa-chevron-right find-slick-right"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="book-places slides2">
+                </div>
+            </div>
+
+            <!-- <div class="myTrip">
+                <div class="book-places-title">
+                    <p>TOUR PACKAGES</p>
+                    <div class="book-text">
+                        <h1>Đồng hành những chuyến đi</h1>
+                        <div class="book-control join-control">
+                            <i class="fa-solid fa-chevron-left find-slick-left prev1 prev2"></i>
+                            <i class="fa-solid fa-chevron-right find-slick-right next1 next2"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slides3">
+                    <div class="slides_wrapp">
+                        <div class="blog-slider">
+                            <div class="blog-slider__wrp swiper-wrapper">
+                                <div class="blog-slider__item swiper-slide">
+                                    <div class="blog-slider__img">
+
+                                        <img src="https://images.unsplash.com/photo-1512633017083-67231aba710d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=765&q=80"
+                                            alt="">
+                                    </div>
+                                    <div class="blog-slider__content">
+                                        <div class="blog-slider__title">Chuyến đi mạo hiểm</div>
+                                        <div class="blog-slider__trip">
+                                            <p><b>Từ:</b> Đà Nẵng - <b>Đến:</b> Hội An</p>
+                                            <p>25 Sep 2022</p>
+                                        </div>
+                                        <div class="blog-slider__host"><b>Người tạo: </b>Nguyễn Hoàng Vũ</div>
+                                        <a href="../HTML/detailFind.html" class="blog-slider__button">CHI TIẾT</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="blog-slider__pagination"></div>
+                        </div>
+                        <div class="blog-slider">
+                            <div class="blog-slider__wrp swiper-wrapper">
+                                <div class="blog-slider__item swiper-slide">
+                                    <div class="blog-slider__img">
+
+                                        <img src="https://images.unsplash.com/photo-1512633017083-67231aba710d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=765&q=80"
+                                            alt="">
+                                    </div>
+                                    <div class="blog-slider__content">
+                                        <div class="blog-slider__title">Chuyến đi mạo hiểm</div>
+                                        <div class="blog-slider__trip">
+                                            <p><b>Từ:</b> Đà Nẵng - <b>Đến:</b> Hội An</p>
+                                            <p>25 Sep 2022</p>
+                                        </div>
+                                        <div class="blog-slider__host"><b>Người tạo: </b>Nguyễn Hoàng Vũ</div>
+                                        <a href="../HTML/detailFind.html" class="blog-slider__button">CHI TIẾT</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="blog-slider__pagination"></div>
+                        </div>
+                    </div>
+                    <div class="slides_wrapp">
+                        <div class="blog-slider">
+                            <div class="blog-slider__wrp swiper-wrapper">
+                                <div class="blog-slider__item swiper-slide">
+                                    <div class="blog-slider__img">
+
+                                        <img src="https://images.unsplash.com/photo-1512633017083-67231aba710d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=765&q=80"
+                                            alt="">
+                                    </div>
+                                    <div class="blog-slider__content">
+                                        <div class="blog-slider__title">Chuyến đi mạo hiểm</div>
+                                        <div class="blog-slider__trip">
+                                            <p><b>Từ:</b> Đà Nẵng - <b>Đến:</b> Hội An</p>
+                                            <p>25 Sep 2022</p>
+                                        </div>
+                                        <div class="blog-slider__host"><b>Người tạo: </b>Nguyễn Hoàng Vũ</div>
+                                        <a href="../HTML/detailFind.html" class="blog-slider__button">CHI TIẾT</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="blog-slider__pagination"></div>
+                        </div>
+                        <div class="blog-slider">
+                            <div class="blog-slider__wrp swiper-wrapper">
+                                <div class="blog-slider__item swiper-slide">
+                                    <div class="blog-slider__img">
+
+                                        <img src="https://images.unsplash.com/photo-1512633017083-67231aba710d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=765&q=80"
+                                            alt="">
+                                    </div>
+                                    <div class="blog-slider__content">
+                                        <div class="blog-slider__title">Chuyến đi mạo hiểm</div>
+                                        <div class="blog-slider__trip">
+                                            <p><b>Từ:</b> Đà Nẵng - <b>Đến:</b> Hội An</p>
+                                            <p>25 Sep 2022</p>
+                                        </div>
+                                        <div class="blog-slider__host"><b>Người tạo: </b>Nguyễn Hoàng Vũ</div>
+                                        <a href="../HTML/detailFind.html" class="blog-slider__button">CHI TIẾT</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="blog-slider__pagination"></div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+
+
+        <div class="popular-groups">
+            <div class="popular-heading">
+                <i class="fa-solid fa-chevron-left popular-heading-icon"></i>
+                <h1>POPULAR GROUPS</h1>
+                <i class="fa-solid fa-chevron-right popular-heading-icon"></i>
+            </div>
+            <div class="popular-slides">
+                <div>
+                    <div class="popular-container">
+                        <div class="popular-container-left">
+                            <img src="../IMAGES/slides/slide-0.png" alt="">
+                            <div class="popular-container-host">
+                                <p><b>Host:</b> Nguyễn Hoàng Vũ</p>
+                            </div>
+                        </div>
+                        <div class="popular-container-center">
+                            <h1>Chuyến đi đến Đà Nẵng</h1>
+                            <p><b>Thành viên:</b> 15/20</p>
+                            <p><b>Từ:</b> Đà Nẵng - <b>Đến:</b> Hội An</p>
+                            <p><b>Ngày xuất phát:</b> 15/20</p>
+                        </div>
+                        <div class="popular-container-right">
+                            <button class="btn" id="btn1">JOIN</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="wrap-footer">
+                <div class="footer-content">
+                    <div class="footer-title">
+                        Về CJB
+                    </div>
+                    <ul class="footer-list">
+                        <li><a href="">Về chúng tôi</a></li>
+                        <li><a href="">Liên hệ</a></li>
+                        <li><a href="">Trợ giúp</a></li>
+                        <li><a href="">Quy chế hoạt động</a></li>
+                        <li><a href="">Quy định bảo mật</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-content">
+                    <div class="footer-title">
+                        Đối tác
+                    </div>
+                    <ul class="footer-list">
+                        <li><a href="">Đối tác liên kết</a></li>
+                        <li><a href="">Đối tác kết nối</a></li>
+                        <li><a href="">Quy chế trả góp</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-content">
+                    <div class="footer-title">
+                        Điểm du lịch
+                    </div>
+                    <ul class="footer-list">
+                        <li><a href="">Thành phố Hà Nội</a></li>
+                        <li><a href="">Thành phố Hải Phòng</a></li>
+                        <li><a href="">Thành phố Đà Nẵng</a></li>
+                        <li><a href="">Thành phố Hồ Chí Minh</a></li>
+                        <li><a href="">Thành phố Cần Thơ</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-content">
+                    <div class="footer-title">
+                        Theo dõi chúng tôi trên
+                    </div>
+                    <ul class="footer-list">
+                        <li>
+                            <a href="https://www.facebook.com/ngayay.emcua/" class="footer-list-connect">
+                                <div class="footer-list-icon">
+                                    <i class="fa-brands fa-facebook"></i>
+                                </div>
+                                Facebook
+                            </a>
+                        </li>
+                        <li>
+                            <a href="" class="footer-list-connect">
+                                <div class="footer-list-icon">
+                                    <i class="fa-brands fa-instagram"></i>
+                                </div>
+                                Instagram
+                            </a>
+                        </li>
+                        <li>
+                            <a href="" class="footer-list-connect">
+                                <div class="footer-list-icon">
+                                    <i class="fa-brands fa-youtube"></i>
+                                </div>
+                                Youtube
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="custom-shape-divider-bottom-1679667216">
+                <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"
+                    preserveAspectRatio="none">
+                    <path
+                        d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z"
+                        class="shape-fill"></path>
+                </svg>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+        integrity="sha512-+NqPlbbtM1QqiK8ZAo4Yrj2c4lNQoGv8P79DPtKzj++l5jnN39rHA/xsqn8zE9l0uSoxaCdrOgFs6yjyfbBxSg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.3.5/js/swiper.min.js"
+        integrity="sha512-NdZyIQYjul6RuB0vCoq9ec+xqTO2riVTZAZf9YM3BHkkcJxFTq7z9FAK3PXP+XYs5zQRuOycmL5GdwD85t2T+Q=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script src="../JS/bookTour.js"></script>
+
+</body>
+
+</html>
