@@ -102,7 +102,7 @@ function RenderTourDetail(obj) {
                     <div class="add-friend">
                         <button onclick="handleAddFriend(${obj[0].owner_id})">
                             <i class="fa-solid fa-user-plus" style="color: #ffffff;"></i>
-                            Add friend
+                            Theo dõi
                         </button>
                     </div>
                 </div>
@@ -126,67 +126,38 @@ function RenderTourDetail(obj) {
 
         <div style="padding: 20px;"><h4>Thành viên đã tham gia</h4></div>
         <div class="detail-member">
-            <div class="detail-member-wraper">
-                <div class="detail-member-img">
-                    <img src="../IMAGES/slides/slide-0.png" alt="">
-                </div>
-                <div class="detail-member-name">
-                    <p>Nguyễn Hoàng Vũ</p>
-                </div>
-            </div>
-            <div class="detail-member-wraper">
-                <div class="detail-member-img">
-                    <img src="../IMAGES/slides/slide-0.png" alt="">
-                </div>
-                <div class="detail-member-name">
-                    <p>Lê Đình Trường</p>
-                </div>
-            </div>
-            <div class="detail-member-wraper">
-                <div class="detail-member-img">
-                    <img src="../IMAGES/slides/slide-0.png" alt="">
-                </div>
-                <div class="detail-member-name">
-                    <p>Nguyễn Thúy Hằng</p>
-                </div>
-            </div>
-            <div class="detail-member-wraper">
-                <div class="detail-member-img">
-                    <img src="../IMAGES/slides/slide-0.png" alt="">
-                </div>
-                <div class="detail-member-name">
-                    <p>Võ Tiến Dũng</p>
-                </div>
-            </div>
-            <div class="detail-member-wraper">
-                <div class="detail-member-img">
-                    <img src="../IMAGES/slides/slide-0.png" alt="">
-                </div>
-                <div class="detail-member-name">
-                    <p>Nguyễn Văn Tân</p>
-                </div>
-            </div>
-            <div class="detail-member-wraper">
-                <div class="detail-member-img">
-                    <img src="../IMAGES/slides/slide-0.png" alt="">
-                </div>
-                <div class="detail-member-name">
-                    <p>Nguyễn Văn Tùng</p>
-                </div>
-            </div>
+            
         </div>
     </div>
 </div>
   `;
   //   console.log(htmls);
-  return (htmlPersonTour.innerHTML = htmls);
+  htmlPersonTour.innerHTML = htmls;
+
+  const memberContainer = document.querySelector(".detail-member");
+
+  memberContainer.innerHTML = obj[0].member_list
+    .map(
+      (member) => `<div class="detail-member-wraper">
+          <div class="detail-member-img">
+              <img src="../IMAGES/slides/slide-0.png" alt="">
+          </div>
+          <div class="detail-member-name">
+              <p>${member.name}</p>
+          </div>
+        </div>`
+    )
+    .join("");
 }
 
 const handleAddFriend = (id) => {
   fetch(
     `http://127.0.0.1:8000/api/friend/create?user_id=${localStorage.getItem(
       "id"
-    )}&friend_id=${id}`
+    )}&friend_id=${id}`,
+    {
+      method: "post",
+    }
   )
     .then((res) => res.json())
     .then((data) => {
@@ -197,8 +168,5 @@ const handleAddFriend = (id) => {
 fetch("http://127.0.0.1:8000/api/personal/tour/show/" + pageDetail)
   .then((res) => res.json())
   .then((data) => {
-    console.log(data);
-    // window.localStorage.setItem("data", JSON.stringify(data));
-    // const dataa = window.localStorage.getItem("data");
     RenderTourDetail(data);
   });
