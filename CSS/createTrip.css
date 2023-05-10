@@ -290,11 +290,11 @@ body {
 }
 
 /* -------- create trip ----------*/
-.container {
-  width: 80%;
+.container-create-trip {
+  width: 100%;
   position: relative;
-  top: 140px;
-  padding: 0 100px;
+  top: 50px;
+  padding: 0 50px;
   margin: 0 auto;
 }
 

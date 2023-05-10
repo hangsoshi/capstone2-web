@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CJB</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
@@ -20,6 +22,11 @@
       src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
       integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
       crossorigin=""
+    ></script>
+    <script
+      src="https://cdn.socket.io/4.6.0/socket.io.min.js"
+      integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+"
+      crossorigin="anonymous"
     ></script>
     <script
       src="https://cdn.socket.io/4.6.0/socket.io.min.js"
@@ -155,6 +162,7 @@
             </ul>
           </div>
         </div>
+        <ul class="notifications"></ul>
         <div class="custom-shape-divider-bottom-1679667216">
           <svg
             data-name="Layer 1"

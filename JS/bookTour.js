@@ -10,7 +10,6 @@ const headerFormLogin = headerNavForm.querySelector(".header-form-login");
 const headerFormLogout = document.querySelector(".header-form-logout");
 const login = JSON.parse(window.localStorage.getItem("login"));
 
-
 if (login) {
   headerNavForm.onclick = function () {
     if (headerForm.style.display === "none") {
@@ -33,22 +32,21 @@ if (login) {
   };
 }
 const z = document.querySelector.bind(document);
-const logout = z('.form-logout');
+const logout = z(".form-logout");
 logout.onclick = () => {
-  alert('Bạn chắc chắn muốn thoát ?')
+  alert("Bạn chắc chắn muốn thoát ?");
   window.localStorage.clear();
   window.location.reload(true);
-  window.location.href = 'http://localhost:3000/home.html';
-}
+  window.location.href = "http://localhost:3000/home.html";
+};
 
-
-const names = z('.header-name1');
+const names = z(".header-name1");
 const avatarUser = document.getElementById("avatar_user");
 console.log(names);
 if (login.msg === "Đăng nhập thành công") {
-console.log(login);
-names.innerText = login.user_info.name;
-avatarUser.src = login.user_info.user_profile[0].avatar;
+  console.log(login);
+  names.innerText = login.user_info.name;
+  avatarUser.src = login.user_info.user_profile[0].avatar;
 }
 // } else {
 //   names.innerText = login.user_info.name;
@@ -104,42 +102,37 @@ slickNext[0].onclick = () => {
 
 //   // ------------ slide 2 --------------
 
-
 //   // ---------- chuyển qua trang detail Tour------------
-const findContainer = document.querySelectorAll('.find-container')
-findContainer.forEach(value => {
+const findContainer = document.querySelectorAll(".find-container");
+findContainer.forEach((value) => {
   value.onclick = function () {
-    location.href = "http://localhost:3000/detailTour.html"
-  }
-})
+    location.href = "http://localhost:3000/detailTour.html";
+  };
+});
 
 //   // --------- ẩn hiện thông báo----------
-const faBell = document.querySelector('.fa-bell')
-const containerNotification = document.querySelector('.container-notification')
+const faBell = document.querySelector(".fa-bell");
+const containerNotification = document.querySelector(".container-notification");
 
 faBell.onclick = function () {
-  if (containerNotification.style.display === 'none') {
-    containerNotification.style.display = 'block'
+  if (containerNotification.style.display === "none") {
+    containerNotification.style.display = "block";
+  } else {
+    containerNotification.style.display = "none";
   }
-  else {
-    containerNotification.style.display = 'none'
-  }
-}
-
-
+};
 
 const ss = document.querySelector.bind(document);
 var sliderFind = ss(".book-places");
 const api = "http://127.0.0.1:8000/api/ts/tour";
 
-
 let htmls = "";
 function getTours(api) {
   fetch(api)
-    .then(response => {
+    .then((response) => {
       return response.json();
     })
-    .then(data => {
+    .then((data) => {
       const tours = data;
       console.log(htmls);
       htmls = tours.map((tour) => {
@@ -185,7 +178,8 @@ function getTours(api) {
           </div>
       </div>
         `;
-      }); sliderFind.innerHTML = htmls.join("");
+      });
+      sliderFind.innerHTML = htmls.join("");
       if (sliderFind.innerHTML) {
         $(".slides2").slick({
           infinite: true,
@@ -201,23 +195,17 @@ function getTours(api) {
           next.click();
         };
       }
-    })
+    });
 }
 
 getTours(api);
 
-
 // -------------------------- slide3 người dùng tạo tour (render and slides) ----------------------------------------------
 
-const slickPrev = document.querySelectorAll(".fa-chevron-left");
-const slickNextt = document.querySelectorAll(".fa-chevron-right");
+const slickPrev = document.querySelector(".ps-prev");
+const slickNextt = document.querySelector(".ps-next");
 const findSlickPrevv = document.getElementsByClassName("find-slick-left");
 const findSlickNextt = document.getElementsByClassName("find-slick-right");
-
-console.log(slickPre);
-console.log(slickNext);
-console.log(findSlickPrev);
-console.log(findSlickNext);
 
 const pre1 = document.getElementsByClassName("slick-prev");
 const next1 = document.getElementsByClassName("slick-next");
@@ -226,10 +214,10 @@ let htmlss = "";
 function getTourUser() {
   const apiTourUser = "http://127.0.0.1:8000/api/personal/tour";
   fetch(apiTourUser)
-    .then(response => {
+    .then((response) => {
       return response.json();
     })
-    .then(data => {
+    .then((data) => {
       const PStours = data.data;
       console.log(PStours);
       htmlss = PStours.map((tour) => {
@@ -266,10 +254,9 @@ function getTourUser() {
       };
       slickNext[1].onclick = () => {
         next1[1].click();
-      }
-    })
+      };
+    });
 }
-
 
 getTourUser();
 
