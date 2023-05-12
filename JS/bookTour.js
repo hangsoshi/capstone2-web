@@ -200,6 +200,7 @@ function getTours(api) {
 
 getTours(api);
 
+
 // -------------------------- slide3 người dùng tạo tour (render and slides) ----------------------------------------------
 
 const slickPrev = document.querySelector(".ps-prev");
@@ -207,6 +208,8 @@ const slickNextt = document.querySelector(".ps-next");
 const findSlickPrevv = document.getElementsByClassName("find-slick-left");
 const findSlickNextt = document.getElementsByClassName("find-slick-right");
 
+console.log(slickPrev);
+console.log(slickNextt);
 const pre1 = document.getElementsByClassName("slick-prev");
 const next1 = document.getElementsByClassName("slick-next");
 var renderListTourUser = document.getElementsByClassName("popular-slides");
@@ -249,14 +252,16 @@ function getTourUser() {
         slidesToScroll: 1,
         autoplay: true,
       });
-      slickPrev[1].onclick = () => {
+      slickPrev.onclick = () => {
         pre1[1].click();
       };
-      slickNext[1].onclick = () => {
+      slickNextt.onclick = () => {
         next1[1].click();
       };
     });
 }
+
+
 
 getTourUser();
 
