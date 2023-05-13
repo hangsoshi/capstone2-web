@@ -292,7 +292,7 @@ button {
 .post-img-container {
   width: 100%;
   position: relative;
-  top: 140px;
+  top: 50px;
   padding: 0 100px;
 }
 
@@ -578,4 +578,20 @@ button {
 
 .custom-shape-divider-bottom-1679667216 .shape-fill {
   fill: #2f4e84;
+}
+
+.destination-schedules {
+  position: absolute;
+  z-index: 99999;
+  list-style: none;
+  width: 100%;
+}
+
+.destination-schedule {
+  margin-top: 2px;
+  border: 1px solid #777;
+  background-color: white;
+  padding: 5px;
+  border-radius: 5px;
+  cursor: pointer;
 }
