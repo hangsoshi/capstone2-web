@@ -51,6 +51,8 @@ registerButton.onclick = () => {
     inputs.forEach(item => {
         requestValues[item.attributes.name.value] = item.value;
     })
+
+    console.log(requestValues);
     fetch('http://127.0.0.1:8000/api/auth/tsRegister', {
         method: 'POST',
         headers: {
@@ -61,12 +63,11 @@ registerButton.onclick = () => {
         .then(response => response.json())
         .then(
             data => {
-                if (data.status === 200) {
-                    alert("success......");
-                    window.location.href = 'http://localhost:3000/home.html'
-                } else {
-                    alert(data.message)
-                }
+                alert("success......");
+                window.location.href = 'http://localhost:3000/TS-home.html'
             }
         )
+        .catch((error) => {
+            alert(error);
+        })
 }

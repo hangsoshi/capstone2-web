@@ -69,7 +69,7 @@ const postSchedualAdd = document.querySelector(".post-schedual-add");
 const postSchedualInput = document.querySelector(".post-schedual-input");
 let postControl = document.querySelectorAll(".post-control i");
 
-let id;
+let id = 0;
 const array = [
   {
     id: 0,
@@ -111,12 +111,12 @@ postSchedualAdd.onclick = () => {
     </div>
     </div>`
   });
-  postSchedualInput.innerHTML = array.map((val) => val.value);
+  postSchedualInput.innerHTML = array.map((val) => val.value).join("");
   postControl = document.querySelectorAll(".post-control i");
   console.log(postControl);
   postControl.forEach((element) => {
     element.onclick = (e) => {
-      console.log(e.target.dataset.remove);
+      console.log(e.target);
       const re = e.target.dataset.remove;
 
       postSchedualInput.innerHTML = array.map((val) => {
@@ -124,9 +124,9 @@ postSchedualAdd.onclick = () => {
           console.log(val.value);
           return val.value;
         } else return "";
-        });
-      };
-    });
+      }).join("");
+    };
+  });
 };
 
 
@@ -137,4 +137,53 @@ logout.onclick = () => {
   window.localStorage.clear();
   window.location.reload(true);
   window.location.href = 'http://localhost:3000/home.html';
+}
+
+
+// ------ handelImages ---------
+const chooseFiles = document.querySelector(".choose-files");
+const dropInput = document.querySelector(".drop-input");
+const showImages = document.querySelector(".show-images");
+const dragImages = document.querySelector(".drag-images");
+const postImages = document.querySelector(".post-images");
+chooseFiles.onclick = function () {
+  dropInput.click();
+};
+
+var countImages = [], objectURL = [];
+var a = [];
+dropInput.onchange = function (e) {
+  files = e.target.files;
+  for (const file of files) {
+    countImages.push(URL.createObjectURL(file));
+    const renderUI = countImages.map((item, index) => {
+      return `<div class="list-images" data-remove="${index}" onclick="handleDelete(${index})">
+      <img src="${item}" alt="">
+      <i class="fa-solid fa-xmark"></i>
+      </div>`;
+      
+    });
+    showImages.innerHTML = renderUI.join("");
+  }
+  if (countImages.length > 0) {
+    showImages.style.display = "flex";
+    postImages.style.alignItems = "start";
+  }
+  console.log(countImages);
+};
+
+function handleDelete(id) {
+  console.log(id);
+  let dataDelete = document.querySelectorAll(".list-images");
+  console.log(dataDelete[id].dataset.remove);
+  countImages.splice(id,1);
+  console.log(countImages);
+  const renderUI = countImages.map((item, index) => {
+    return `<div class="list-images" data-remove="${index}" onclick="handleDelete(${index})">
+    <img src="${item}" alt="">
+    <i class="fa-solid fa-xmark"></i>
+    </div>`;
+    
+  });
+  showImages.innerHTML = renderUI.join("");
 }

@@ -57,7 +57,7 @@ const next1 = document.getElementsByClassName(" slick-next");
 
 // const ss = document.querySelector.bind(document);
 var sliderFind = document.getElementsByClassName("slides");
-const api = "http://127.0.0.1:8000/api/homepage/tour";
+const api = "http://127.0.0.1:8000/api/ts/tour";
 
 let htmls = "";
 function getTours(api) {
@@ -66,7 +66,7 @@ function getTours(api) {
       return response.json();
     })
     .then((data) => {
-      const tours = data.data;
+      const tours = data;
       htmls = tours.map((tour) => {
         return `
           <div class="find-container">

@@ -48,7 +48,7 @@ const login = JSON.parse(window.localStorage.getItem("login"));
 function getListTour() {
   fetch(
     "http://127.0.0.1:8000/api/personal/tour/all/" +
-      login.user_info.user_profile[0].user_id
+    login.user_info.user_profile[0].user_id
   )
     .then((res) => res.json())
     .then((data) => {
@@ -65,7 +65,7 @@ let htmls = "";
 function renderListTour() {
   fetch(
     "http://127.0.0.1:8000/api/personal/tour/all/" +
-      login.user_info.user_profile[0].user_id
+    login.user_info.user_profile[0].user_id
   )
     .then((response) => {
       return response.json();
@@ -108,7 +108,7 @@ function renderListTour() {
                             <a href="./detailFind.html" class="blog-slider__button" onclick="handle_detail_page(${tour.id},${tour.owner_id})" >CHI TIẾT</a>
                         </div>
                         <div class="profile-action">
-                            <a href="./createTrip.html">
+                            <a href="./UpdateTrip.html" onclick="handleUpdateTours(${tour.id})">
                                 <i class="fa-solid fa-pencil"></i>
                             </a>
                             <i class="fa-solid fa-trash-can btn-delete" onclick="handle_delete(${tour.id},${tour.owner_id})"></i>
@@ -169,6 +169,11 @@ function handle_detail_page(e) {
   window.localStorage.setItem("page-detail", e);
   console.log(window.localStorage.getItem("page-detail"));
   // e.href = 'http://localhost:3000/detailFind.html';
+}
+
+function handleUpdateTours(e) {
+  console.log(e);
+  window.localStorage.setItem("TourIdUpdate", e);
 }
 
 // const tourNames = document.querySelectorAll('.blog-slider__item .blog-slider__content .profile-control .btn-delete')
@@ -326,21 +331,18 @@ function renderUserInfo(obj) {
     <form class="form-profile">
       <div class="form-profile-info">
           <label for="">Họ và tên</label>
-          <div class="form-profile-content user_name">${
-            obj.user_info.name
-          }</div>
+          <div class="form-profile-content user_name">${obj.user_info.name
+    }</div>
       </div>
       <div class="form-profile-info">
           <label for="">Số điện thoại</label>
-          <div class="form-profile-conten user_phone">${
-            obj.user_info.phone_number
-          }</div>
+          <div class="form-profile-conten user_phone">${obj.user_info.phone_number
+    }</div>
       </div>
       <div class="form-profile-info">
           <label for="">Email</label>
-          <div class="form-profile-content user_email">${
-            obj.user_info.email
-          }</div>
+          <div class="form-profile-content user_email">${obj.user_info.email
+    }</div>
       </div>
       <div class="form-profile-info">
           <label for="">Giới tính/ Tuổi</label>
