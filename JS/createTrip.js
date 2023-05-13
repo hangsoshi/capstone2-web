@@ -71,9 +71,6 @@ const handleCurrentLocationSuggestItemClick = (doms, parent) => {
 };
 let aborter = null;
 const searching = (value, listdom, itemclass, func) => {
-  // if (aborter) {
-  //   aborter.abort()
-  // }
   aborter = new AbortController();
   const NOMINATIM_BASE_URL = "https://nominatim.openstreetmap.org/search?";
   const params = {
