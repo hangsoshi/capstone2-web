@@ -52,40 +52,36 @@ const apiPersonTourDetail = "http://127.0.0.1:8000/api/personal/tour/show/";
 var htmlPersonTour = z(".detail-container");
 
 function RenderTourDetail(obj) {
-  console.log(obj);
+  const target = obj[0];
   const htmls = `
     <div class="detail-inf-tour">
     <div class="detail-inf-wraper">
         <div class="detail-inf">
-            <h1>${obj[0].to_where}</h1>
+            <h1>${target.to_where}</h1>
             <div class="detail-inf-all detail-inf-time">
                 <i class="fa-solid fa-location-dot"></i>
-                <p><b>Điểm xuất phát: </b>${obj[0].from_where}</p>
+                <p><b>Điểm xuất phát: </b>${target.from_where}</p>
             </div>
             <div class="detail-inf-all detail-inf-time">
                 <i class="fa-solid fa-location-dot"></i>
-                <p><b>Điểm đến: </b>${obj[0].to_where}</p>
+                <p><b>Điểm đến: </b>${target.to_where}</p>
             </div>
             <div class="detail-inf-all detail-inf-time">
                 <i class="fa-solid fa-person"></i>
-                <p><b>Số thành viên: </b>5</p>
+                <p><b>Số thành viên: </b>${target.member_list.length}</p>
             </div>
             <div class="detail-inf-all detail-inf-time">
                 <i class="fa-solid fa-calendar-days"></i>
-                <p>${obj[0].from_date} - ${obj[0].to_date}</p>
+                <p>${target.from_date} - ${target.to_date}</p>
             </div>
         </div>
         <div class="detail-trip">
             <h4>Mô tả chuyến đi</h4>
-            <p>${obj[0].description}</p>
+            <p>${target.description}</p>
         </div>
-        <!-- <div class="detail-location">
-            <h4>Điểm xuất phát</h4>
-            <p>Thành phố Đà Nẵng</p>
-        </div> -->
 
         <div class="detail-host">
-            <h4 style="font-size: 22px; display: flex; align-items: center;">Chuyến đi được tạo bởi: <span style="color: #000; margin-left: 10px;">${obj[0].name}</span></h4>
+            <h4 style="font-size: 22px; display: flex; align-items: center;">Chuyến đi được tạo bởi: <span style="color: #000; margin-left: 10px;">${target.name}</span></h4>
             <div class="detail-host-inf">
                 <div class="detail-host-img">
                     <img src="../IMAGES/default/avatar.jpg" alt="avatar" style="border-radius: 50%;">
@@ -100,9 +96,9 @@ function RenderTourDetail(obj) {
                         <p>Xác minh qua facebook</p>
                     </div>
                     <div class="add-friend">
-                        <button onclick="handleAddFriend(${obj[0].owner_id})">
+                        <button onclick="handleAddFriend(${target.owner_id})">
                             <i class="fa-solid fa-user-plus" style="color: #ffffff;"></i>
-                            Add friend
+                            Theo dõi
                         </button>
                     </div>
                 </div>
@@ -111,82 +107,92 @@ function RenderTourDetail(obj) {
     </div>
 
     <div class="detail-map">
-        <div id="map">
-            <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d245427.202253111!2d108.07605262450348!3d16.02392166225702!2m3!1f0!2f0!3f0!3m2!
-            1i1024!2i768!4f13.1!3m3!1m2!1s0x314219c792252a13%3A0x1df0cb4b86727e06!2zxJDDoCBO4bq1bmcsIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1679646974460!5m2!1svi!2s"
-                width="600" height="320" style="border:0;" allowfullscreen="" loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <div id="map" style="height: 250px">
+            
         </div>
         <div class="detail-inf-action" style="padding-bottom: 25px">
             <div class="detail-action detail-book">
-                <button style="font-size: 18px;">Tham gia</button>
+                <button style="font-size: 18px;" class="join-button">Tham gia</button>
             </div>
         </div>
 
         <div style="padding: 20px;"><h4>Thành viên đã tham gia</h4></div>
         <div class="detail-member">
-            <div class="detail-member-wraper">
-                <div class="detail-member-img">
-                    <img src="../IMAGES/slides/slide-0.png" alt="">
-                </div>
-                <div class="detail-member-name">
-                    <p>Nguyễn Hoàng Vũ</p>
-                </div>
-            </div>
-            <div class="detail-member-wraper">
-                <div class="detail-member-img">
-                    <img src="../IMAGES/slides/slide-0.png" alt="">
-                </div>
-                <div class="detail-member-name">
-                    <p>Lê Đình Trường</p>
-                </div>
-            </div>
-            <div class="detail-member-wraper">
-                <div class="detail-member-img">
-                    <img src="../IMAGES/slides/slide-0.png" alt="">
-                </div>
-                <div class="detail-member-name">
-                    <p>Nguyễn Thúy Hằng</p>
-                </div>
-            </div>
-            <div class="detail-member-wraper">
-                <div class="detail-member-img">
-                    <img src="../IMAGES/slides/slide-0.png" alt="">
-                </div>
-                <div class="detail-member-name">
-                    <p>Võ Tiến Dũng</p>
-                </div>
-            </div>
-            <div class="detail-member-wraper">
-                <div class="detail-member-img">
-                    <img src="../IMAGES/slides/slide-0.png" alt="">
-                </div>
-                <div class="detail-member-name">
-                    <p>Nguyễn Văn Tân</p>
-                </div>
-            </div>
-            <div class="detail-member-wraper">
-                <div class="detail-member-img">
-                    <img src="../IMAGES/slides/slide-0.png" alt="">
-                </div>
-                <div class="detail-member-name">
-                    <p>Nguyễn Văn Tùng</p>
-                </div>
-            </div>
+            
         </div>
     </div>
 </div>
   `;
-  //   console.log(htmls);
-  return (htmlPersonTour.innerHTML = htmls);
+  const socketRoom = io("http://localhost:3002/room", {
+    auth: {
+      token: localStorage.getItem("id"),
+    },
+  });
+
+  htmlPersonTour.innerHTML = htmls;
+
+  const memberContainer = document.querySelector(".detail-member");
+
+  const mapDOM = document.querySelector("#map");
+  const map = L.map(mapDOM).setView([target.lat, target.lon], 5);
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 10,
+    attribution:
+      '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+  }).addTo(map);
+
+  L.marker([target.lat, target.lon]).addTo(map);
+
+  memberContainer.innerHTML = target.member_list
+    .map(
+      (member) => `<div class="detail-member-wraper">
+          <div class="detail-member-img">
+              <img src="../IMAGES/slides/slide-0.png" alt="">
+          </div>
+          <div class="detail-member-name">
+              <p>${member.name}</p>
+          </div>
+        </div>`
+    )
+    .join("");
+
+  const joinButton = document.querySelector(".join-button");
+  function joinRoom(idRoom) {
+    fetch("http://127.0.0.1:8000/api/personal/room/join", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user_id: login.user_info.user_profile[0].user_id,
+        room_id: idRoom,
+      }),
+    })
+      .then((response) => response.json())
+      .then((val) => {
+        createToast("success", val.msg);
+        socketRoom.emit("join-room", {
+          roomId: idRoom,
+          joiner: login.user_info.user_profile[0].user_id,
+        });
+      })
+      .catch((error) => {
+        createToast("error");
+      });
+  }
+  joinButton.onclick = () => {
+    joinRoom(target.room_id);
+  };
 }
 
 const handleAddFriend = (id) => {
   fetch(
     `http://127.0.0.1:8000/api/friend/create?user_id=${localStorage.getItem(
       "id"
-    )}&friend_id=${id}`
+    )}&friend_id=${id}`,
+    {
+      method: "post",
+    }
   )
     .then((res) => res.json())
     .then((data) => {
@@ -197,8 +203,46 @@ const handleAddFriend = (id) => {
 fetch("http://127.0.0.1:8000/api/personal/tour/show/" + pageDetail)
   .then((res) => res.json())
   .then((data) => {
-    console.log(data);
-    // window.localStorage.setItem("data", JSON.stringify(data));
-    // const dataa = window.localStorage.getItem("data");
     RenderTourDetail(data);
   });
+
+const notifications = document.querySelector(".notifications");
+const toastDetails = {
+  timer: 5000,
+  success: {
+    icon: "fa-circle-check",
+    text: "Success: Create Room success...",
+  },
+  error: {
+    icon: "fa-circle-xmark",
+    text: "Error: Create Room error....",
+  },
+  warning: {
+    icon: "fa-triangle-exclamation",
+    text: "Warning: This is a warning toast.",
+  },
+  info: {
+    icon: "fa-circle-info",
+    text: "Info: This is an information toast.",
+  },
+};
+const removeToast = (toast) => {
+  toast.classList.add("hide");
+  if (toast.timeoutId) clearTimeout(toast.timeoutId); // Clearing the timeout for the toast
+  setTimeout(() => toast.remove(), 500); // Removing the toast after 500ms
+};
+const createToast = (id, message) => {
+  // Getting the icon and text for the toast based on the id passed
+  const { icon, text } = toastDetails[id];
+  const toast = document.createElement("li"); // Creating a new 'li' element for the toast
+  toast.className = `toast ${id}`; // Setting the classes for the toast
+  // Setting the inner HTML for the toast
+  toast.innerHTML = `<div class="column">
+                           <i class="fa-solid ${icon}"></i>
+                           <span>${message || text}</span>
+                        </div>
+                        <i class="fa-solid fa-xmark" onclick="removeToast(this.parentElement)"></i>`;
+  notifications.appendChild(toast); // Append the toast to the notification ul
+  // Setting a timeout to remove the toast after the specified duration
+  toast.timeoutId = setTimeout(() => removeToast(toast), toastDetails.timer);
+};

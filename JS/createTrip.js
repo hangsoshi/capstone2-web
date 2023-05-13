@@ -8,9 +8,8 @@ const login = JSON.parse(window.localStorage.getItem("login"));
 
 const destinationInput = $(".diemden");
 const destinationSuggestList = $(".destination-location-suggestion");
-const currentLocationInupt = $('.diemxuatphat')
-const currentLocationSuggestList = $('.current-location-suggestion')
-
+const currentLocationInupt = $(".diemxuatphat");
+const currentLocationSuggestList = $(".current-location-suggestion");
 
 const createTourState = {
   name: "",
@@ -22,14 +21,15 @@ const createTourState = {
   lon: "",
   from_where: "",
   to_where: "",
-  room_id: ""
-}
+  room_id: "",
+};
 
 const mapDOM = $(".form-map");
 const map = L.map(mapDOM).setView([51.505, -0.09], 13);
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
   maxZoom: 19,
   attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+
 }).addTo(map);
 
 map.on("click", (e) => {
@@ -43,10 +43,11 @@ map.on("click", (e) => {
 let listPlace = [];
 
 const handleDestinationSuggestItemClick = (doms, parent) => {
-  doms.forEach(item => {
+  doms.forEach((item) => {
     item.onclick = () => {
-      const { lat, lon } = item.dataset
+      const { lat, lon } = item.dataset;
       // gán lat, lon cho biến bất kỳ để có thể ném vào trong call api create-tour, ví dụ: a = lat; b = lon
+
       const marker = L.marker([lat, lon], { draggable: true }).addTo(map)
       map.flyTo([lat, lon], 19)
       marker.on('dragend', (e) => {
@@ -59,26 +60,22 @@ const handleDestinationSuggestItemClick = (doms, parent) => {
 
 const handleCurrentLocationSuggestItemClick = (doms, parent) => {
   doms.forEach(item => {
-    item.onclick = () => {
-      const { lat, lon } = item.dataset
-      const name = item.innerText
-      console.log(name)
-      // gán name của điểm xuất phát, ví dụ: a = name
-      const marker = L.marker([lat, lon], { draggable: true }).addTo(map)
-      map.flyTo([lat, lon], 10)
-      marker.on('dragend', (e) => {
 
-      })
-      parent.innerHTML = null
-    }
-  })
-}
-let aborter = null
+    item.onclick = () => {
+      const { lat, lon } = item.dataset;
+      const name = item.innerText;
+      console.log(name);
+      // gán name của điểm xuất phát, ví dụ: a = name
+      const marker = L.marker([lat, lon], { draggable: true }).addTo(map);
+      map.flyTo([lat, lon], 10);
+      marker.on("dragend", (e) => {});
+      parent.innerHTML = null;
+    };
+  });
+};
+let aborter = null;
 const searching = (value, listdom, itemclass, func) => {
-  // if (aborter) {
-  //   aborter.abort()
-  // }
-  aborter = new AbortController()
+  aborter = new AbortController();
   const NOMINATIM_BASE_URL = "https://nominatim.openstreetmap.org/search?";
   const params = {
     q: value,
@@ -95,12 +92,17 @@ const searching = (value, listdom, itemclass, func) => {
     .then((response) => response.text())
     .then((result) => {
       listPlace = JSON.parse(result);
-      const places = listPlace.map((place) => `<li data-lat="${place.lat}" data-lon="${place.lon}" class="destination-item"><p>${place.display_name}</p></li>`).join("");
+      const places = listPlace
+        .map(
+          (place) =>
+            `<li data-lat="${place.lat}" data-lon="${place.lon}" class="destination-item"><p>${place.display_name}</p></li>`
+        )
+        .join("");
       listdom.innerHTML = places;
-      const itemdoms = listdom.querySelectorAll(`.${itemclass}`)
-      func(itemdoms, listdom)
+      const itemdoms = listdom.querySelectorAll(`.${itemclass}`);
+      func(itemdoms, listdom);
     })
-    .catch(error => console.log(error))
+    .catch((error) => console.log(error));
 };
 
 const debounce = (func, timeout = 300) => {
@@ -114,12 +116,30 @@ const debounce = (func, timeout = 300) => {
 };
 
 destinationInput.onkeydown = (e) => {
-  debounce(() => searching(e.target.value, destinationSuggestList, 'destination-item', handleDestinationSuggestItemClick), 0)();
+  debounce(
+    () =>
+      searching(
+        e.target.value,
+        destinationSuggestList,
+        "destination-item",
+        handleDestinationSuggestItemClick
+      ),
+    0
+  )();
 };
 
 currentLocationInupt.onkeydown = (e) => {
-  debounce(() => searching(e.target.value, currentLocationSuggestList, 'destination-item', handleCurrentLocationSuggestItemClick), 0)()
-}
+  debounce(
+    () =>
+      searching(
+        e.target.value,
+        currentLocationSuggestList,
+        "destination-item",
+        handleCurrentLocationSuggestItemClick
+      ),
+    0
+  )();
+};
 
 // ------------------------------------------------------------------------------
 
@@ -145,14 +165,14 @@ currentLocationInupt.onkeydown = (e) => {
 //     };
 // }
 
-const logout = $('.form-logout');
+const logout = $(".form-logout");
 logout.onclick = () => {
-  alert('Bạn chắc chắn muốn thoát ?')
+  alert("Bạn chắc chắn muốn thoát ?");
   window.localStorage.clear();
   window.location.reload(true);
-  window.location.href = 'http://127.0.0.1:5500/CAPSTONE2/FrontEnd/HTML/home.html';
-}
-
+  window.location.href =
+    "http://127.0.0.1:5500/CAPSTONE2/FrontEnd/HTML/home.html";
+};
 
 const names = $(".header-name1");
 const avatarUser = $("#avatar_user");
@@ -187,7 +207,6 @@ if (login) {
     }
   };
 }
-
 
 // ---------------create trip --------------------
 
@@ -232,7 +251,6 @@ if (login) {
 //   tab1.style.marginTop = "102px";
 // };
 
-
 const notifications = document.querySelector(".notifications"),
   buttons = document.querySelectorAll(".buttons .btn");
 // Object containing details for different types of toasts
@@ -259,6 +277,7 @@ const removeToast = (toast) => {
   toast.classList.add("hide");
   if (toast.timeoutId) clearTimeout(toast.timeoutId); // Clearing the timeout for the toast
   setTimeout(() => toast.remove(), 500); // Removing the toast after 500ms
+
 }
 const createToast = (id) => {
   // Getting the icon and text for the toast based on the id passed
@@ -274,14 +293,6 @@ const createToast = (id) => {
   notifications.appendChild(toast); // Append the toast to the notification ul
   // Setting a timeout to remove the toast after the specified duration
   toast.timeoutId = setTimeout(() => removeToast(toast), toastDetails.timer);
-}
-// // Adding a click event listener to each button to create a toast when clicked
-buttons.forEach(btn => {
-  btn.addEventListener("click", () => {
-    createToast(btn.id)
-    console.log(btn.id);
-  });
-});
 
 const button1 = document.querySelector(".button1 button");
 const button2 = document.querySelector(".button2 button");
@@ -303,8 +314,7 @@ const motachuyendi = $(".description");
 
 motachuyendi.onchange = (e) => {
   console.log(e.target.value);
-}
-
+};
 
 
 
@@ -324,6 +334,7 @@ btnCreateTrip.onclick = () => {
       to_date: denngay.value,
       lat: 234723, //vido.value,
       lon: 234324,//kinhdo.value,
+
       from_where: diemxuatphat.value,
       to_where: diemden.value,
       room_id: login.user_info.user_profile[0].user_id,
@@ -336,6 +347,7 @@ btnCreateTrip.onclick = () => {
       to_date: denngay.value,
       lat: 234723,//vido.value,
       lon: 234324,//kinhdo.value,
+
       from_where: diemxuatphat.value,
       to_where: diemden.value,
       room_id: login.user_info.user_profile[0].user_id,
@@ -344,6 +356,7 @@ btnCreateTrip.onclick = () => {
   })
     .then((response) => response.json())
     .then(data => {
+
       createToast("success");
       setTimeout(() => {
         window.location.reload(true);
@@ -354,8 +367,8 @@ btnCreateTrip.onclick = () => {
 
     })
 
-};
 
+};
 
 // ------------------------------- image -----------------------
 
@@ -372,11 +385,6 @@ uploadImage.onclick = () => {
   };
 };
 
-// setTimeout(() => {
-//   console.log(objImage);
-// }, 10000)
-
-
 
 if (!login) {
   btnCreateTrip.disabled = true;
@@ -384,4 +392,3 @@ if (!login) {
 } else {
   btnCreateTrip.enabled = true;
 }
-

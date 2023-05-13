@@ -290,10 +290,10 @@ body {
 }
 
 /* -------- create trip ----------*/
-.container {
-  width: 80%;
+.container-create-trip {
+  width: 100%;
   position: relative;
-  top: 140px;
+  top: 50px;
   padding: 0 100px;
   margin: 0 auto;
 }
@@ -434,12 +434,12 @@ iframe {
 
 .trip-2-img {
   width: 50%;
-  width: 100%;
   margin: 0 20px 0 0;
   object-fit: cover;
   background-size: 100% 100%;
   background-repeat: no-repeat;
   height: auto;
+  border-radius: 10px;
 }
 
 .trip-2-img img {

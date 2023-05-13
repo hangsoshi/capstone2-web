@@ -60,7 +60,7 @@ var sliderFind = document.getElementsByClassName("slides");
 const api = "http://127.0.0.1:8000/api/ts/tour";
 
 let htmls = "";
-function getTours(api) {
+function getTours() {
   fetch(api)
     .then((response) => {
       return response.json();
@@ -69,7 +69,7 @@ function getTours(api) {
       const tours = data;
       htmls = tours.map((tour) => {
         return `
-          <div class="find-container">
+          <div class="find-container" data-id="${tour.id}" style="cursor: pointer">
                 <div class="find-container-top">
                     <img src="../IMAGES/slides/slide-5.png" alt="">
                 </div>
@@ -103,7 +103,16 @@ function getTours(api) {
       findSlickNext[0].onclick = () => {
         next1[0].click();
       };
+
+      const findContainers = document.querySelectorAll(".find-container");
+      findContainers.forEach((item) => {
+        item.onclick = () => {
+          const id = item.dataset.id;
+          localStorage.setItem("page-detail", id);
+          location.href = "detailFind.html";
+        };
+      });
     });
 }
 
-getTours(api);
+getTours();
