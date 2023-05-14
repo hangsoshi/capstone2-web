@@ -38,86 +38,12 @@
   <body>
     <div class="main">
       <div id="render-nav"></div>
-      <!-- <div class="wrapper-header">
-        <div class="detail-header">
-          <a href="./home.html" class="logo">
-            <img src="../IMAGES/logo/logo-removebg-preview.png" alt="" />
-          </a>
-          <ul class="nav-menu">
-            <li><a href="./home.html" class="nav-link">Home</a></li>
-            <li><a href="./bookTour.html" class="nav-link">Tours</a></li>
-            <li>
-              <a href="./createTrip.html" class="nav-link">Tạo chuyến đi</a>
-            </li>
-            <li><a href="./group.html" class="nav-link">Group</a></li>
-            <li>
-              <a href="./TS-home.html" class="nav-link"
-                >Trở thành nhà cung cấp</a
-              >
-            </li>
-            <li>
-              <a href="#" class="nav-link"
-                ><ion-icon name="notifications-outline"></ion-icon
-              ></a>
-            </li>
-
-            <div class="header-nav-form">
-              <div class="header-nav-icon">
-                <i class="fa-solid fa-user user-icon"></i>
-                <i class="fa-solid fa-bars"></i>
-              </div>
-              <div style="display: none" class="header-form">
-                <div class="header-form-login">
-                  <ul>
-                    <li><a href="./login-register.html">Đăng nhập</a></li>
-                    <li><a href="./login-register.html">Đăng ký</a></li>
-                  </ul>
-                </div>
-                <div class="header-form-logout">
-                  <div class="content-logout">
-                    <a href="./profile.html" class="avatar-login">
-                      <div class="header-form-avatar">
-                        <img src="" alt="" id="avatar_user" />
-                        <div class="header-name">
-                          <span class="header-name1">NguyenHoangVu</span>
-                          <p>Xem hồ sơ</p>
-                        </div>
-                      </div>
-                    </a>
-                    <span class="drop-line"></span>
-                    <div class="header-form-booked">
-                      <i class="fa-sharp fa-solid fa-clock-rotate-left"></i>
-                      <span>Chuyến đi của tôi</span>
-                    </div>
-                    <div class="header-form-loved">
-                      <i class="fa-regular fa-heart"></i>
-                      <span>Lịch sử chuyến đi</span>
-                    </div>
-                    <div class="form-logout">Đăng xuất</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </ul>
-        </div>
-      </div> -->
-
       <div class="container-create-trip">
         <div class="create-trip-container">
           <h1>Bắt đầu chuyến đi</h1>
           <p>
             Hãy tạo những chuyến đi của bạn và chúc bạn có 1 chuyến đi vui vẻ
           </p>
-          <!-- <div class="create-trip-control">
-                    <div class="button1">
-                        <button class="button1-btn">1</button>
-                        <p>Điểm đến</p>
-                    </div>
-                    <div class="button2">
-                        <button class="button2-btn">2</button>
-                        <p>Mô tả chuyến đi</p>
-                    </div>
-                </div> -->
         </div>
 
         <div class="form-trip">
@@ -136,6 +62,23 @@
                   />
                 </div>
                 <div class="form-content">
+                  <div class="form-info-wrap">
+                    <div class="form-info">
+                      <label for="">Nhóm</label>
+                      <div class="form-input">
+                        <select
+                          class="form-control what-room"
+                          style="
+                            width: 100%;
+                            background-color: white;
+                            border: 1px solid #999;
+                            border-radius: 10px;
+                            padding: 10px;
+                          "
+                        ></select>
+                      </div>
+                    </div>
+                  </div>
                   <div class="form-info-wrap">
                     <div class="form-info">
                       <label for="">Tên chuyến đi</label>
@@ -172,22 +115,6 @@
                     </div>
                   </div>
                   <div class="form-info-wrap1">
-                    <div class="form-info form-info-0">
-                      <label for="">Điểm xuất phát</label>
-                      <div class="form-input">
-                        <input
-                          name="from_where"
-                          type="text"
-                          placeholder="Nhập điểm xuất phát"
-                          class="form-control diemxuatphat"
-                        />
-                      </div>
-                      <div>
-                        <ul
-                          class="destination-list current-location-suggestion"
-                        ></ul>
-                      </div>
-                    </div>
                     <div class="form-info">
                       <label for="">Điểm đến</label>
                       <div class="form-input">
@@ -201,6 +128,7 @@
                       <div>
                         <ul
                           class="destination-list destination-location-suggestion"
+                          style="display: none"
                         ></ul>
                       </div>
                     </div>
@@ -210,19 +138,6 @@
               <div class="form-trip-2">
                 <div class="form-2">
                   <div class="form-content-2">
-                    <div class="trip-2-content">
-                      <div class="form-info form-info1">
-                        <label for="">Số người</label>
-                        <div class="form-input1">
-                          <input
-                            name="people"
-                            type="number"
-                            placeholder="Nhập số người"
-                            class="form-control songuoi"
-                          />
-                        </div>
-                      </div>
-                    </div>
                     <!-- <div class="form-info-wrap1">
                                     <div class="form-info form-info-0">
                                         <label for="">Kinh độ</label>
@@ -251,13 +166,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="form-map" id="form-map">
-                    <!-- <iframe
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d245427.202253111!2d108.07605262450348!3d16.02392166225702!2m3!1f0!2f0!3f0!3m2!
-                                    1i1024!2i768!4f13.1!3m3!1m2!1s0x314219c792252a13%3A0x1df0cb4b86727e06!2zxJDDoCBO4bq1bmcsIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1679646974460!5m2!1svi!2s"
-                                    allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-                                </iframe> -->
-                  </div>
+                  <div class="form-map" id="form-map"></div>
                 </div>
                 <div class="form-back-start">
                   <button type="button" class="create-trip">
