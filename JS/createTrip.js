@@ -174,7 +174,7 @@ const removeToast = (toast) => {
   if (toast.timeoutId) clearTimeout(toast.timeoutId); // Clearing the timeout for the toast
   setTimeout(() => toast.remove(), 500); // Removing the toast after 500ms
 };
-const createToast = (id) => {
+const createToast = (id, message) => {
   // Getting the icon and text for the toast based on the id passed
   const { icon, text } = toastDetails[id];
   const toast = document.createElement("li"); // Creating a new 'li' element for the toast
@@ -182,7 +182,7 @@ const createToast = (id) => {
   // Setting the inner HTML for the toast
   toast.innerHTML = `<div class="column">
                          <i class="fa-solid ${icon}"></i>
-                         <span>${text}</span>
+                         <span>${message || text}</span>
                       </div>
                       <i class="fa-solid fa-xmark" onclick="removeToast(this.parentElement)"></i>`;
   notifications.appendChild(toast); // Append the toast to the notification ul
@@ -255,26 +255,45 @@ if (updateTour) {
 }
 
 btnCreateTrip.onclick = () => {
-  fetch("http://127.0.0.1:8000/api/personal/tour/create", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      ...createTourState,
-      owner_id: localStorage.getItem("id"),
-    }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      createToast("success");
-      setTimeout(() => {
-        window.location.reload(true);
-      }, 5000);
+  if (updateTour) {
+    fetch(`http://127.0.0.1:8000/api/personal/tour/update/${updateTour}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ...createTourState,
+        owner_id: localStorage.getItem("id"),
+      }),
     })
-    .catch((error) => {
-      createToast("error");
-    });
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.status === 200) {
+          createToast("success", "Success: Cập nhật thành công");
+        }
+      });
+  } else {
+    fetch("http://127.0.0.1:8000/api/personal/tour/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ...createTourState,
+        owner_id: localStorage.getItem("id"),
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        createToast("success");
+        setTimeout(() => {
+          window.location.reload(true);
+        }, 5000);
+      })
+      .catch((error) => {
+        createToast("error");
+      });
+  }
 };
 
 // ------------------------------- image -----------------------

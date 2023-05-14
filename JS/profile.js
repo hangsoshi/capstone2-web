@@ -114,7 +114,6 @@ function renderListTour() {
           mousewheel: {
             invert: false,
           },
-          // autoHeight: true,
           pagination: {
             el: ".blog-slider__pagination",
             clickable: true,
@@ -122,14 +121,9 @@ function renderListTour() {
         });
       }
     });
-  // window.location.reload(true)
 }
 
-// const handle_detail_page = $(".blog-slider__button");
-
 function handle_delete(e, v) {
-  console.log(e);
-  console.log(v);
   const listTour = JSON.parse(window.localStorage.getItem("dataPersonTour"));
   window.localStorage.setItem("page-detail", e);
   console.log(window.localStorage.getItem("page-detail"));
@@ -440,7 +434,7 @@ const removeToast = (toast) => {
   if (toast.timeoutId) clearTimeout(toast.timeoutId); // Clearing the timeout for the toast
   setTimeout(() => toast.remove(), 500); // Removing the toast after 500ms
 };
-const createToast = (id) => {
+const createToast = (id, message) => {
   // Getting the icon and text for the toast based on the id passed
   const { icon, text } = toastDetails[id];
   const toast = document.createElement("li"); // Creating a new 'li' element for the toast
@@ -448,7 +442,7 @@ const createToast = (id) => {
   // Setting the inner HTML for the toast
   toast.innerHTML = `<div class="column">
                          <i class="fa-solid ${icon}"></i>
-                         <span>${text}</span>
+                         <span>${message || text}</span>
                       </div>
                       <i class="fa-solid fa-xmark" onclick="removeToast(this.parentElement)"></i>`;
   notifications.appendChild(toast); // Append the toast to the notification ul
