@@ -70,6 +70,39 @@ const postSchedualAdd = document.querySelector(".post-schedual-add i");
 const postSchedualInput = document.querySelector(".post-schedual");
 let postControl = document.querySelectorAll(".post-control i");
 
+let id = 0;
+const array = [
+  {
+    id: 0,
+    value: `<div class="post-item">
+  <div class="post-control">
+  <p>Lịch trình</p>
+  </div>
+  <div class="post-control-input">
+                                <input type="text" placeholder="Nhập tên chuyến đi ( Ví dụ: Ngày 1: Đà Nẵng - Hà Nội )">
+                            </div>
+  </div>
+  <div class="post-item">
+  <div class="post-control">
+      <i class="fa-solid fa-trash"></i>
+  </div>
+  <div class="post-control-input">
+                                <textarea cols="30" rows="10" placeholder="Mô tả nội dung chuyến đi..."></textarea>
+                            </div>
+  </div>`
+  }
+];
+
+postSchedualAdd.onclick = () => {
+  id++;
+  array.push({
+    id, value: `<div class="post-item">
+    <div class="post-control">
+    </div>
+    <div class="post-control-input">
+      <input type="text" placeholder="Nhập tên chuyến đi ( Ví dụ: Ngày 1: Đà Nẵng - Hà Nội )">
+    </div>
+    </div>
 const ID = () => "_" + Math.random().toString(36).substring(2, 9);
 const renderSchedules = () =>
   schedules.map((schedule, index) => {
@@ -114,6 +147,22 @@ const renderSchedules = () =>
       </div>
     </div>
   </div>`;
+  });
+  postSchedualInput.innerHTML = array.map((val) => val.value).join("");
+  postControl = document.querySelectorAll(".post-control i");
+  console.log(postControl);
+  postControl.forEach((element) => {
+    element.onclick = (e) => {
+      console.log(e.target);
+      const re = e.target.dataset.remove;
+
+      postSchedualInput.innerHTML = array.map((val) => {
+        if (val.id !== Number(re)) {
+          console.log(val.value);
+          return val.value;
+        } else return "";
+      }).join("");
+    };
   });
 
 let aborter = null;
@@ -261,6 +310,41 @@ chooseFiles.onclick = function () {
   dropInput.click();
 };
 
+const z = document.querySelector.bind(document);
+const logout = z('.form-logout');
+logout.onclick = () => {
+  alert('Bạn chắc chắn muốn thoát ?')
+  window.localStorage.clear();
+  window.location.reload(true);
+  window.location.href = 'http://localhost:3000/home.html';
+}
+
+
+// ------ handelImages ---------
+const chooseFiles = document.querySelector(".choose-files");
+const dropInput = document.querySelector(".drop-input");
+const showImages = document.querySelector(".show-images");
+const dragImages = document.querySelector(".drag-images");
+const postImages = document.querySelector(".post-images");
+chooseFiles.onclick = function () {
+  dropInput.click();
+};
+
+var countImages = [], objectURL = [];
+var a = [];
+dropInput.onchange = function (e) {
+  files = e.target.files;
+  for (const file of files) {
+    countImages.push(URL.createObjectURL(file));
+    const renderUI = countImages.map((item, index) => {
+      return `<div class="list-images" data-remove="${index}" onclick="handleDelete(${index})">
+      <img src="${item}" alt="">
+      <i class="fa-solid fa-xmark"></i>
+      </div>`;
+      
+    });
+    showImages.innerHTML = renderUI.join("");
+  }
 var countImages = [];
 dropInput.onchange = function (e) {
   console.log(e);
@@ -279,4 +363,23 @@ dropInput.onchange = function (e) {
     showImages.style.display = "flex";
     postImages.style.alignItems = "start";
   }
+  console.log(countImages);
 };
+
+function handleDelete(id) {
+  console.log(id);
+  let dataDelete = document.querySelectorAll(".list-images");
+  console.log(dataDelete[id].dataset.remove);
+  countImages.splice(id,1);
+  console.log(countImages);
+  const renderUI = countImages.map((item, index) => {
+    return `<div class="list-images" data-remove="${index}" onclick="handleDelete(${index})">
+    <img src="${item}" alt="">
+    <i class="fa-solid fa-xmark"></i>
+    </div>`;
+    
+  });
+  showImages.innerHTML = renderUI.join("");
+}
+};
+

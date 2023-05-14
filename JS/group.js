@@ -136,8 +136,9 @@ function getTours() {
     })
     .then((data) => {
       const tours = data.allRoom;
+      console.log(tours);
       htmlss = tours
-        .map((tour) => {
+        .map((tour) => { 
           return `<div class="group-item">
            <div class="group-img">
                <img src="../IMAGES/slides/slide-5.png" alt="">
@@ -145,6 +146,7 @@ function getTours() {
            <div class="group-info">
                <h4 class="group-info-name">${tour.name}</h4>
                <p>30 thành viên</p>
+               <p>host:</p>
                <button onclick="joinRoom(${tour.id})">Tham gia</button>
            </div>
        </div>`;

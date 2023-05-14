@@ -58,8 +58,7 @@ function getListTour() {
 }
 
 var sliderFind = $(".swiper-wrapper");
-const api = "http://127.0.0.1:8000/api/ts/tour";
-console.log(api);
+const api = "http://127.0.0.1:8000/api/ts/tour/all/"+login.user_info.user_profile[0].user_id;
 let htmls = "";
 function renderListTour() {
   fetch(api)
@@ -173,11 +172,11 @@ if (!login) {
   headerFormLogin.style.display = "none";
 }
 const names = $(".header-name1");
-const avatarUser = $(".avatar_user");
+const avatarUser = $("#avatar_user");
 const avatarUser1 = $(".avatar_user_header");
 
 console.log(names);
-console.log(avatarUser1);
+console.log(avatarUser);
 
 headerNavForm.onclick = function () {
   if (headerForm.style.display === "none") {

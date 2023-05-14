@@ -40,6 +40,10 @@ header .container {
   width: 51.5%;
 }
 
+.home {
+  padding-top: 80px;
+}
+
 .home .text {
   color: white;
   padding: 48px 110px;
@@ -511,6 +515,13 @@ header .container {
   font-size: 45px;
   margin-right: 10px;
   color: #b4b2b2;
+}
+
+.render-nav .header .container {
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 1000;
 }
 
 .header-form-avatar img {

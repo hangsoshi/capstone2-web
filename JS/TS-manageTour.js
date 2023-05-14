@@ -1,7 +1,8 @@
 const ss = document.querySelector.bind(document);
 var sliderFind = ss(".list-tour");
-const api = "http://127.0.0.1:8000/api/ts/tour";
 const login = JSON.parse(window.localStorage.getItem("login"));
+console.log(login);
+const api = "http://127.0.0.1:8000/api/ts/tour/all/" + login.user_info.user_profile.user_id;
 var i=0;
 let htmls = "";
 function getTours(api) {
