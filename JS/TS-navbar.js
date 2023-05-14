@@ -9,7 +9,7 @@
             <li> <a href="TS-postTour.html" class="nav-link">Đăng tours</a> </li>
             <li> <a href="TS-managerTours.html" class="nav-link">Quản lý tours</a> </li>
             <li> <a href="TS-managerBooked.html" class="nav-link">Quản lý đặt tours</a> </li>
-            <li> <a href="login-register.html" class="nav-link">Trở thành người dùng</a> </li>
+            <li> <a href="TS-register.html" class="nav-link">Trở thành người dùng</a> </li>
             <li><i class="fa-solid fa-bell"></i>
                 <div style="display: none;" class="container-notification">
                     <div class="wrap-notification">
