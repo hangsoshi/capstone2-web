@@ -1,6 +1,7 @@
 const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document);
 const login = JSON.parse(window.localStorage.getItem("login"));
+const updateTour = localStorage.getItem("TourIdUpdate");
 
 const destinationInput = $(".diemden");
 const destinationSuggestList = $(".destination-location-suggestion");
@@ -221,6 +222,38 @@ motachuyendi.onchange = (e) => {
 
 // ---------------------------------   create trip   ----------------------------------------
 const btnCreateTrip = document.querySelector(".create-trip");
+if (updateTour) {
+  btnCreateTrip.innerText = "Cập nhật chuyến đi";
+}
+
+if (updateTour) {
+  fetch(`http://localhost:3002/api/client/tours/${updateTour}`)
+    .then((res) => res.json())
+    .then((data) => {
+      createTourState.name = data.name;
+      createTourState.owner_id = data.owner_id;
+      createTourState.description = data.description;
+      createTourState.from_date = data.from_date;
+      createTourState.to_date = data.to_date;
+      createTourState.lat = data.lat;
+      createTourState.lon = data.lon;
+      createTourState.to_where = data.to_where;
+      createTourState.room_id = data.room_id;
+
+      rooms.value = createTourState.room_id;
+      tenchuyendi.value = createTourState.name;
+      tungay.value = createTourState.from_date;
+      denngay.value = createTourState.to_date;
+      diemden.value = createTourState.to_where;
+      motachuyendi.value = createTourState.description;
+      const marker = L.marker([createTourState.lat, createTourState.lon], {
+        draggable: true,
+      }).addTo(map);
+      map.flyTo([createTourState.lat, createTourState.lon], 10);
+      marker.on("dragend", (e) => {});
+    });
+}
+
 btnCreateTrip.onclick = () => {
   fetch("http://127.0.0.1:8000/api/personal/tour/create", {
     method: "POST",
@@ -247,7 +280,6 @@ btnCreateTrip.onclick = () => {
 // ------------------------------- image -----------------------
 
 const uploadImage = $(".upload_image");
-console.log(uploadImage);
 const importImage = $(".input_image");
 
 let objImage;
