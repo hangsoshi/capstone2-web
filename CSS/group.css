@@ -364,7 +364,7 @@ body {
 .group-container {
   width: 100%;
   position: relative;
-  top: 150px;
+  top: 30px;
   padding: 0 140px;
 }
 
@@ -559,7 +559,7 @@ body {
 .footer {
   background-color: #1b1b1b;
   position: relative;
-  margin-top: 200px;
+  margin-top: 70px;
   padding-bottom: 100px;
 }
 

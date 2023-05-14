@@ -1,9 +1,9 @@
 const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document);
-const headerNavForm = document.querySelector(".header-nav-form");
-const headerForm = document.querySelector(".header-form");
-const headerFormLogin = headerNavForm.querySelector(".header-form-login");
-const headerFormLogout = document.querySelector(".header-form-logout");
+// const headerNavForm = document.querySelector(".header-nav-form");
+// const headerForm = document.querySelector(".header-form");
+// const headerFormLogin = headerNavForm.querySelector(".header-form-login");
+// const headerFormLogout = document.querySelector(".header-form-logout");
 const login = JSON.parse(window.localStorage.getItem("login"));
 
 const destinationInput = $(".diemden");
@@ -165,14 +165,14 @@ currentLocationInupt.onkeydown = (e) => {
 //     };
 // }
 
-const logout = $(".form-logout");
-logout.onclick = () => {
-  alert("Bạn chắc chắn muốn thoát ?");
-  window.localStorage.clear();
-  window.location.reload(true);
-  window.location.href =
-    "http://127.0.0.1:5500/CAPSTONE2/FrontEnd/HTML/home.html";
-};
+// const logout = $(".form-logout");
+// logout.onclick = () => {
+//   alert("Bạn chắc chắn muốn thoát ?");
+//   window.localStorage.clear();
+//   window.location.reload(true);
+//   window.location.href =
+//     "http://127.0.0.1:5500/CAPSTONE2/FrontEnd/HTML/home.html";
+// };
 
 const names = $(".header-name1");
 const avatarUser = $("#avatar_user");
@@ -293,6 +293,7 @@ const createToast = (id) => {
   notifications.appendChild(toast); // Append the toast to the notification ul
   // Setting a timeout to remove the toast after the specified duration
   toast.timeoutId = setTimeout(() => removeToast(toast), toastDetails.timer);
+}
 
 const button1 = document.querySelector(".button1 button");
 const button2 = document.querySelector(".button2 button");
@@ -392,3 +393,8 @@ if (!login) {
 } else {
   btnCreateTrip.enabled = true;
 }
+
+
+
+
+['blob:http://localhost:3000/e2a5b326-d7f8-4043-99a0-495bd9883c49', 'blob:http://localhost:3000/1e90de57-3176-4ecb-8c62-8d98d00536c2', 'blob:http://localhost:3000/c1322ad8-ba87-4b81-8da8-74fe45fc0550', 'blob:http://localhost:3000/6a48819b-6b1d-4e6b-8dbb-67281349601f', 'blob:http://localhost:3000/d16b8a5f-2b0c-45ca-b7cd-b7bad24cf3fb']

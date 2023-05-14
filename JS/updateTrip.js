@@ -206,3 +206,7 @@ fetch("http://127.0.0.1:8000/api/personal/tour/show/" + TourIdUpdate)
 // ------------------------------------------------------------------
 const btnUpdateTour = document.querySelector(".update-trip");
 console.log(btnUpdateTour);
+
+btnUpdateTour.onclick = () => {
+  fetch()
+}
