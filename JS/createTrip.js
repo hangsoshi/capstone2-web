@@ -1,6 +1,7 @@
 const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document);
 const login = JSON.parse(window.localStorage.getItem("login"));
+const updateTour = localStorage.getItem("TourIdUpdate");
 
 const destinationInput = $(".diemden");
 const destinationSuggestList = $(".destination-location-suggestion");
@@ -173,7 +174,7 @@ const removeToast = (toast) => {
   if (toast.timeoutId) clearTimeout(toast.timeoutId); // Clearing the timeout for the toast
   setTimeout(() => toast.remove(), 500); // Removing the toast after 500ms
 };
-const createToast = (id) => {
+const createToast = (id, message) => {
   // Getting the icon and text for the toast based on the id passed
   const { icon, text } = toastDetails[id];
   const toast = document.createElement("li"); // Creating a new 'li' element for the toast
@@ -181,7 +182,7 @@ const createToast = (id) => {
   // Setting the inner HTML for the toast
   toast.innerHTML = `<div class="column">
                          <i class="fa-solid ${icon}"></i>
-                         <span>${text}</span>
+                         <span>${message || text}</span>
                       </div>
                       <i class="fa-solid fa-xmark" onclick="removeToast(this.parentElement)"></i>`;
   notifications.appendChild(toast); // Append the toast to the notification ul
@@ -221,33 +222,83 @@ motachuyendi.onchange = (e) => {
 
 // ---------------------------------   create trip   ----------------------------------------
 const btnCreateTrip = document.querySelector(".create-trip");
-btnCreateTrip.onclick = () => {
-  fetch("http://127.0.0.1:8000/api/personal/tour/create", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      ...createTourState,
-      owner_id: localStorage.getItem("id"),
-    }),
-  })
-    .then((response) => response.json())
+if (updateTour) {
+  btnCreateTrip.innerText = "Cập nhật chuyến đi";
+}
+
+if (updateTour) {
+  fetch(`http://localhost:3002/api/client/tours/${updateTour}`)
+    .then((res) => res.json())
     .then((data) => {
-      createToast("success");
-      setTimeout(() => {
-        window.location.reload(true);
-      }, 5000);
-    })
-    .catch((error) => {
-      createToast("error");
+      createTourState.name = data.name;
+      createTourState.owner_id = data.owner_id;
+      createTourState.description = data.description;
+      createTourState.from_date = data.from_date;
+      createTourState.to_date = data.to_date;
+      createTourState.lat = data.lat;
+      createTourState.lon = data.lon;
+      createTourState.to_where = data.to_where;
+      createTourState.room_id = data.room_id;
+
+      rooms.value = createTourState.room_id;
+      tenchuyendi.value = createTourState.name;
+      tungay.value = createTourState.from_date;
+      denngay.value = createTourState.to_date;
+      diemden.value = createTourState.to_where;
+      motachuyendi.value = createTourState.description;
+      const marker = L.marker([createTourState.lat, createTourState.lon], {
+        draggable: true,
+      }).addTo(map);
+      map.flyTo([createTourState.lat, createTourState.lon], 10);
+      marker.on("dragend", (e) => {});
     });
+}
+
+btnCreateTrip.onclick = () => {
+  if (updateTour) {
+    fetch(`http://127.0.0.1:8000/api/personal/tour/update/${updateTour}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ...createTourState,
+        owner_id: localStorage.getItem("id"),
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.status === 200) {
+          createToast("success", "Success: Cập nhật thành công");
+        }
+      });
+  } else {
+    fetch("http://127.0.0.1:8000/api/personal/tour/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ...createTourState,
+        owner_id: localStorage.getItem("id"),
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        createToast("success");
+        setTimeout(() => {
+          window.location.reload(true);
+        }, 5000);
+      })
+      .catch((error) => {
+        createToast("error");
+      });
+  }
 };
 
 // ------------------------------- image -----------------------
 
 const uploadImage = $(".upload_image");
-console.log(uploadImage);
 const importImage = $(".input_image");
 
 let objImage;
