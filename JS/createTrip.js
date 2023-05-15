@@ -239,11 +239,15 @@ if (updateTour) {
       createTourState.lon = data.lon;
       createTourState.to_where = data.to_where;
       createTourState.room_id = data.room_id;
-
+      console.log(new Date(data.from_date).toISOString().slice(0, 10));
       rooms.value = createTourState.room_id;
       tenchuyendi.value = createTourState.name;
-      tungay.value = createTourState.from_date;
-      denngay.value = createTourState.to_date;
+      tungay.value = new Date(createTourState.from_date)
+        .toISOString()
+        .slice(0, 10);
+      denngay.value = new Date(createTourState.to_date)
+        .toISOString()
+        .slice(0, 10);
       diemden.value = createTourState.to_where;
       motachuyendi.value = createTourState.description;
       const marker = L.marker([createTourState.lat, createTourState.lon], {
