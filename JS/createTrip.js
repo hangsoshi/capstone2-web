@@ -6,6 +6,8 @@ const updateTour = localStorage.getItem("TourIdUpdate");
 const destinationInput = $(".diemden");
 const destinationSuggestList = $(".destination-location-suggestion");
 const currentLocationSuggestList = $(".current-location-suggestion");
+const uploadImage = $(".upload_image");
+const importImage = $(".input_image");
 
 const rooms = document.querySelector(".what-room");
 
@@ -19,6 +21,7 @@ const createTourState = {
   lon: "",
   to_where: "",
   room_id: "",
+  image: "",
 };
 
 fetch(
@@ -239,7 +242,6 @@ if (updateTour) {
       createTourState.lon = data.lon;
       createTourState.to_where = data.to_where;
       createTourState.room_id = data.room_id;
-      console.log(new Date(data.from_date).toISOString().slice(0, 10));
       rooms.value = createTourState.room_id;
       tenchuyendi.value = createTourState.name;
       tungay.value = new Date(createTourState.from_date)
@@ -250,6 +252,9 @@ if (updateTour) {
         .slice(0, 10);
       diemden.value = createTourState.to_where;
       motachuyendi.value = createTourState.description;
+      createTourState.image = data.image;
+      uploadImage.innerText = null;
+      uploadImage.style.backgroundImage = `url('${createTourState.image}')`;
       const marker = L.marker([createTourState.lat, createTourState.lon], {
         draggable: true,
       }).addTo(map);
@@ -274,6 +279,7 @@ btnCreateTrip.onclick = () => {
       .then((data) => {
         if (data.status === 200) {
           createToast("success", "Success: Cập nhật thành công");
+          localStorage.removeItem("tourIdUpdate");
         }
       });
   } else {
@@ -302,15 +308,23 @@ btnCreateTrip.onclick = () => {
 
 // ------------------------------- image -----------------------
 
-const uploadImage = $(".upload_image");
-const importImage = $(".input_image");
-
 let objImage;
 uploadImage.onclick = () => {
   importImage.click();
   importImage.onchange = (e) => {
-    objImage = URL.createObjectURL(e.target.files[0]);
-    uploadImage.style.backgroundImage = `url('${objImage}')`;
+    const formdata = new FormData();
+    formdata.append("directory", "thumbnail");
+    formdata.append("file", e.target.files[0]);
+    fetch("http://localhost:3000/upload", {
+      method: "post",
+      body: formdata,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        createTourState.image = data.data.fileUrl;
+        uploadImage.innerText = null;
+        uploadImage.style.backgroundImage = `url('${data.data.fileUrl}')`;
+      });
   };
 };
 

@@ -10,6 +10,7 @@ const {
   uploadBytes,
   getDownloadURL,
 } = require("firebase/storage");
+const uploadController = require("./upload");
 
 const firebaseConfig = {
   apiKey: process.env.API_KEY,
@@ -32,6 +33,8 @@ app.use("/", express.static(path.join(__dirname, "HTML")));
 app.get("/", (_req, res) => {
   res.redirect("home.html");
 });
+
+app.post("/upload", upload.single("file"), uploadController);
 
 app.get("/firebase/:fileName", (req, res) => {
   let folder = req.query.folder || "";
