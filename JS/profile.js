@@ -28,21 +28,6 @@ const inputHobbies = $(".input-hobbies");
 const inputGender = $("#input-gender");
 const login = JSON.parse(window.localStorage.getItem("login"));
 
-// ----- my trip----------
-// new Swiper(".blog-slider", {
-//     spaceBetween: 30,
-//     effect: "fade",
-//     loop: true,
-//     mousewheel: {
-//         invert: false,
-//     },
-//     // autoHeight: true,
-//     pagination: {
-//         el: ".blog-slider__pagination",
-//         clickable: true,
-//     },
-// });
-
 // -------------------- render list tour ------------------------
 
 function getListTour() {
@@ -108,10 +93,12 @@ function renderListTour() {
                             <a href="./detailFind.html" class="blog-slider__button" onclick="handle_detail_page(${tour.id},${tour.owner_id})" >CHI TIẾT</a>
                         </div>
                         <div class="profile-action">
-                            <a href="./createTrip.html">
+                            <button type="button" style="background-color: white; border: none;" onclick="handleUpdateTours(${tour.id})">
                                 <i class="fa-solid fa-pencil"></i>
-                            </a>
-                            <i class="fa-solid fa-trash-can btn-delete" onclick="handle_delete(${tour.id},${tour.owner_id})"></i>
+                            </button>
+                            <button type="button" style="background-color: white; border: none;" onclick="handle_delete(${tour.id},${tour.owner_id})">
+                              <i class="fa-solid fa-trash-can btn-delete"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -127,7 +114,6 @@ function renderListTour() {
           mousewheel: {
             invert: false,
           },
-          // autoHeight: true,
           pagination: {
             el: ".blog-slider__pagination",
             clickable: true,
@@ -135,14 +121,9 @@ function renderListTour() {
         });
       }
     });
-  // window.location.reload(true)
 }
 
-// const handle_detail_page = $(".blog-slider__button");
-
 function handle_delete(e, v) {
-  console.log(e);
-  console.log(v);
   const listTour = JSON.parse(window.localStorage.getItem("dataPersonTour"));
   window.localStorage.setItem("page-detail", e);
   console.log(window.localStorage.getItem("page-detail"));
@@ -171,14 +152,10 @@ function handle_detail_page(e) {
   // e.href = 'http://localhost:3000/detailFind.html';
 }
 
-// const tourNames = document.querySelectorAll('.blog-slider__item .blog-slider__content .profile-control .btn-delete')
-// tourNames.forEach((tourr) => {
-//     tourr.onclick = (e) => {
-//         alert(e.target.dataset.tourr);
-//         localStorage.setItem('targetTourId', e.target.dataset.tourr)
-//         e.href = 'http://localhost:3000/detailFind.html'
-//     }
-// })
+function handleUpdateTours(e) {
+  localStorage.setItem("TourIdUpdate", e);
+  location.href = "createTrip.html";
+}
 
 function start() {
   renderListTour();
@@ -457,7 +434,7 @@ const removeToast = (toast) => {
   if (toast.timeoutId) clearTimeout(toast.timeoutId); // Clearing the timeout for the toast
   setTimeout(() => toast.remove(), 500); // Removing the toast after 500ms
 };
-const createToast = (id) => {
+const createToast = (id, message) => {
   // Getting the icon and text for the toast based on the id passed
   const { icon, text } = toastDetails[id];
   const toast = document.createElement("li"); // Creating a new 'li' element for the toast
@@ -465,7 +442,7 @@ const createToast = (id) => {
   // Setting the inner HTML for the toast
   toast.innerHTML = `<div class="column">
                          <i class="fa-solid ${icon}"></i>
-                         <span>${text}</span>
+                         <span>${message || text}</span>
                       </div>
                       <i class="fa-solid fa-xmark" onclick="removeToast(this.parentElement)"></i>`;
   notifications.appendChild(toast); // Append the toast to the notification ul

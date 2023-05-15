@@ -42,11 +42,15 @@ logout.onclick = () => {
 
 const names = z(".header-name1");
 const avatarUser = document.getElementById("avatar_user");
-console.log(names);
 if (login.msg === "Đăng nhập thành công") {
+
+names.innerText = login.user_info.name;
+avatarUser.src = login.user_info.user_profile[0].avatar;
+
   console.log(login);
   names.innerText = login.user_info.name;
   avatarUser.src = login.user_info.user_profile[0].avatar;
+
 }
 // } else {
 //   names.innerText = login.user_info.name;
@@ -89,8 +93,6 @@ var findSlickNext = document.getElementsByClassName(".next1");
 var pre = document.getElementsByClassName("slick-prev");
 var next = document.getElementsByClassName("slick-next");
 
-console.log(pre);
-console.log(next);
 
 slickPre[0].onclick = () => {
   pre[0].click();
@@ -134,11 +136,18 @@ function getTours(api) {
     })
     .then((data) => {
       const tours = data;
-      console.log(htmls);
+      const tourDetails = document.querySelectorAll('.book-tour-places .find-container')
+      tourDetails.forEach(tourr => {
+          tourr.onclick = (e) => {
+            console.log(e);
+              localStorage.setItem('detailTourId', e)
+              // window.location.href = 'http://localhost:3000/detailTour.html'
+          }
+      })
+      window.localStorage.setItem("dataTSTour", JSON.stringify(data));
       htmls = tours.map((tour) => {
-        console.log(Date(`${tour.to_date}`));
         return `
-          <div class="find-container">
+          <div class="find-container data-id='${tour.id}'" onclick="tranFormPage(${tour.id})">
           <div class="find-container-top">
               <img src="../IMAGES/slides/slide-0.png" alt="">
           </div>
@@ -200,6 +209,13 @@ function getTours(api) {
 
 getTours(api);
 
+const idPage = 0;
+function tranFormPage(idPage) {
+  const listTourDetail = JSON.parse(window.localStorage.getItem("dataTSTour"));
+    window.localStorage.setItem("detail-tour", idPage)
+    window.location.href = 'http://localhost:3000/detailTour.html';
+}
+
 
 // -------------------------- slide3 người dùng tạo tour (render and slides) ----------------------------------------------
 
@@ -207,6 +223,7 @@ const slickPrev = document.querySelector(".ps-prev");
 const slickNextt = document.querySelector(".ps-next");
 const findSlickPrevv = document.getElementsByClassName("find-slick-left");
 const findSlickNextt = document.getElementsByClassName("find-slick-right");
+
 
 console.log(slickPrev);
 console.log(slickNextt);
@@ -222,7 +239,6 @@ function getTourUser() {
     })
     .then((data) => {
       const PStours = data.data;
-      console.log(PStours);
       htmlss = PStours.map((tour) => {
         return `          
         <div>
@@ -261,6 +277,8 @@ function getTourUser() {
     });
 }
 
+getTourUser();
+const dataTSTour = window.localStorage.getItem("dataTSTour");
 
 
 getTourUser();
