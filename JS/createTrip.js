@@ -38,12 +38,9 @@ fetch(
           `<option class="room-option" value="${item.id}">${item.name}</option>`
       )
       .join("");
-    const roomOptions = rooms.querySelectorAll(".room-option");
-    roomOptions.forEach((item) => {
-      item.onclick = (e) => {
-        createTourState.room_id = e.target.value;
-      };
-    });
+    rooms.onchange = (e) => {
+      createTourState.room_id = e.target.value;
+    };
   });
 
 const mapDOM = $(".form-map");
