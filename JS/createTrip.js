@@ -1,9 +1,5 @@
 const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document);
-const headerNavForm = document.querySelector(".header-nav-form");
-const headerForm = document.querySelector(".header-form");
-const headerFormLogin = headerNavForm.querySelector(".header-form-login");
-const headerFormLogout = document.querySelector(".header-form-logout");
 const login = JSON.parse(window.localStorage.getItem("login"));
 
 const destinationInput = $(".diemden");
@@ -142,71 +138,6 @@ currentLocationInupt.onkeydown = (e) => {
 
 // ------------------------------------------------------------------------------
 
-// if (login) {
-//     headerNavForm.onclick = function () {
-//         if (headerForm.style.display === "none") {
-//             headerForm.style.display = "block";
-//             headerFormLogout.style.display = "block";
-//         } else {
-//             headerForm.style.display = "none";
-//             headerFormLogout.style.display = "none";
-//         }
-//     };
-// } else {
-//     headerNavForm.onclick = function () {
-//         if (headerForm.style.display === "none") {
-//             headerForm.style.display = "block";
-//             headerFormLogin.style.display = "block";
-//         } else {
-//             headerForm.style.display = "none";
-//             headerFormLogin.style.display = "none";
-//         }
-//     };
-// }
-
-const logout = $(".form-logout");
-logout.onclick = () => {
-  alert("Bạn chắc chắn muốn thoát ?");
-  window.localStorage.clear();
-  window.location.reload(true);
-  window.location.href =
-    "http://127.0.0.1:5500/CAPSTONE2/FrontEnd/HTML/home.html";
-};
-
-const names = $(".header-name1");
-const avatarUser = $("#avatar_user");
-if (login?.msg === "Đăng nhập thành công") {
-  names.innerText = login?.user_info.name;
-  avatarUser.src = login?.user_info.user_profile[0].avatar;
-} else {
-  names.innerText = login?.user_info.name;
-  avatarUser.src = login?.user_info.user_profile[0].avatar;
-}
-
-if (login) {
-  headerNavForm.onclick = function () {
-    if (headerForm.style.display === "none") {
-      headerForm.style.display = "block";
-      headerFormLogout.style.display = "block";
-      headerFormLogin.style.display = "none";
-    } else {
-      headerForm.style.display = "none";
-      headerFormLogout.style.display = "none";
-    }
-  };
-} else {
-  headerNavForm.onclick = function () {
-    if (headerForm.style.display === "none") {
-      headerForm.style.display = "block";
-      headerFormLogin.style.display = "block";
-      headerFormLogout.style.display = "none";
-    } else {
-      headerForm.style.display = "none";
-      headerFormLogin.style.display = "none";
-    }
-  };
-}
-
 // ---------------create trip --------------------
 
 // const tab = $(".createTrip-wraper");
@@ -317,6 +248,7 @@ const songuoi = $(".songuoi");
 const kinhdo = $(".kinhdo");
 const vido = $(".vido");
 const motachuyendi = $(".description");
+const formControl = $$(".form-control");
 
 motachuyendi.onchange = (e) => {
   console.log(e.target.value);
@@ -393,3 +325,80 @@ if (!login) {
 } else {
   btnCreateTrip.enabled = true;
 }
+
+// ----------- Validate form ---------------
+function validateMaxlength(e, length) {
+  if (e.target.value.length > length) {
+    e.target.classList.add("error");
+    document.querySelector(
+      `.${[...e.target.classList].join(".")} ~ small`
+    ).innerText = `Không quá ${length} kí tự`;
+  } else {
+    e.target.classList.remove("error");
+    document.querySelector(
+      `.${[...e.target.classList].join(".")} ~ small`
+    ).innerText = "";
+  }
+}
+
+function validateDateFrom(e) {
+  var dateValue = new Date(e.target.value);
+  var dateNow = new Date();
+
+  if (dateNow >= dateValue) {
+    e.target.classList.add("error");
+    document.querySelector(
+      `.${[...e.target.classList].join(".")} ~ small`
+    ).innerText = `Ngày không hợp lệ`;
+  } else {
+    e.target.classList.remove("error");
+    document.querySelector(
+      `.${[...e.target.classList].join(".")} ~ small`
+    ).innerText = "";
+  }
+}
+
+function validateDateTo(e) {
+  let dateFrom = document.querySelector(".tungay").value;
+  let dateFromValue = new Date(dateFrom)
+  let dateToValue = new Date(e.target.value);
+
+  if (dateToValue < dateFromValue) {
+    e.target.classList.add("error");
+    document.querySelector(
+      `.${[...e.target.classList].join(".")} ~ small`
+    ).innerText = `Ngày không hợp lệ`;
+  } else {
+    e.target.classList.remove("error");
+    document.querySelector(
+      `.${[...e.target.classList].join(".")} ~ small`
+    ).innerText = "";
+  }
+}
+
+function checkNumberPeople(e) {
+  let peopleValue = Number(e.target.value)
+  if (peopleValue <= 0) {
+    e.target.classList.add("error");
+    document.querySelector(
+      `.${[...e.target.classList].join(".")} ~ small`
+    ).innerText = `Số người không hợp lệ`;
+  } else if(peopleValue > 100) {
+    e.target.classList.add("error");
+    document.querySelector(
+      `.${[...e.target.classList].join(".")} ~ small`
+    ).innerText = `không được nhập quá 100 người`;
+  } else {
+    e.target.classList.remove("error");
+    document.querySelector(
+      `.${[...e.target.classList].join(".")} ~ small`
+    ).innerText = "";
+  }
+}
+
+tenchuyendi.onchange = (e) => validateMaxlength(e, 40);
+motachuyendi.onchange = (e) => validateMaxlength(e, 10);
+tungay.onchange = (e) => validateDateFrom(e);
+denngay.onchange = (e) => validateDateTo(e);
+songuoi.onchange = (e) => checkNumberPeople(e)
+

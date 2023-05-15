@@ -579,3 +579,13 @@ button {
 .custom-shape-divider-bottom-1679667216 .shape-fill {
   fill: #2f4e84;
 }
+
+/* ----------Validate-------- */
+.post-information p {
+  color: red;
+  font-size: 14px;
+}
+
+.post-information .error {
+  border: 1px solid red;
+}

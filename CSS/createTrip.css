@@ -377,6 +377,7 @@ body {
   border-radius: 10px;
   border: 1px solid #333;
   margin-top: 10px;
+  outline: none;
 }
 
 .form-input-0 input {
@@ -386,6 +387,7 @@ body {
   border-radius: 10px;
   border: 1px solid #333;
   margin-top: 10px;
+  outline: none;
 }
 
 .form-info {
@@ -454,20 +456,22 @@ iframe {
 }
 
 .form-input1 input {
-  width: 95%;
+  width: 97%;
   padding: 8px 20px;
   border-radius: 10px;
   border: 1px solid #333;
   margin-top: 10px;
+  outline: none;
 }
 
 .form-info1 textarea {
-  width: 95%;
+  width: 97%;
   padding: 8px 20px;
   color: 30px;
   border-radius: 10px;
   border: 1px solid #333;
   margin-top: 10px;
+  outline: none;
 }
 
 .form-info1 {
@@ -678,4 +682,13 @@ iframe {
     font-size: 1.1rem;
     padding: 8px 15px;
   }
+}
+
+/* ----------Validate-------- */
+.form-info small {
+  color: red;
+}
+
+.form-info .error {
+  border: 1px solid red;
 }
