@@ -1,8 +1,3 @@
-const headerNavForm = document.querySelector(".header-nav-form");
-const headerForm = document.querySelector(".header-form");
-const headerFormLogin = headerNavForm.querySelector(".header-form-login");
-const headerFormLogout = document.querySelector(".header-form-logout");
-
 const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document);
 const userName = $$(".user_name");
@@ -163,38 +158,6 @@ function start() {
 
 start();
 
-if (!login) {
-  headerFormLogin.style.display = "block";
-  headerFormLogout.style.display = "none";
-} else {
-  headerFormLogout.style.display = "block";
-  headerFormLogin.style.display = "none";
-}
-const names = $("#header-name1");
-const avatarUser = $("#avatar_user");
-const avatarUser1 = $(".avatar_user_header");
-
-headerNavForm.onclick = function () {
-  if (headerForm.style.display === "none") {
-    headerForm.style.display = "block";
-  } else {
-    headerForm.style.display = "none";
-  }
-};
-if (login.status === 200) {
-  names.innerText = login.user_info.name;
-  avatarUser.src = login.user_info.user_profile[0].avatar;
-  avatarUser1.src = login.user_info.user_profile[0].avatar;
-}
-if (login.status === 200) {
-  names.innerText = login.user_info.name;
-  avatarUser.src = login.user_info.user_profile[0].avatar;
-  avatarUser1.src = login.user_info.user_profile[0].avatar;
-} else {
-  names.innerText = login.user_info.name;
-  avatarUser.src = login.user_info.user_profile[0].avatar;
-  avatarUser1.src = login.user_info.user_profile[0].avatar;
-}
 
 // // ---------------------------------------
 
@@ -237,16 +200,6 @@ if (login.status === 200) {
   userGender.innerText = login.user_info.user_profile[0].gender;
   userAbout.innerText = login.user_info.about;
 }
-
-// // ------------------- logout -----------------------------
-console.log(login);
-const logout = $(".form-logout");
-logout.onclick = () => {
-  alert("Bạn chắc chắn muốn thoát ?");
-  window.localStorage.clear();
-  window.location.reload(true);
-  window.location.href = "http://localhost:3000/home.html";
-};
 
 // // -----------------------  update profile user ------------------------------------
 

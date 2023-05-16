@@ -81,7 +81,7 @@ function RenderTourDetail(obj) {
         </div>
 
         <div class="detail-host">
-            <h4 style="font-size: 22px; display: flex; align-items: center;">Chuyến đi được tạo bởi: <span style="color: #000; margin-left: 10px;">${target.name}</span></h4>
+            <h4 style="font-size: 22px; display: flex; align-items: center;">Chuyến đi được tạo bởi: <span style="color: #000; margin-left: 10px;">${target.owner_name}</span></h4>
             <div class="detail-host-inf">
                 <div class="detail-host-img">
                     <img src="../IMAGES/default/avatar.jpg" alt="avatar" style="border-radius: 50%;">
