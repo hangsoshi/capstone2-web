@@ -317,8 +317,8 @@ btnCreateTrip.onclick = () => {
         body: JSON.stringify({
             name: tenchuyendi.value,
             owner_id: login.user_info.user_profile[0].user_id,
-            from_date: tungay.value,
-            to_date: denngay.value,
+            from_date: "8/8/2023",
+            to_date: "8/8/2023",
             lat: 234723, //vido.value,
             lon: 234324,//kinhdo.value,
             from_where: diemxuatphat.value,
@@ -336,7 +336,7 @@ btnCreateTrip.onclick = () => {
             from_where: diemxuatphat.value,
             to_where: diemden.value,
             room_id: login.user_info.user_profile[0].user_id,
-            description:motachuyendi.value, 
+            description:motachuyendi.value,
         },
     })
         .then((response) => response.json())
@@ -348,7 +348,6 @@ btnCreateTrip.onclick = () => {
       })
       .catch(error => {
           createToast("error")
-
       })
 
 };
