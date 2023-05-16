@@ -32,7 +32,6 @@ if (login) {
 }
 const names = z(".header-name1");
 const avatarUser = z(".header-form-avatar #avatar_user");
-console.log(avatarUser);
 if (login) {
   names.innerText = login.user_info.name;
   avatarUser.src = login.user_info.user_profile[0].avatar;
@@ -85,7 +84,7 @@ function RenderTourDetail(obj) {
         </div> -->
 
         <div class="detail-host">
-            <h4 style="font-size: 22px; display: flex; align-items: center;">Chuyến đi được tạo bởi: <span style="color: #000; margin-left: 10px;">${obj[0].name}</span></h4>
+            <h4 style="font-size: 22px; display: flex; align-items: center;">Chuyến đi được tạo bởi: <span style="color: #000; margin-left: 10px;">${obj[0].owner_name}</span></h4>
             <div class="detail-host-inf">
                 <div class="detail-host-img">
                     <img src="../IMAGES/default/avatar.jpg" alt="avatar" style="border-radius: 50%;">

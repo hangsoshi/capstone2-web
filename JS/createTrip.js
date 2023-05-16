@@ -317,8 +317,8 @@ btnCreateTrip.onclick = () => {
         body: JSON.stringify({
             name: tenchuyendi.value,
             owner_id: login.user_info.user_profile[0].user_id,
-            from_date: "8/8/2023",
-            to_date: "8/8/2023",
+            from_date: tungay.value,
+            to_date: denngay.value,
             lat: 234723, //vido.value,
             lon: 234324,//kinhdo.value,
             from_where: diemxuatphat.value,

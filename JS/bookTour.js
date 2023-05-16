@@ -132,7 +132,6 @@ const ss = document.querySelector.bind(document);
 var sliderFind = ss(".book-places");
 const api = "http://127.0.0.1:8000/api/ts/tour";
 
-
 let htmls = "";
 function getTours(api) {
   fetch(api)
@@ -145,7 +144,7 @@ function getTours(api) {
       htmls = tours.map((tour) => {
         console.log(Date(`${tour.to_date}`));
         return `
-          <div class="find-container">
+          <div class="find-container" data-id='${tour.id}'" onclick="tranFormPage(${tour.id})">
           <div class="find-container-top">
               <img src="../IMAGES/slides/slide-0.png" alt="">
           </div>
@@ -272,6 +271,18 @@ function getTourUser() {
 
 
 getTourUser();
+
+const idPage = 0;
+function tranFormPage(idPage) {
+  const listTourDetail = JSON.parse(window.localStorage.getItem("dataTSTour"));
+    window.localStorage.setItem("detail-tour", idPage)
+    window.location.href = 'http://localhost:3000/detailTour.html';
+}
+
+// function tranformToPayment() {
+//   window.location.href = "http://localhost:3000/payment.html";
+//   console.log(1);
+// }
 
 // $(".slides3").slick({
 //   infinite: true,
