@@ -35,11 +35,11 @@ body {
   padding: 8px 0;
 }
 
-.detail-header>a {
+.detail-header > a {
   width: 16%;
 }
 
-.detail-header>a>img {
+.detail-header > a > img {
   width: 70%;
   object-fit: contain;
   display: flex;
@@ -47,7 +47,7 @@ body {
   align-items: center;
 }
 
-.detail-header>ul {
+.detail-header > ul {
   width: 65%;
   justify-content: space-evenly;
   margin-left: -140px;
@@ -64,7 +64,7 @@ body {
   font-size: 18px;
 }
 
-.detail-header>img {
+.detail-header > img {
   width: 50px;
   height: 50px;
 }
@@ -204,7 +204,7 @@ body {
   z-index: -1;
 }
 
-.header-form-login>ul>li>a {
+.header-form-login > ul > li > a {
   font-weight: normal;
   line-height: 10px;
   color: #333;
@@ -446,6 +446,7 @@ body {
 .group-item {
   border: 1px solid #333;
   width: 20%;
+  height: 270px;
   padding: 20px;
   border-radius: 10px;
   margin: 0 10px;
@@ -488,11 +489,22 @@ body {
 
 .group-info-name {
   font-size: 18px;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .group-info p {
   font-size: 15px;
   margin-bottom: 5px;
+}
+
+.host {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .group-info button {
@@ -628,9 +640,6 @@ body {
   display: none !important;
 }
 
-
-
-
 #CR-body {
   position: fixed;
   display: flex;
@@ -697,7 +706,7 @@ body {
   padding-bottom: 10px;
 }
 
-.form-privacy>label {
+.form-privacy > label {
   color: #0000008c;
 }
 
@@ -709,7 +718,7 @@ body {
   padding-left: 30px;
 }
 
-.select-privacy>div {
+.select-privacy > div {
   padding-bottom: 10px;
 }
 
@@ -795,22 +804,22 @@ body {
   left: 0;
   background-color: #0000007d;
   z-index: 99;
-  opacity: .9;
+  opacity: 0.9;
 }
 
 /* ------------------------- toast message --------------------------------- */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
 
 :root {
-  --dark: #34495E;
+  --dark: #34495e;
   --light: #ffffff;
-  --success: #0ABF30;
-  --error: #E24D4C;
-  --warning: #E9BD0C;
-  --info: #3498DB;
+  --success: #0abf30;
+  --error: #e24d4c;
+  --warning: #e9bd0c;
+  --info: #3498db;
 }
 
-.buttons{
+.buttons {
   position: fixed;
   display: none;
 }
@@ -882,16 +891,20 @@ body {
     width: 0%;
   }
 }
-.toast.success::before, .btn#success {
+.toast.success::before,
+.btn#success {
   background: var(--success);
 }
-.toast.error::before, .btn#error {
+.toast.error::before,
+.btn#error {
   background: var(--error);
 }
-.toast.warning::before, .btn#warning {
+.toast.warning::before,
+.btn#warning {
   background: var(--warning);
 }
-.toast.info::before, .btn#info {
+.toast.info::before,
+.btn#info {
   background: var(--info);
 }
 .toast .column i {
