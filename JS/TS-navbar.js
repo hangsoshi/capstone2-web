@@ -40,8 +40,8 @@
                 <div class="header-form">
                     <div class="header-form-login">
                         <ul>
-                            <li><a href="login-register.html">Đăng nhập</a></li>
-                            <li><a href="login-register.html">Đăng ký</a></li>
+                            <li><a href="TS-register.html">Đăng nhập</a></li>
+                            <li><a href="TS-register.html">Đăng ký</a></li>
                         </ul>
                     </div>
                     <div class="header-form-logout">

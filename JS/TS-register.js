@@ -56,7 +56,6 @@ registerButton.onclick = (e) => {
     requestValues[item.attributes.name.value] = item.value;
   });
 
-  console.log(requestValues);
   fetch("http://127.0.0.1:8000/api/auth/tsRegister", {
     method: "POST",
     headers: {
@@ -73,23 +72,3 @@ registerButton.onclick = (e) => {
       alert(error);
     });
 };
-inputs.forEach((item) => {
-  requestValues[item.attributes.name.value] = item.value;
-});
-fetch("http://127.0.0.1:8000/api/auth/tsRegister", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify(requestValues),
-})
-  .then((response) => response.json())
-  .then((data) => {
-    console.log(data);
-    if (data.status === 200) {
-      alert("success......");
-      location.reload();
-    } else {
-      alert(data.message);
-    }
-  });
