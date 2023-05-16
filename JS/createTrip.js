@@ -22,6 +22,7 @@ const createTourState = {
   to_where: "",
   room_id: "",
   image: "",
+  
 };
 
 fetch(
