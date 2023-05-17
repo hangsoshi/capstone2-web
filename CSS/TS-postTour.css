@@ -595,3 +595,13 @@ button {
   border-radius: 5px;
   cursor: pointer;
 }
+
+/* ----------Validate-------- */
+.post-information p {
+  color: red;
+  font-size: 14px;
+}
+
+.post-information .error {
+  border: 1px solid red;
+}
