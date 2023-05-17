@@ -21,10 +21,11 @@ const inputEmail = $(".input-email");
 const inputAbout = $(".form-bio");
 const inputHobbies = $(".input-hobbies");
 const inputGender = $("#input-gender");
+
 const login = JSON.parse(window.localStorage.getItem("login"));
+console.log(login);
 const avatar = document.querySelector(".avatar_user_header");
 const avatarInputFile = document.querySelector('.avatar-input-file')
-
 avatar.onclick = () => {
     avatarInputFile.click()
 }
@@ -38,9 +39,11 @@ avatarInputFile.onchange = (e) => {
     })
         .then(res => res.json())
         .then(data => {
-            avatar.src = data.data.fileUrl
+            avatar.src = data.data.fileUrl;
+            login.user_info.user_profile[0].avatar = data.data.fileUrl;
         })
 }
+
 
 // -------------------- render list tour ------------------------
 
@@ -61,7 +64,6 @@ var sliderFind = $(".swiper-wrapper");
 
 // const api = "http://127.0.0.1:8000/api/personal/tour/all/" + login.user_info.user_profile[0].user_id;
 let htmls = "";
-
 function renderListTour() {
     fetch(
         "http://127.0.0.1:8000/api/personal/tour/all/" +
@@ -87,38 +89,37 @@ function renderListTour() {
                 };
             });
             htmls = tours.map((tour) => {
+                console.log(tour);
                 return `
-                <div class="blog-slider__item swiper-slide data-id='${tour.id}'">
-                
-                <div class="blog-slider__img">
-
-                    <img src="https://images.unsplash.com/photo-1512633017083-67231aba710d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=765&q=80"
-                        alt="">
-                </div>
-                <div class="blog-slider__content">
-                    <div class="blog-slider__title">${tour.name}</div>
-                    <div class="blog-slider__trip">
-                        <p><b>Từ:</b> ${tour.from_where} - <b>Đến:</b> ${tour.to_where}</p>
-                        <p class="tao-them">${tour.from_date}</p>
-                    </div>
-                    <div class="blog-slider__host"><b>Người tạo: </b>${login.user_info.name}</div>
-                    <div class="blog-slider__text"> ${tour.description} </div>
-                    <div class="profile-control">
-                        <div class="">
-                            <a href="./detailFind.html" class="blog-slider__button" onclick="handle_detail_page(${tour.id},${tour.owner_id})" >CHI TIẾT</a>
-                        </div>
-                        <div class="profile-action">
-                            <button type="button" style="background-color: white; border: none;" onclick="handleUpdateTours(${tour.id})">
-                                <i class="fa-solid fa-pencil"></i>
-                            </button>
-                            <button type="button" style="background-color: white; border: none;" onclick="handle_delete(${tour.id},${tour.owner_id})">
-                              <i class="fa-solid fa-trash-can btn-delete"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
+                  <div class="blog-slider__item swiper-slide data-id='${tour.id}'">
+                  
+                  <div class="blog-slider__img">
+  
+                      <img src="${tour.image}"
+                          alt="">
+                  </div>
+                  <div class="blog-slider__content">
+                      <div class="blog-slider__title">${tour.name}</div>
+                      <div class="blog-slider__trip">
+                          <p><b>Từ:</b> ${tour.from_where} - <b>Đến:</b> ${tour.to_where}</p>
+                          <p class="tao-them">${tour.from_date}</p>
+                      </div>
+                      <div class="blog-slider__host"><b>Người tạo: </b>${login.user_info.name}</div>
+                      <div class="blog-slider__text"> ${tour.description} </div>
+                      <div class="profile-control">
+                          <div class="">
+                              <a href="./detailFind.html" class="blog-slider__button" onclick="handle_detail_page(${tour.id},${tour.owner_id})" >CHI TIẾT</a>
+                          </div>
+                          <div class="profile-action">
+                              <a href="./UpdateTrip.html" onclick="handleUpdateTours(${tour.id})">
+                                  <i class="fa-solid fa-pencil"></i>
+                              </a>
+                              <i class="fa-solid fa-trash-can btn-delete" onclick="handle_delete(${tour.id},${tour.owner_id})"></i>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          `;
             });
             sliderFind.innerHTML = htmls.join("");
             if (sliderFind.innerHTML) {
@@ -129,6 +130,7 @@ function renderListTour() {
                     mousewheel: {
                         invert: false,
                     },
+                    // autoHeight: true,
                     pagination: {
                         el: ".blog-slider__pagination",
                         clickable: true,
@@ -136,9 +138,14 @@ function renderListTour() {
                 });
             }
         });
+    // window.location.reload(true)
 }
 
+// const handle_detail_page = $(".blog-slider__button");
+
 function handle_delete(e, v) {
+    console.log(e);
+    console.log(v);
     const listTour = JSON.parse(window.localStorage.getItem("dataPersonTour"));
     window.localStorage.setItem("page-detail", e);
     console.log(window.localStorage.getItem("page-detail"));
@@ -168,15 +175,62 @@ function handle_detail_page(e) {
 }
 
 function handleUpdateTours(e) {
-    localStorage.setItem("TourIdUpdate", e);
-    location.href = "createTrip.html";
+    console.log(e);
+    window.localStorage.setItem("TourIdUpdate", e);
 }
+
+// const tourNames = document.querySelectorAll('.blog-slider__item .blog-slider__content .profile-control .btn-delete')
+// tourNames.forEach((tourr) => {
+//     tourr.onclick = (e) => {
+//         alert(e.target.dataset.tourr);
+//         localStorage.setItem('targetTourId', e.target.dataset.tourr)
+//         e.href = 'http://localhost:3000/detailFind.html'
+//     }
+// })
+// const headerNavForm = $(".header-nav-form");
+// const headerForm = $(".header-form");
+// const headerFormLogin = $(".header-form-login");
+// const headerFormLogout = $(".header-form-logout");
 
 function start() {
     renderListTour();
 }
 
 start();
+// console.log(headerFormLogin);
+// console.log(headerFormLogout);
+// if (login) {
+//     headerFormLogin.style.display = "block";
+//     headerFormLogout.style.display = "none";
+// } else {
+//     headerFormLogout.style.display = "block";
+//     headerFormLogin.style.display = "none";
+// }
+const names = $("#header-name1");
+const avatarUser = $("#avatar_user");
+const avatarUser1 = $(".avatar_user_header");
+
+// headerNavForm.onclick = function () {
+//     if (headerForm.style.display === "none") {
+//         headerForm.style.display = "block";
+//     } else {
+//         headerForm.style.display = "none";
+//     }
+// };
+// if (login.status === 200) {
+//     names.innerText = login.user_info.name;
+//     avatarUser.src = login.user_info.user_profile[0].avatar;
+//     avatarUser1.src = login.user_info.user_profile[0].avatar;
+// }
+// if (login.status === 200) {
+//     names.innerText = login.user_info.name;
+//     avatarUser.src = login.user_info.user_profile[0].avatar;
+//     avatarUser1.src = login.user_info.user_profile[0].avatar;
+// } else {
+//     names.innerText = login.user_info.name;
+//     avatarUser.src = login.user_info.user_profile[0].avatar;
+//     avatarUser1.src = login.user_info.user_profile[0].avatar;
+// }
 
 // // ---------------------------------------
 
@@ -211,7 +265,6 @@ if (login.status === 200) {
     userEmail.innerText = login.user_info.email;
     userGender.innerText = login.user_info.user_profile[0].gender;
     userAbout.innerText = login.user_info.about;
-    avatar.src = login.user_info.user_profile[0].avatar
 } else {
     userName[0].innerText = login.user_info.name;
     userName[1].innerText = login.user_info.name;
@@ -221,10 +274,19 @@ if (login.status === 200) {
     userAbout.innerText = login.user_info.about;
 }
 
+// // ------------------- logout -----------------------------
+// console.log(login);
+// const logout = $(".form-logout");
+// logout.onclick = () => {
+//     alert("Bạn chắc chắn muốn thoát ?");
+//     window.localStorage.clear();
+//     window.location.reload(true);
+//     window.location.href = "http://localhost:3000/home.html";
+// };
+
 // // -----------------------  update profile user ------------------------------------
 
 const apiUserProfile = "http://127.0.0.1:8000/api/user/profile/update";
-
 function getInfoUser() {
     fetch(apiUserProfile, {
         method: "PUT",
@@ -235,18 +297,28 @@ function getInfoUser() {
             id: login.user_info.user_profile[0].user_id,
             name: inputUserName.value,
             phone_number: inputPhoneNumber.value,
+            avatar: login.user_info.user_profile[0].avatar,
             gender: inputGender.value,
             about: inputAbout.value,
-            avatar: avatar.src
         }),
+        data: {
+            id: login.user_info.user_profile[0].user_id,
+            name: inputUserName.value,
+            phone_number: inputPhoneNumber.value,
+            avatar: login.user_info.user_profile[0].avatar,
+            gender: inputGender.value,
+            about: inputAbout.value,
+        },
     })
         .then((response) => response.json())
         .then((data) => {
-            if (data.status === 200) {
-                localStorage.setItem('login', data.user_info)
-                createToast("success");
-                renderUserInfo(user_info);
-            }
+            window.localStorage.setItem("login", JSON.stringify(data));
+            const profile = JSON.parse(window.localStorage.getItem("login"));
+            createToast("success");
+            setTimeout(() => {
+                window.location.reload(true);
+            }, 5000)
+            renderUserInfo(profile);
         })
         .catch((error) => alert(error));
 }
@@ -257,65 +329,63 @@ var html_UserInfo = $(".profile-genaral");
 
 function renderUserInfo(obj) {
     const html = `
-  <div class="profile-title">
-  <h2>Hồ sơ của tôi</h2>
-  <div class="profile-save">
-      <button class="profile_update">Lưu</button>
-      <p class="profile_cancel">Hủy</p>
+    <div class="profile-title">
+    <h2>Hồ sơ của tôi</h2>
+    <div class="profile-save">
+        <button class="profile_update">Lưu</button>
+        <p class="profile_cancel">Hủy</p>
+    </div>
   </div>
-</div>
-    <div class="form-profile-wraper">
-    <form class="form-profile">
-      <div class="form-profile-info">
-          <label for="">Họ và tên</label>
-          <div class="form-profile-content user_name">${
-        obj.user_info.name
-    }</div>
-      </div>
-      <div class="form-profile-info">
-          <label for="">Số điện thoại</label>
-          <div class="form-profile-conten user_phone">${
-        obj.user_info.phone_number
-    }</div>
-      </div>
-      <div class="form-profile-info">
-          <label for="">Email</label>
-          <div class="form-profile-content user_email">${
-        obj.user_info.email
-    }</div>
-      </div>
-      <div class="form-profile-info">
-          <label for="">Giới tính/ Tuổi</label>
-          <div class="form-profile-content user_gender">${"Male"}</div>
-      </div>
-      <div class="form-line"></div>
-      <div class="form-profile-bio">
-          <h2>About:</h2>
-          <p class="user_about">${obj.user_info.about}</p>
-      </div>
-      <div class="form-line"></div>
-
-      <div class="form-profile-hobbies form-profile-bio">
-          <h2>Sở thích:</h2>
-          <div class="profile-hobbies-list">
-              <div class="tag hobbies-1">Cắm trại</div>
-              <div class="tag hobbies-2">Cắm trại</div>
-              <div class="tag hobbies-3">Cắm trại</div>
-              <div class="tag hobbies-4">Cắm trại</div>
-              <div class="tag hobbies-5">Cắm trại</div>
-              <div class="tag hobbies-6">Cắm trại</div>
-              <div class="tag hobbies-7">Cắm trại</div>
-              <div class="tag hobbies-8">Cắm trại</div>
-              <div class="tag hobbies-9">Cắm trại</div>
-              <div class="tag hobbies-10">Cắm trại</div>
-          </div>
-      </div>
-  </form>
-</div> `;
+      <div class="form-profile-wraper">
+      <form class="form-profile">
+        <div class="form-profile-info">
+            <label for="">Họ và tên</label>
+            <div class="form-profile-content user_name">${obj.user_info.name
+        }</div>
+        </div>
+        <div class="form-profile-info">
+            <label for="">Số điện thoại</label>
+            <div class="form-profile-conten user_phone">${obj.user_info.phone_number
+        }</div>
+        </div>
+        <div class="form-profile-info">
+            <label for="">Email</label>
+            <div class="form-profile-content user_email">${obj.user_info.email
+        }</div>
+        </div>
+        <div class="form-profile-info">
+            <label for="">Giới tính/ Tuổi</label>
+            <div class="form-profile-content user_gender">${"Male"}</div>
+        </div>
+        <div class="form-line"></div>
+        <div class="form-profile-bio">
+            <h2>About:</h2>
+            <p class="user_about">${obj.user_info.about}</p>
+        </div>
+        <div class="form-line"></div>
+  
+        <div class="form-profile-hobbies form-profile-bio">
+            <h2>Sở thích:</h2>
+            <div class="profile-hobbies-list">
+                <div class="tag hobbies-1">Cắm trại</div>
+                <div class="tag hobbies-2">Cắm trại</div>
+                <div class="tag hobbies-3">Cắm trại</div>
+                <div class="tag hobbies-4">Cắm trại</div>
+                <div class="tag hobbies-5">Cắm trại</div>
+                <div class="tag hobbies-6">Cắm trại</div>
+                <div class="tag hobbies-7">Cắm trại</div>
+                <div class="tag hobbies-8">Cắm trại</div>
+                <div class="tag hobbies-9">Cắm trại</div>
+                <div class="tag hobbies-10">Cắm trại</div>
+            </div>
+        </div>
+    </form>
+  </div> `;
     return (html_UserInfo.innerHTML = html);
 }
 
 // if (login.status === 200) {
+avatar.src = login.user_info.user_profile[0].avatar;
 btnUpdate.onclick = () => {
     getInfoUser();
     // window.location.reload(true);
@@ -379,11 +449,11 @@ const toastDetails = {
     timer: 5000,
     success: {
         icon: "fa-circle-check",
-        text: "Success: Delete tour success...",
+        text: "Success: Update profile success...",
     },
     error: {
         icon: "fa-circle-xmark",
-        text: "Error: Delete tour error....",
+        text: "Error: Update profile error....",
     },
     warning: {
         icon: "fa-triangle-exclamation",
@@ -399,17 +469,17 @@ const removeToast = (toast) => {
     if (toast.timeoutId) clearTimeout(toast.timeoutId); // Clearing the timeout for the toast
     setTimeout(() => toast.remove(), 500); // Removing the toast after 500ms
 };
-const createToast = (id, message) => {
+const createToast = (id) => {
     // Getting the icon and text for the toast based on the id passed
-    const {icon, text} = toastDetails[id];
+    const { icon, text } = toastDetails[id];
     const toast = document.createElement("li"); // Creating a new 'li' element for the toast
     toast.className = `toast ${id}`; // Setting the classes for the toast
     // Setting the inner HTML for the toast
     toast.innerHTML = `<div class="column">
-                         <i class="fa-solid ${icon}"></i>
-                         <span>${message || text}</span>
-                      </div>
-                      <i class="fa-solid fa-xmark" onclick="removeToast(this.parentElement)"></i>`;
+                           <i class="fa-solid ${icon}"></i>
+                           <span>${text}</span>
+                        </div>
+                        <i class="fa-solid fa-xmark" onclick="removeToast(this.parentElement)"></i>`;
     notifications.appendChild(toast); // Append the toast to the notification ul
     // Setting a timeout to remove the toast after the specified duration
     toast.timeoutId = setTimeout(() => removeToast(toast), toastDetails.timer);

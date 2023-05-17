@@ -16,51 +16,25 @@ socketRoom.on("connect", () => {
   localStorage.setItem("socketId", socketRoom.id);
 });
 
-// if (login) {
-//   headerNavForm.onclick = function () {
-//     if (headerForm.style.display === "none") {
-//       headerForm.style.display = "block";
-//       headerFormLogout.style.display = "block";
-//       headerFormLogin.style.display = "none";
-//     } else {
-//       headerForm.style.display = "none";
-//       headerFormLogout.style.display = "none";
-//     }
-//   };
-// } else {
-//   headerNavForm.onclick = function () {
-//     if (headerForm.style.display === "none") {
-//       headerForm.style.display = "block";
-//       headerFormLogin.style.display = "block";
-//       headerFormLogout.style.display = "none";
-//     } else {
-//       headerForm.style.display = "none";
-//       headerFormLogin.style.display = "none";
-//     }
-//   };
-// }
-
-// const z = document.querySelector.bind(document);
-// const logout = z(".form-logout");
-// logout.onclick = () => {
-//   alert("Bạn chắc chắn muốn thoát ?");
-//   window.localStorage.clear();
-//   window.location.reload(true);
-//   window.location.href = "http://localhost:3000/home.html";
-// };
-
-// const goBackProfile = z(".group-icon");
-
-// goBackProfile.onclick = () => {
-//   window.location.href = "http://localhost:3000/profile.html";
-// };
-
-// const names = document.getElementsByClassName(" header-name1");
-// const avatarUser = document.getElementById("avatar_user");
-// if (login) {
-//   names[0].innerText = login.user_info.name;
-//   avatarUser.src = login.user_info.user_profile[0].avatar;
-// }
+const avatar = document.querySelector(".CR-room-image");
+const avatarInputFile = document.querySelector('.avatar-input-file')
+avatar.onclick = () => {
+    avatarInputFile.click()
+}
+avatarInputFile.onchange = (e) => {
+    const formdata = new FormData()
+    formdata.append('directory', 'avatar')
+    formdata.append('file', e.target.files[0])
+    fetch('http://localhost:3000/upload', {
+        method: 'post',
+        body: formdata
+    })
+        .then(res => res.json())
+        .then(data => {
+            avatar.src = data.data.fileUrl;
+            // login.user_info.user_profile[0].avatar = data.data.fileUrl;
+        })
+}
 
 // ----------- ẩn hiện create group-----------
 const group = document.querySelector(".group");
@@ -146,7 +120,7 @@ function getTours() {
            <div class="group-info">
                <h4 class="group-info-name">${tour.name}</h4>
                <p>30 thành viên</p>
-               <p>host:</p>
+               <p>host:${tour.room_owner_name}</p>
                <button onclick="joinRoom(${tour.id})">Tham gia</button>
            </div>
        </div>`;
