@@ -220,8 +220,12 @@ motachuyendi.onchange = (e) => {
   createTourState.description = e.target.value;
 };
 
+console.log(localStorage.getItem("id"));
+
 // ---------------------------------   create trip   ----------------------------------------
 const btnCreateTrip = document.querySelector(".create-trip");
+const tourID = JSON.parse(window.localStorage.getItem("detail-tour"));
+console.log(tourID);
 if (updateTour) {
   btnCreateTrip.innerText = "Cập nhật chuyến đi";
 }
@@ -280,15 +284,26 @@ btnCreateTrip.onclick = () => {
         }
       });
   } else {
+    const formData = new FormData();
+    const data = {
+      name: tenchuyendi.value,
+      owner_id: Number(localStorage.getItem("id")),
+      description: motachuyendi.value,
+      from_date: "8/8/23",
+      to_date: "8/8/23",
+      lat: 2.42342,
+      lon: 2423.44,
+      to_where: diemden.value,
+      room_id: tourID,
+      image: "blob:http://localhost:3000/e2a5b326-d7f8-4043-99a0-495bd9883c49",
+    };
+    Object.keys(data).forEach((key) => {
+      formData.append(key, data[key]);
+    });
+    console.log(formData);
     fetch("http://127.0.0.1:8000/api/personal/tour/create", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        ...createTourState,
-        owner_id: localStorage.getItem("id"),
-      }),
+      body: formData,
     })
       .then((response) => response.json())
       .then((data) => {
@@ -330,3 +345,58 @@ if (!login) {
 } else {
   btnCreateTrip.enabled = true;
 }
+
+// ----------- Validate form ---------------
+function validateMaxlength(e, length) {
+  if (e.target.value.length > length) {
+    e.target.classList.add("error");
+    document.querySelector(
+      `.${[...e.target.classList].join(".")} ~ p`
+    ).innerText = `Không quá ${length} kí tự`;
+  } else {
+    e.target.classList.remove("error");
+    document.querySelector(
+      `.${[...e.target.classList].join(".")} ~ p`
+    ).innerText = "";
+  }
+}
+
+function validateDateFrom(e) {
+  var dateValue = new Date(e.target.value);
+  var dateNow = new Date();
+
+  if (dateNow >= dateValue) {
+    e.target.classList.add("error");
+    document.querySelector(
+      `.${[...e.target.classList].join(".")} ~ p`
+    ).innerText = `Ngày không hợp lệ`;
+  } else {
+    e.target.classList.remove("error");
+    document.querySelector(
+      `.${[...e.target.classList].join(".")} ~ p`
+    ).innerText = "";
+  }
+}
+
+function validateDateTo(e) {
+  let dateFrom = document.querySelector(".tungay").value;
+  let dateFromValue = new Date(dateFrom);
+  let dateToValue = new Date(e.target.value);
+
+  if (dateToValue < dateFromValue) {
+    e.target.classList.add("error");
+    document.querySelector(
+      `.${[...e.target.classList].join(".")} ~ p`
+    ).innerText = `Ngày không hợp lệ`;
+  } else {
+    e.target.classList.remove("error");
+    document.querySelector(
+      `.${[...e.target.classList].join(".")} ~ p`
+    ).innerText = "";
+  }
+}
+
+tenchuyendi.onchange = (e) => validateMaxlength(e, 40);
+motachuyendi.onchange = (e) => validateMaxlength(e, 50);
+tungay.onchange = (e) => validateDateFrom(e);
+denngay.onchange = (e) => validateDateTo(e);
