@@ -285,3 +285,117 @@ function handleDelete(id) {
   });
   showImages.innerHTML = renderUI.join("");
 }
+
+// --------- validate form ----------
+const nameTrip = document.querySelector('.nameTrip')
+const startPlace = document.querySelector('.startPlace')
+const fromDate = document.querySelector('.fromDate')
+const toDate = document.querySelector('.toDate')
+const cost = document.querySelector('.cost')
+const numberPeople = document.querySelector('.numberPeople')
+
+function validateMaxlength(e, length) {
+  if (e.target.value.length > length) {
+    e.target.classList.add("error");
+    document.querySelector(
+      `.${[...e.target.classList].join(".")} ~ p`
+    ).innerText = `Không quá ${length} kí tự`;
+  } else {
+    e.target.classList.remove("error");
+    document.querySelector(
+      `.${[...e.target.classList].join(".")} ~ p`
+    ).innerText = "";
+  }
+}
+
+function emptyValue(e) {
+  if (e.target.value == '') {
+    e.target.classList.add("error");
+    document.querySelector(
+      `.${[...e.target.classList].join(".")} ~ p`
+    ).innerText = `Bạn không được để trống`;
+  }
+  else {
+    e.target.classList.remove("error");
+    document.querySelector(
+      `.${[...e.target.classList].join(".")} ~ p`
+    ).innerText = "";
+  }
+}
+
+function validateDateFrom(e) {
+  var dateValue = new Date(e.target.value);
+  var dateNow = new Date();
+
+  if (dateNow >= dateValue) {
+    e.target.classList.add("error");
+    document.querySelector(
+      `.${[...e.target.classList].join(".")} ~ p`
+    ).innerText = `Ngày không hợp lệ`;
+  } else {
+    e.target.classList.remove("error");
+    document.querySelector(
+      `.${[...e.target.classList].join(".")} ~ p`
+    ).innerText = "";
+  }
+}
+
+function validateDateTo(e) {
+  let dateFrom = document.querySelector(".fromDate").value;
+  let dateFromValue = new Date(dateFrom)
+  let dateToValue = new Date(e.target.value);
+
+  if (dateToValue < dateFromValue) {
+    e.target.classList.add("error");
+    document.querySelector(
+      `.${[...e.target.classList].join(".")} ~ p`
+    ).innerText = `Ngày không hợp lệ`;
+  } else {
+    e.target.classList.remove("error");
+    document.querySelector(
+      `.${[...e.target.classList].join(".")} ~ p`
+    ).innerText = "";
+  }
+}
+
+function checkCost(e) {
+  if (e.target.value <= 0) {
+    e.target.classList.add("error");
+    document.querySelector(
+      `.${[...e.target.classList].join(".")} ~ p`
+    ).innerText = `Số tiền không hợp lệ`;
+  }
+  else {
+    e.target.classList.remove("error");
+    document.querySelector(
+      `.${[...e.target.classList].join(".")} ~ p`
+    ).innerText = "";
+  }
+}
+
+function checkNumberPeople(e) {
+  let peopleValue = Number(e.target.value)
+  if (peopleValue <= 0) {
+    e.target.classList.add("error");
+    document.querySelector(
+      `.${[...e.target.classList].join(".")} ~ p`
+    ).innerText = `Số người không hợp lệ`;
+  } else if(peopleValue > 100) {
+    e.target.classList.add("error");
+    document.querySelector(
+      `.${[...e.target.classList].join(".")} ~ p`
+    ).innerText = `không được nhập quá 100 người`;
+  } else {
+    e.target.classList.remove("error");
+    document.querySelector(
+      `.${[...e.target.classList].join(".")} ~ p`
+    ).innerText = "";
+  }
+}
+
+nameTrip.onchange = (e) => validateMaxlength(e, 40);
+startPlace.onchange = (e) => emptyValue(e);
+fromDate.onchange = (e) => validateDateFrom(e);
+toDate.onchange = (e) => validateDateTo(e);
+cost.onchange = (e) => checkCost(e)
+numberPeople.onchange = (e) => checkNumberPeople(e)

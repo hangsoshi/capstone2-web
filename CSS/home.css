@@ -289,13 +289,25 @@ header .container {
 }
 
 .find-container {
-  width: 20%;
+  width: 22%;
   border-radius: 10px;
   overflow: hidden;
   margin: 0 10px;
   background-color: #fff;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 2px 3px rgba(0, 0, 0, 0.1);
   margin-bottom: 10px;
+}
+
+.slick-list {
+  width: 100%;
+}
+
+.slick-track {
+  opacity: 1;
+  width: 100%;
+  transform: translate3d(0px, 0px, 0px);
+  display: flex;
+  justify-content: space-between;
 }
 
 .find-container-top {

@@ -146,7 +146,7 @@ function getTours() {
            <div class="group-info">
                <h4 class="group-info-name">${tour.name}</h4>
                <p>30 thành viên</p>
-               <p>host:</p>
+               <p class="host">host:</p>
                <button onclick="joinRoom(${tour.id})">Tham gia</button>
            </div>
        </div>`;

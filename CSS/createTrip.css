@@ -679,3 +679,17 @@ iframe {
     padding: 8px 15px;
   }
 }
+
+/* ----------Validate-------- */
+.form-info p {
+  color: red;
+  font-size: 14px;
+}
+
+.form-info .error {
+  border: 1px solid red;
+}
+
+/* .form-input1 p {
+  font-size: 12px;
+} */

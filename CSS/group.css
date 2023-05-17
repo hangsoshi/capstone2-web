@@ -447,6 +447,7 @@ body {
   border: 1px solid #333;
   width: 20%;
   padding: 20px;
+  height: 270px;
   border-radius: 10px;
   margin: 0 10px;
   text-align: center;
@@ -488,6 +489,17 @@ body {
 
 .group-info-name {
   font-size: 18px;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.host {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .group-info p {
@@ -505,7 +517,6 @@ body {
 }
 
 /* ---------------pagination------------ */
-/* ----------- */
 .pagination {
   text-align: center;
   margin-top: 60px;
