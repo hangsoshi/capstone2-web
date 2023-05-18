@@ -4,58 +4,6 @@ new Swiper(".blog-slider", {
 });
 //   // ---------------------------
 
-const headerNavForm = document.querySelector(".header-nav-form");
-const headerForm = document.querySelector(".header-form");
-const headerFormLogin = headerNavForm.querySelector(".header-form-login");
-const headerFormLogout = document.querySelector(".header-form-logout");
-const login = JSON.parse(window.localStorage.getItem("login"));
-
-if (login) {
-  headerNavForm.onclick = function () {
-    if (headerForm.style.display === "none") {
-      headerForm.style.display = "block";
-      headerFormLogout.style.display = "block";
-    } else {
-      headerForm.style.display = "none";
-      headerFormLogout.style.display = "none";
-    }
-  };
-} else {
-  headerNavForm.onclick = function () {
-    if (headerForm.style.display === "none") {
-      headerForm.style.display = "block";
-      headerFormLogin.style.display = "block";
-    } else {
-      headerForm.style.display = "none";
-      headerFormLogin.style.display = "none";
-    }
-  };
-}
-const z = document.querySelector.bind(document);
-const logout = z(".form-logout");
-logout.onclick = () => {
-  alert("Bạn chắc chắn muốn thoát ?");
-  window.localStorage.clear();
-  window.location.reload(true);
-  window.location.href = "http://localhost:3000/home.html";
-};
-
-const names = z(".header-name1");
-const avatarUser = document.getElementById("avatar_user");
-if (login.msg === "Đăng nhập thành công") {
-  names.innerText = login.user_info.name;
-  avatarUser.src = login.user_info.user_profile[0].avatar;
-
-  console.log(login);
-  names.innerText = login.user_info.name;
-  avatarUser.src = login.user_info.user_profile[0].avatar;
-}
-// } else {
-//   names.innerText = login.user_info.name;
-//   avatarUser.src = login.user_info.user_profile[0].avatar;
-// }
-//   // ---------------------------------------
-
 let endDate = new Date("4/20/2023 00:00:00").getTime();
 let check = setInterval(function () {
   let now = new Date().getTime();
@@ -110,17 +58,6 @@ findContainer.forEach((value) => {
 });
 
 //   // --------- ẩn hiện thông báo----------
-const faBell = document.querySelector(".fa-bell");
-const containerNotification = document.querySelector(".container-notification");
-
-faBell.onclick = function () {
-  if (containerNotification.style.display === "none") {
-    containerNotification.style.display = "block";
-  } else {
-    containerNotification.style.display = "none";
-  }
-};
-
 const ss = document.querySelector.bind(document);
 var sliderFind = ss(".book-places");
 const api = "http://127.0.0.1:8000/api/ts/tour";
@@ -222,8 +159,6 @@ const slickNextt = document.querySelector(".ps-next");
 const findSlickPrevv = document.getElementsByClassName("find-slick-left");
 const findSlickNextt = document.getElementsByClassName("find-slick-right");
 
-console.log(slickPrev);
-console.log(slickNextt);
 const pre1 = document.getElementsByClassName("slick-prev");
 const next1 = document.getElementsByClassName("slick-next");
 var renderListTourUser = document.getElementsByClassName("popular-slides");
@@ -237,7 +172,6 @@ function getTourUser() {
     .then((data) => {
       const PStours = data.data;
       htmlss = PStours.map((tour) => {
-        console.log(tour);
         return `
         <div>
           <div class="popular-container">
