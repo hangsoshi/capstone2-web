@@ -43,14 +43,12 @@ logout.onclick = () => {
 const names = z(".header-name1");
 const avatarUser = document.getElementById("avatar_user");
 if (login.msg === "Đăng nhập thành công") {
-
-names.innerText = login.user_info.name;
-avatarUser.src = login.user_info.user_profile[0].avatar;
+  names.innerText = login.user_info.name;
+  avatarUser.src = login.user_info.user_profile[0].avatar;
 
   console.log(login);
   names.innerText = login.user_info.name;
   avatarUser.src = login.user_info.user_profile[0].avatar;
-
 }
 // } else {
 //   names.innerText = login.user_info.name;
@@ -92,7 +90,6 @@ var findSlickPrev = document.getElementsByClassName(".prev1");
 var findSlickNext = document.getElementsByClassName(".next1");
 var pre = document.getElementsByClassName("slick-prev");
 var next = document.getElementsByClassName("slick-next");
-
 
 slickPre[0].onclick = () => {
   pre[0].click();
@@ -136,14 +133,16 @@ function getTours(api) {
     })
     .then((data) => {
       const tours = data;
-      const tourDetails = document.querySelectorAll('.book-tour-places .find-container')
-      tourDetails.forEach(tourr => {
-          tourr.onclick = (e) => {
-            console.log(e);
-              localStorage.setItem('detailTourId', e)
-              // window.location.href = 'http://localhost:3000/detailTour.html'
-          }
-      })
+      const tourDetails = document.querySelectorAll(
+        ".book-tour-places .find-container"
+      );
+      tourDetails.forEach((tourr) => {
+        tourr.onclick = (e) => {
+          console.log(e);
+          localStorage.setItem("detailTourId", e);
+          // window.location.href = 'http://localhost:3000/detailTour.html'
+        };
+      });
       window.localStorage.setItem("dataTSTour", JSON.stringify(data));
       htmls = tours.map((tour) => {
         return `
@@ -212,10 +211,9 @@ getTours(api);
 const idPage = 0;
 function tranFormPage(idPage) {
   const listTourDetail = JSON.parse(window.localStorage.getItem("dataTSTour"));
-    window.localStorage.setItem("detail-tour", idPage)
-    window.location.href = 'http://localhost:3000/detailTour.html';
+  window.localStorage.setItem("detail-tour", idPage);
+  window.location.href = "http://localhost:3000/detailTour.html";
 }
-
 
 // -------------------------- slide3 người dùng tạo tour (render and slides) ----------------------------------------------
 
@@ -223,7 +221,6 @@ const slickPrev = document.querySelector(".ps-prev");
 const slickNextt = document.querySelector(".ps-next");
 const findSlickPrevv = document.getElementsByClassName("find-slick-left");
 const findSlickNextt = document.getElementsByClassName("find-slick-right");
-
 
 console.log(slickPrev);
 console.log(slickNextt);
@@ -240,9 +237,10 @@ function getTourUser() {
     .then((data) => {
       const PStours = data.data;
       htmlss = PStours.map((tour) => {
-        return `          
+        console.log(tour);
+        return `
         <div>
-        <div class="popular-container">
+          <div class="popular-container">
             <div class="popular-container-left">
                 <img src="../IMAGES/slides/slide-0.png" alt="">
                 <div class="popular-container-host">
@@ -250,7 +248,7 @@ function getTourUser() {
                 </div>
             </div>
             <div class="popular-container-center">
-                <h1>${tour.name}</h1>
+                <h1 class="ps-tour-name" data-id="${tour.id}">${tour.name}</h1>
                 <p><b>Thành viên:</b> ${tour.room.member}</p>
                 <p><b>Từ:</b> ${tour.from_where} - <b>Đến:</b> ${tour.to_where}</p>
                 <p><b>Ngày xuất phát:</b> ${tour.from_date}</p>
@@ -263,38 +261,16 @@ function getTourUser() {
         `;
       });
       renderListTourUser[0].innerHTML = htmlss.join("");
-      $(".popular-slides").slick({
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        autoplay: true,
+      const tourNames = document.querySelectorAll(".ps-tour-name");
+      tourNames.forEach((item) => {
+        item.onclick = (e) => {
+          const id = e.target.dataset.id;
+          localStorage.setItem("page-detail", id);
+          window.location.href = "http://localhost:3000/detailFind.html";
+        };
       });
-      slickPrev.onclick = () => {
-        pre1[1].click();
-      };
-      slickNextt.onclick = () => {
-        next1[1].click();
-      };
     });
 }
 
 getTourUser();
 const dataTSTour = window.localStorage.getItem("dataTSTour");
-
-
-getTourUser();
-
-// $(".slides3").slick({
-//   infinite: true,
-//   slidesToShow: 1,
-//   slidesToScroll: 1,
-//   speed: 1000,
-//   autoplay: true,
-// });
-// prev2.onclick = () => {
-//   console.log(1);
-//   slickPrev2.click();
-// };
-// next2.onclick = () => {
-//   slickNext2.click();
-//   console.log(1);
-// };
