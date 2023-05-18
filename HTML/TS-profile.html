@@ -10,21 +10,44 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
     <link rel="stylesheet" href="../CSS/profile.css">
+    <link rel="stylesheet" href="../CSS/navbar.css">
+    <link rel="stylesheet" href="CSS/root.css" />
     <title>CJB</title>
 </head>
 
 <body>
-    <div class="main">
-        <div class="wrapper-header">
-            <div class="detail-header">
-                <a href="./home.html" class="logo"> <img src="../IMAGES/logo/logo-removebg-preview.png" alt=""> </a>
+    <div class="main" id="main">
+        <header class="header">
+            <div class="container" style="background-color: rgba(2, 127, 255, 1); padding: 10px 0">
+                <a href="home.html" class="logo"> <img src="IMAGES/logo/logo-removebg-preview.png" alt=""> </a>
+
                 <ul class="nav-menu">
-                    <li> <a href="./home.html" class="nav-link">Home</a> </li>
-                    <li> <a href="./bookTour.html" class="nav-link">Tours</a> </li>
-                    <li> <a href="./createTrip.html" class="nav-link">Tạo chuyến đi</a> </li>
-                    <li> <a href="./group.html" class="nav-link">Group</a> </li>
-                    <li> <a href="./TS-home.html" class="nav-link">Trở thành nhà cung cấp</a> </li>
-                    <li> <a href="#" class="nav-link"><ion-icon name="notifications-outline"></ion-icon></a> </li>
+                    <li> <a href="TS-home.html" class="nav-link">Home</a> </li>
+                    <li> <a href="TS-postTour.html" class="nav-link">Đăng tours</a> </li>
+                    <li> <a href="TS-managerTours.html" class="nav-link">Quản lý tours</a> </li>
+                    <li> <a href="TS-managerBooked.html" class="nav-link">Quản lý đặt tours</a> </li>
+                    <li> <a href="login-register.html" class="nav-link">Trở thành người dùng</a> </li>
+                    <li><i class="fa-solid fa-bell"></i>
+                        <div style="display: none;" class="container-notification">
+                            <div class="wrap-notification">
+                                <div class="header-notification">
+                                    <p>Thông báo</p>
+                                </div>
+                                <div class="content-notification">
+                                    <div style="display: none;" class="content-notification-empty">
+                                        <img src="https://static.boosty.to/assets/images/bell-light.gNKz9.svg" alt="">
+                                        <div class="empty-title">
+                                            <h3>Chưa có thông báo nào</h3>
+                                            <p>Tất cả thông báo sẽ có ở đây</p>
+                                        </div>
+                                    </div>
+                                    <div class="content-notication-show">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
 
                     <div class="header-nav-form">
                         <div class="header-nav-icon">
@@ -34,17 +57,17 @@
                         <div class="header-form">
                             <div class="header-form-login">
                                 <ul>
-                                    <li><a href="./TS-register.html">Đăng nhập</a></li>
-                                    <li><a href="./TS-register.html">Đăng ký</a></li>
+                                    <li><a href="TS-register.html">Đăng nhập</a></li>
+                                    <li><a href="TS-register.html">Đăng ký</a></li>
                                 </ul>
                             </div>
-                            <div style="display: none;" class="header-form-logout">
+                            <div class="header-form-logout">
                                 <div class="content-logout">
-                                    <a href="./TS-profile.html" class="avatar-login">
+                                    <a href="TS-profile.html" class="avatar-login">
                                         <div class="header-form-avatar">
                                             <img src="" alt="" id="avatar_user">
                                             <div class="header-name">
-                                                <span class="header-name1">NguyenHoangVu</span>
+                                                <span class="header-name1"></span>
                                                 <p>Xem hồ sơ</p>
                                             </div>
                                         </div>
@@ -65,12 +88,14 @@
                     </div>
                 </ul>
             </div>
-        </div>
+        </header>
 
         <div class="profile-container" style="display: block;">
             <div class="container">
                 <div class="profile-avatar">
-                    <img src="" alt="" class="avatar_user_header">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReiyHYtDJQ0t5jCs4j_PiD5ESMvPwnvHVa3w&usqp=CAU"
+                        alt="" class="avatar_user_header" style="height: 100px; width: 100px; padding: 0">
+                    <input type="file" hidden class="avatar-input-file">
                     <p class="user_name">Nguyễn Hoàng Vũ, Nam</p>
 
                     <div class="form-wraper">
@@ -108,16 +133,6 @@
                                     <label for="">Email</label>
                                     <div class="form-profile-content user_email">hoangvu22062001@gmail.com</div>
                                 </div>
-                                <div class="form-profile-info">
-                                    <label for="">Giới tính/ Tuổi</label>
-                                    <div class="form-profile-content user_gender">Nam, 22</div>
-                                </div>
-                                <div class="form-line"></div>
-
-                                <div class="form-profile-bio">
-                                    <h2>About:</h2>
-                                    <p class="user_about">Write your bio...</p>
-                                </div>
                                 <div class="form-line"></div>
 
                                 <div class="form-profile-hobbies form-profile-bio">
@@ -151,41 +166,23 @@
                                 <div class="form-profile-info form-profile-space">
                                     <label for="">Họ và tên</label>
                                     <div class="form-profile-input">
-                                        <input class="form-profile-text input-username" type="text"
+                                        <input name="name" class="form-profile-text input-username" type="text"
                                             placeholder="Nhập Họ và tên của bạn">
                                     </div>
                                 </div>
                                 <div class="form-profile-info form-profile-space">
                                     <label for="">Số điện thoại</label>
                                     <div class="form-profile-input">
-                                        <input class="form-profile-text  input-phonenumber" type="number"
-                                            placeholder="Nhập số điện thoại của bạn">
+                                        <input name="phone_number" class="form-profile-text input-phonenumber"
+                                            type="number" placeholder="Nhập số điện thoại của bạn">
                                     </div>
                                 </div>
                                 <div class="form-profile-info form-profile-space">
                                     <label for="">Email</label>
                                     <div class="form-profile-input ">
                                         <input class="form-profile-text input-email" type="text"
-                                            placeholder="Nhập email của bạn">
+                                            placeholder="Nhập email của bạn" disabled>
                                     </div>
-                                </div>
-                                <div class="form-profile-info form-profile-space">
-                                    <label for="">Giới tính/ Tuổi</label>
-                                    <div class="form-profile-input">
-                                        <select name="gender" id="input-gender" class="form-profile-text">
-                                            <!--<option class="form-gender" value="">Chọn giới tính của bạn</option> -->
-                                            <option value="male">Male</option>
-                                            <option value="female">Female</option>
-                                            </option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-line"></div>
-
-                                <div class="form-profile-bio">
-                                    <h2>About:</h2>
-                                    <textarea class="form-bio" cname="" id="" cols="30" rows="4"
-                                        placeholder="Write your bio..."></textarea>
                                 </div>
                                 <div class="form-line"></div>
 
@@ -411,7 +408,6 @@
                     </div>
                     <div class="blog-slider__pagination"></div>
                 </div>
-
             </div>
         </div>
     </div>

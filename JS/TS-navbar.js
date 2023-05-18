@@ -9,7 +9,7 @@
             <li> <a href="TS-postTour.html" class="nav-link">Đăng tours</a> </li>
             <li> <a href="TS-managerTours.html" class="nav-link">Quản lý tours</a> </li>
             <li> <a href="TS-managerBooked.html" class="nav-link">Quản lý đặt tours</a> </li>
-            <li> <a href="TS-register.html" class="nav-link">Trở thành người dùng</a> </li>
+            <li> <a href="login-register.html" class="nav-link">Trở thành người dùng</a> </li>
             <li><i class="fa-solid fa-bell"></i>
                 <div style="display: none;" class="container-notification">
                     <div class="wrap-notification">
@@ -46,7 +46,7 @@
                     </div>
                     <div class="header-form-logout">
                         <div class="content-logout">
-                            <a href="profile.html" class="avatar-login">
+                            <a href="TS-profile.html" class="avatar-login">
                                 <div class="header-form-avatar">
                                     <img src="" alt="" id="avatar_user">
                                     <div class="header-name">
@@ -74,7 +74,7 @@
   </header>`;
   };
 
-  const renderNav = document.getElementById("render-nav");
+  const renderNav = document.getElementById("TSrender-nav");
   renderNav.innerHTML = navbar();
 
   const notificationContainer = document.querySelector(

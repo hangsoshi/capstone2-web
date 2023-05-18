@@ -31,17 +31,13 @@ loginButton.addEventListener("click", (e) => {
   })
     .then((response) => response.json())
     .then((data) => {
-      if (data.status === 200) {
-        window.localStorage.setItem("login", JSON.stringify(data));
-        window.localStorage.setItem("access_token", data.token);
-        window.localStorage.setItem(
-          "id",
-          JSON.stringify(data.user_info.user_profile[0].user_id)
-        );
-        window.location.href = "home.html";
-      } else {
-        alert(data.msg);
-      }
+      window.localStorage.setItem("login", JSON.stringify(data));
+      window.localStorage.setItem("access_token", data.token);
+      window.localStorage.setItem(
+        "id",
+        JSON.stringify(data.user_info.user_profile[0].user_id)
+      );
+      window.location.href = "home.html";
     })
     .catch((error) => console.log(error));
 });

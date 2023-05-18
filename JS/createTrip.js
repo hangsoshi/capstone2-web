@@ -22,13 +22,13 @@ const createTourState = {
   to_where: "",
   room_id: "",
   image: "",
+
 };
 
+console.log(localStorage.getItem("id"));
+
 fetch(
-  `http://127.0.0.1:8000/api/personal/room/roomOfUser?user_id=${localStorage.getItem(
-    "id"
-  )}`
-)
+  "http://127.0.0.1:8000/api/personal/room/roomOfUser?user_id=" + localStorage.getItem("id"))
   .then((res) => res.json())
   .then((data) => {
     rooms.innerHTML = `<option value="" selected disabled hidden>Chọn nhóm</option>`;
@@ -73,7 +73,7 @@ const handleDestinationSuggestItemClick = (doms, parent) => {
       destinationInput.value = name;
       const marker = L.marker([lat, lon], { draggable: true }).addTo(map);
       map.flyTo([lat, lon], 19);
-      marker.on("dragend", (e) => {});
+      marker.on("dragend", (e) => { });
       parent.innerHTML = null;
     };
   });
@@ -87,7 +87,7 @@ const handleCurrentLocationSuggestItemClick = (doms, parent) => {
       // gán name của điểm xuất phát, ví dụ: a = name
       const marker = L.marker([lat, lon], { draggable: true }).addTo(map);
       map.flyTo([lat, lon], 10);
-      marker.on("dragend", (e) => {});
+      marker.on("dragend", (e) => { });
       parent.innerHTML = null;
     };
   });
@@ -259,7 +259,7 @@ if (updateTour) {
         draggable: true,
       }).addTo(map);
       map.flyTo([createTourState.lat, createTourState.lon], 10);
-      marker.on("dragend", (e) => {});
+      marker.on("dragend", (e) => { });
     });
 }
 

@@ -16,6 +16,26 @@ socketRoom.on("connect", () => {
   localStorage.setItem("socketId", socketRoom.id);
 });
 
+const avatar = document.querySelector(".CR-room-image");
+const avatarInputFile = document.querySelector('.avatar-input-file')
+avatar.onclick = () => {
+    avatarInputFile.click()
+}
+avatarInputFile.onchange = (e) => {
+    const formdata = new FormData()
+    formdata.append('directory', 'avatar')
+    formdata.append('file', e.target.files[0])
+    fetch('http://localhost:3000/upload', {
+        method: 'post',
+        body: formdata
+    })
+        .then(res => res.json())
+        .then(data => {
+            avatar.src = data.data.fileUrl;
+            // login.user_info.user_profile[0].avatar = data.data.fileUrl;
+        })
+}
+
 // ----------- ẩn hiện create group-----------
 const group = document.querySelector(".group");
 const CRBody = document.querySelector("#CR-body");
@@ -100,7 +120,7 @@ function getTours() {
            <div class="group-info">
                <h4 class="group-info-name">${tour.name}</h4>
                <p>30 thành viên</p>
-               <p class="host">host:</p>
+               <p>host:${tour.room_owner_name}</p>
                <button onclick="joinRoom(${tour.id})">Tham gia</button>
            </div>
        </div>`;
