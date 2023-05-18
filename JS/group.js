@@ -112,7 +112,7 @@ function getTours() {
       const tours = data.allRoom;
       console.log(tours);
       htmlss = tours
-        .map((tour) => { 
+        .map((tour) => {
           return `<div class="group-item">
            <div class="group-img">
                <img src="../IMAGES/slides/slide-5.png" alt="">
