@@ -149,7 +149,7 @@
   const headerForm = document.querySelector(".header-form");
   const headerFormLogin = headerNavForm.querySelector(".header-form-login");
   const headerFormLogout = document.querySelector(".header-form-logout");
-  const login = JSON.parse(window.localStorage.getItem('login'));
+  const login = JSON.parse(window.localStorage.getItem("login"));
 
   if (login) {
     headerNavForm.onclick = function () {
@@ -175,12 +175,11 @@
     };
   }
   const names = document.getElementsByClassName(" header-name1");
-  const avatarUser = document.querySelector("#avatar_user");
-
-  names[0].innerText = login.user_info.name;
-  avatarUser.src = login.user_info.user_profile[0].avatar;
-  console.log(avatarUser);
-
+  const avatarUser = document.getElementById("avatar_user");
+  if (login) {
+    names[0].innerText = login.user_info.name;
+    avatarUser.src = login.user_info.user_profile[0].avatar;
+  }
 
   const logout = document.getElementsByClassName("form-logout");
   logout[0].onclick = () => {
