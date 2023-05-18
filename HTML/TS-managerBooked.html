@@ -11,62 +11,17 @@
         integrity="sha512-FCU4ZL4ubM4eDxvQQ9SqMmH+UQ9t0noKHj/cfky4whdWnyBgp+NF2ykUBgsyx8Iv+XtM3aXZ8jmFs4uLnT+Vng=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="../CSS/TS-managerBooked.css">
+    <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"
+        integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../CSS/navbar.css">
+    <link rel="stylesheet" href="CSS/root.css" />
     <title>CJB</title>
 </head>
 
 <body>
-    <div class="main">
-        <div class="wrapper-header">
-            <div class="detail-header">
-                <a href="./home.html" class="logo"> <img src="../IMAGES/logo/logo-removebg-preview.png" alt=""> </a>
-                <ul class="nav-menu">
-                    <li> <a href="./TS-home.html" class="nav-link">Home</a> </li>
-                    <li> <a href="./TS-postTour.html" class="nav-link">Đăng tours</a> </li>
-                    <li> <a href="./TS-managerTours.html" class="nav-link">Quản lý tours</a> </li>
-                    <li> <a href="./TS-managerBooked.html" class="nav-link">Quản lý đặt tours</a> </li>
-                    <li> <a href="./home.html" class="nav-link">Trở thành người dùng</a> </li>
-
-                    <div class="header-nav-form">
-                        <div class="header-nav-icon">
-                            <i class="fa-solid fa-user user-icon"></i>
-                            <i class="fa-solid fa-bars"></i>
-                        </div>
-                        <div class="header-form">
-                            <div class="header-form-login">
-                                <ul>
-                                    <li><a href="./login-register.html">Đăng nhập</a></li>
-                                    <li><a href="./login-register.html">Đăng ký</a></li>
-                                </ul>
-                            </div>
-                            <div style="display: none;" class="header-form-logout">
-                                <div class="content-logout">
-                                    <a href="./profile.html" class="avatar-login">
-                                        <div class="header-form-avatar">
-                                            <img src="../image/avatars/avatar_1.jpg" alt="">
-                                            <div class="header-name">
-                                                <span>NguyenHoangVu</span>
-                                                <p>Xem hồ sơ</p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <span class="drop-line"></span>
-                                    <div class="header-form-booked">
-                                        <i class="fa-sharp fa-solid fa-clock-rotate-left"></i>
-                                        <span>Chuyến đi của tôi</span>
-                                    </div>
-                                    <div class="header-form-loved">
-                                        <i class="fa-regular fa-heart"></i>
-                                        <span>Lịch sử chuyến đi</span>
-                                    </div>
-                                    <div class="form-logout">Đăng xuất</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </ul>
-            </div>
-        </div>
-
+    <div class="main" id="main">
+        <div id="TSrender-nav"></div>
         <div class="manager-tours card_wrap">
             <div class="container-residence">
                 <div class="container-header">
@@ -261,6 +216,7 @@
     <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
     <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <script src="../JS/TS-managerBooked.js"></script>
+    <script src="../JS/TS-navbar.js"></script>
 </body>
 
 </html>
