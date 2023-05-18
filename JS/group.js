@@ -16,52 +16,6 @@ socketRoom.on("connect", () => {
   localStorage.setItem("socketId", socketRoom.id);
 });
 
-// if (login) {
-//   headerNavForm.onclick = function () {
-//     if (headerForm.style.display === "none") {
-//       headerForm.style.display = "block";
-//       headerFormLogout.style.display = "block";
-//       headerFormLogin.style.display = "none";
-//     } else {
-//       headerForm.style.display = "none";
-//       headerFormLogout.style.display = "none";
-//     }
-//   };
-// } else {
-//   headerNavForm.onclick = function () {
-//     if (headerForm.style.display === "none") {
-//       headerForm.style.display = "block";
-//       headerFormLogin.style.display = "block";
-//       headerFormLogout.style.display = "none";
-//     } else {
-//       headerForm.style.display = "none";
-//       headerFormLogin.style.display = "none";
-//     }
-//   };
-// }
-
-// const z = document.querySelector.bind(document);
-// const logout = z(".form-logout");
-// logout.onclick = () => {
-//   alert("Bạn chắc chắn muốn thoát ?");
-//   window.localStorage.clear();
-//   window.location.reload(true);
-//   window.location.href = "http://localhost:3000/home.html";
-// };
-
-// const goBackProfile = z(".group-icon");
-
-// goBackProfile.onclick = () => {
-//   window.location.href = "http://localhost:3000/profile.html";
-// };
-
-// const names = document.getElementsByClassName(" header-name1");
-// const avatarUser = document.getElementById("avatar_user");
-// if (login) {
-//   names[0].innerText = login.user_info.name;
-//   avatarUser.src = login.user_info.user_profile[0].avatar;
-// }
-
 // ----------- ẩn hiện create group-----------
 const group = document.querySelector(".group");
 const CRBody = document.querySelector("#CR-body");
@@ -138,7 +92,7 @@ function getTours() {
       const tours = data.allRoom;
       console.log(tours);
       htmlss = tours
-        .map((tour) => { 
+        .map((tour) => {
           return `<div class="group-item">
            <div class="group-img">
                <img src="../IMAGES/slides/slide-5.png" alt="">
