@@ -22,13 +22,13 @@ const createTourState = {
   to_where: "",
   room_id: "",
   image: "",
+
 };
 
+console.log(localStorage.getItem("id"));
+
 fetch(
-  `http://127.0.0.1:8000/api/personal/room/roomOfUser?user_id=${localStorage.getItem(
-    "id"
-  )}`
-)
+  "http://127.0.0.1:8000/api/personal/room/roomOfUser?user_id=" + localStorage.getItem("id"))
   .then((res) => res.json())
   .then((data) => {
     rooms.innerHTML = `<option value="" selected disabled hidden>Chọn nhóm</option>`;
@@ -73,7 +73,7 @@ const handleDestinationSuggestItemClick = (doms, parent) => {
       destinationInput.value = name;
       const marker = L.marker([lat, lon], { draggable: true }).addTo(map);
       map.flyTo([lat, lon], 19);
-      marker.on("dragend", (e) => {});
+      marker.on("dragend", (e) => { });
       parent.innerHTML = null;
     };
   });
@@ -87,7 +87,7 @@ const handleCurrentLocationSuggestItemClick = (doms, parent) => {
       // gán name của điểm xuất phát, ví dụ: a = name
       const marker = L.marker([lat, lon], { draggable: true }).addTo(map);
       map.flyTo([lat, lon], 10);
-      marker.on("dragend", (e) => {});
+      marker.on("dragend", (e) => { });
       parent.innerHTML = null;
     };
   });
@@ -204,28 +204,27 @@ const tungay = $(".tungay");
 const denngay = $(".denngay");
 const motachuyendi = $(".description");
 
-denngay.onchange = (e) => {
+denngay.onblur = (e) => {
+  console.log(e.target);
   createTourState.to_date = e.target.value;
 };
 
-tungay.onchange = (e) => {
+tungay.onblur = (e) => {
+  console.log(e.target.value);
   createTourState.from_date = e.target.value;
 };
 
-tenchuyendi.onchange = (e) => {
+tenchuyendi.onkeydown = (e) => {
   createTourState.name = e.target.value;
 };
 
-motachuyendi.onchange = (e) => {
+motachuyendi.onkeydown = (e) => {
   createTourState.description = e.target.value;
 };
-
-console.log(localStorage.getItem("id"));
 
 // ---------------------------------   create trip   ----------------------------------------
 const btnCreateTrip = document.querySelector(".create-trip");
 const tourID = JSON.parse(window.localStorage.getItem("detail-tour"));
-console.log(tourID);
 if (updateTour) {
   btnCreateTrip.innerText = "Cập nhật chuyến đi";
 }
@@ -260,7 +259,7 @@ if (updateTour) {
         draggable: true,
       }).addTo(map);
       map.flyTo([createTourState.lat, createTourState.lon], 10);
-      marker.on("dragend", (e) => {});
+      marker.on("dragend", (e) => { });
     });
 }
 
@@ -284,26 +283,15 @@ btnCreateTrip.onclick = () => {
         }
       });
   } else {
-    const formData = new FormData();
-    const data = {
-      name: tenchuyendi.value,
-      owner_id: Number(localStorage.getItem("id")),
-      description: motachuyendi.value,
-      from_date: "8/8/23",
-      to_date: "8/8/23",
-      lat: 2.42342,
-      lon: 2423.44,
-      to_where: diemden.value,
-      room_id: tourID,
-      image: "blob:http://localhost:3000/e2a5b326-d7f8-4043-99a0-495bd9883c49",
-    };
-    Object.keys(data).forEach((key) => {
-      formData.append(key, data[key]);
-    });
-    console.log(formData);
     fetch("http://127.0.0.1:8000/api/personal/tour/create", {
       method: "POST",
-      body: formData,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ...createTourState,
+        owner_id: localStorage.getItem("id"),
+      }),
     })
       .then((response) => response.json())
       .then((data) => {

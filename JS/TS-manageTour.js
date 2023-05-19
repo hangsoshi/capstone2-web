@@ -2,7 +2,7 @@ const ss = document.querySelector.bind(document);
 var sliderFind = ss(".list-tour");
 const login = JSON.parse(window.localStorage.getItem("login"));
 console.log(login);
-const api = "http://127.0.0.1:8000/api/ts/tour/all/" + login.user_info.user_profile.user_id;
+const api = "http://127.0.0.1:8000/api/ts/tour/all/" + login.user_info.user_profile[0].id;
 var i=0;
 let htmls = "";
 function getTours(api) {
@@ -11,7 +11,7 @@ function getTours(api) {
             return response.json();
         })
         .then(data => {
-            const tours = data;
+            const tours = data.all_tour;
             console.log(tours);
             htmls = tours.map((tour,index) => {
                 return `
@@ -82,17 +82,4 @@ function getTours(api) {
 
 if (login) {
     getTours(api);
-}
-
-
-// const aaa = document.querySelectorAll('.list-info')
-// console.log(aaa);
-
-const z = document.querySelector.bind(document);
-const logout = z('.form-logout');
-logout.onclick = () => {
-  alert('Bạn chắc chắn muốn thoát ?')
-  window.localStorage.clear();
-  window.location.reload(true);
-  window.location.href = 'http://localhost:3000/home.html';
 }

@@ -1,8 +1,3 @@
-const headerNavForm = document.querySelector(".header-nav-form");
-const headerForm = document.querySelector(".header-form");
-const headerFormLogin = headerNavForm.querySelector(".header-form-login");
-const headerFormLogout = document.querySelector(".header-form-logout");
-
 const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document);
 const userName = $$(".user_name");
@@ -22,11 +17,37 @@ const btnUpdate = $(".profile_update");
 const btnProfileCancel = $(".profile_cancel");
 const inputUserName = $(".input-username");
 const inputPhoneNumber = $(".input-phonenumber");
+console.log(inputUserName);
+console.log(inputPhoneNumber);
 const inputEmail = $(".input-email");
-const inputAbout = $(".form-bio");
-const inputHobbies = $(".input-hobbies");
-const inputGender = $("#input-gender");
 const login = JSON.parse(window.localStorage.getItem("login"));
+inputEmail.placeholder = login.userEmail;
+// const inputAbout = $(".form-bio");
+// const inputHobbies = $(".input-hobbies");
+// const inputGender = $("#input-gender");
+console.log(login);
+const avatar = document.querySelector(".avatar_user_header");
+const avatarInputFile = document.querySelector('.avatar-input-file')
+avatar.onclick = () => {
+  avatarInputFile.click()
+}
+avatarInputFile.onchange = (e) => {
+  const formdata = new FormData()
+  formdata.append('directory', 'avatar')
+  formdata.append('file', e.target.files[0])
+  fetch('http://localhost:3000/upload', {
+    method: 'post',
+    body: formdata
+  })
+    .then(res => res.json())
+    .then(data => {
+      avatar.src = data.data.fileUrl;
+      login.user_info.user_profile[0].avatar = data.data.fileUrl;
+    })
+}
+
+
+avatar.src = login.user_info.user_profile[0].avatar;
 
 // ----- my trip----------
 // new Swiper(".blog-slider", {
@@ -48,7 +69,7 @@ const login = JSON.parse(window.localStorage.getItem("login"));
 function getListTour() {
   fetch(
     "http://127.0.0.1:8000/api/personal/tour/all/" +
-      login.user_info.user_profile[0].user_id
+    login.user_info.user_profile[0].user_id
   )
     .then((res) => res.json())
     .then((data) => {
@@ -57,8 +78,9 @@ function getListTour() {
     });
 }
 
+var tours;
 var sliderFind = $(".swiper-wrapper");
-const api = "http://127.0.0.1:8000/api/ts/tour/all/"+login.user_info.user_profile[0].user_id;
+const api = "http://127.0.0.1:8000/api/ts/tour/all/" + login.user_info.user_profile[0].id;
 let htmls = "";
 function renderListTour() {
   fetch(api)
@@ -67,7 +89,7 @@ function renderListTour() {
     })
     .then((data) => {
       console.log(data);
-      const tours = data;
+      tours = data.all_tour;
       window.localStorage.setItem(
         "dataPersonTour",
         JSON.stringify(data.all_tour)
@@ -82,6 +104,7 @@ function renderListTour() {
             "http://127.0.0.1:5500/CAPSTONE2/FrontEnd/HTML/detailFind.html";
         };
       });
+      console.log(tours);
       htmls = tours.map((tour) => {
         return `
                 <div class="blog-slider__item swiper-slide data-id='${tour.id}'">
@@ -147,9 +170,9 @@ function handle_detail_page(e) {
   const params = { ts_id: `${login.user_info.user_profile[0].user_id}` };
   fetch(
     "http://127.0.0.1:8000/api/ts/tour/delete/" +
-      e +
-      "?owner_id=" +
-      params.ts_id,
+    e +
+    "?owner_id=" +
+    params.ts_id,
     {
       method: "DELETE",
     }
@@ -164,133 +187,25 @@ function start() {
 
 start();
 
-if (!login) {
-  headerFormLogin.style.display = "block";
-  headerFormLogout.style.display = "none";
-} else {
-  headerFormLogout.style.display = "block";
-  headerFormLogin.style.display = "none";
-}
 const names = $(".header-name1");
 const avatarUser = $("#avatar_user");
 const avatarUser1 = $(".avatar_user_header");
 
-console.log(names);
-console.log(avatarUser);
-
-headerNavForm.onclick = function () {
-  if (headerForm.style.display === "none") {
-    headerForm.style.display = "block";
-  } else {
-    headerForm.style.display = "none";
-  }
-};
-if (login.status === 200) {
-  names.innerText = login.user_info.name;
-  avatarUser.src = login.user_info.user_profile[0].avatar;
-  avatarUser1.src = login.user_info.user_profile[0].avatar;
-}
-if (login.status === 200) {
-  names.innerText = login.user_info.name;
-  avatarUser.src = login.user_info.user_profile[0].avatar;
-  avatarUser1.src = login.user_info.user_profile[0].avatar;
-} else {
-  names.innerText = login.user_info.name;
-  avatarUser.src = login.user_info.user_profile[0].avatar;
-  avatarUser1.src = login.user_info.user_profile[0].avatar;
-}
 
 // // ---------------------------------------
 
-profileTitleBtn.onclick = function () {
-  if (profileGenaralEdit) {
-    if (profileGenaralEdit.style.display === "block") {
-      profileGenaralEdit.style.display = "none";
-      profileGenaral.style.display = "block";
-    } else {
-      profileGenaralEdit.style.display = "block";
-      profileGenaral.style.display = "none";
-    }
-  }
-};
+
 
 function edit() {
   profileGenaralEdit.style.display = "none";
   profileGenaral.style.display = "block";
 }
 
-btnProfileCancel.onclick = () => {
-  if (profileGenaralEdit.style.display === "block") {
-    profileGenaralEdit.style.display = "none";
-    profileGenaral.style.display = "block";
-  }
-};
-
-if (login.status === 200) {
-  userName[0].innerText = login.user_info.name;
-  userName[1].innerText = login.user_info.name;
-  userPhone.innerText = login.user_info.phone_number;
-  userEmail.innerText = login.user_info.email;
-  userGender.innerText = login.user_info.user_profile[0].gender;
-  userAbout.innerText = login.user_info.about;
-} else {
-  userName[0].innerText = login.user_info.name;
-  userName[1].innerText = login.user_info.name;
-  userPhone.innerText = login.user_info.phone_number;
-  userEmail.innerText = login.user_info.email;
-  userGender.innerText = login.user_info.user_profile[0].gender;
-  userAbout.innerText = login.user_info.about;
-}
-
-// // ------------------- logout -----------------------------
-const logout = $(".form-logout");
-logout.onclick = () => {
-  alert("Bạn chắc chắn muốn thoát ?");
-  window.localStorage.clear();
-  window.location.reload(true);
-  window.location.href = "http://localhost:3000/home.html";
-};
-
 // // -----------------------  update profile user ------------------------------------
 // var profile;
-function getInfoTS() {
-  fetch("http://127.0.0.1:8000/api/ts/profile/update", {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      id: login.user_info.user_profile[0].id,
-      name: inputUserName.value,
-      phone_number: inputPhoneNumber.value,
-      avatar: login.user_info.user_profile[0].avatar,
-      gender: inputGender.value,
-      about: inputAbout.value,
-    }),
-    data: {
-      id: login.user_info.user_profile[0].id,
-      name: inputUserName.value,
-      phone_number: inputPhoneNumber.value,
-      avatar: login.user_info.user_profile[0].avatar,
-      gender: inputGender.value,
-      about: inputAbout.value,
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-      // window.localStorage.removeItem("login");
-      window.localStorage.setItem("dataa", JSON.stringify(data));
-      const profile = JSON.parse(window.localStorage.getItem("dataa"));
-      console.log(profile);
-      renderTSInfo(profile);
-      alert("Cập nhật thông tin thành công");
-      window.location.reload(true);
-    })
-    .catch(error)(alert(error));
-}
 
 var html_UserInfo = $(".profile-genaral");
+console.log(html_UserInfo);
 
 // ----------------------- render user info ------------------------------
 
@@ -305,60 +220,77 @@ function renderTSInfo(obj) {
 </div>
     <div class="form-profile-wraper">
     <form class="form-profile">
-      <div class="form-profile-info">
-          <label for="">Họ và tên</label>
-          <div class="form-profile-content user_name">${
-            obj.user_info.name
-          }</div>
-      </div>
-      <div class="form-profile-info">
-          <label for="">Số điện thoại</label>
-          <div class="form-profile-conten user_phone">${
-            obj.user_info.phone_number
-          }</div>
-      </div>
-      <div class="form-profile-info">
-          <label for="">Email</label>
-          <div class="form-profile-content user_email">${
-            obj.user_info.email
-          }</div>
-      </div>
-      <div class="form-profile-info">
-          <label for="">Giới tính/ Tuổi</label>
-          <div class="form-profile-content user_gender">${"Male"}</div>
-      </div>
-      <div class="form-line"></div>
-      <div class="form-profile-bio">
-          <h2>About:</h2>
-          <p class="user_about">${obj.user_info.about}</p>
-      </div>
-      <div class="form-line"></div>
+    <div class="form-profile-info">
+        <label for="">Họ và tên</label>
+        <div class="form-profile-content user_name">${obj.user_info.name}</div>
+    </div>
+    <div class="form-profile-info">
+        <label for="">Số điện thoại</label>
+        <div class="form-profile-content user_phone">${obj.user_info.phone_number}</div>
+    </div>
+    <div class="form-profile-info">
+        <label for="">Email</label>
+        <div class="form-profile-content user_email">${obj.user_info.email}</div>
+    </div>
+    <div class="form-line"></div>
 
-      <div class="form-profile-hobbies form-profile-bio">
-          <h2>Sở thích:</h2>
-          <div class="profile-hobbies-list">
-              <div class="tag hobbies-1">Cắm trại</div>
-              <div class="tag hobbies-2">Cắm trại</div>
-              <div class="tag hobbies-3">Cắm trại</div>
-              <div class="tag hobbies-4">Cắm trại</div>
-              <div class="tag hobbies-5">Cắm trại</div>
-              <div class="tag hobbies-6">Cắm trại</div>
-              <div class="tag hobbies-7">Cắm trại</div>
-              <div class="tag hobbies-8">Cắm trại</div>
-              <div class="tag hobbies-9">Cắm trại</div>
-              <div class="tag hobbies-10">Cắm trại</div>
-          </div>
-      </div>
-  </form>
+    <div class="form-profile-hobbies form-profile-bio">
+        <h2>Sở thích:</h2>
+        <div class="profile-hobbies-list">
+            <div class="tag hobbies-1">Cắm trại</div>
+            <div class="tag hobbies-2">Cắm trại</div>
+            <div class="tag hobbies-3">Cắm trại</div>
+            <div class="tag hobbies-4">Cắm trại</div>
+            <div class="tag hobbies-5">Cắm trại</div>
+            <div class="tag hobbies-6">Cắm trại</div>
+            <div class="tag hobbies-7">Cắm trại</div>
+            <div class="tag hobbies-8">Cắm trại</div>
+            <div class="tag hobbies-9">Cắm trại</div>
+            <div class="tag hobbies-10">Cắm trại</div>
+        </div>
+    </div>
+</form>
 </div> `;
-  return (html_UserInfo.innerHTML = html);
+  return html_UserInfo.innerHTML = html;
 }
 
-console.log(login);
+function getInfoTS() {
+  fetch("http://127.0.0.1:8000/api/ts/profile/update", {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      id: login.user_info.user_profile[0].user_id,
+      name: inputUserName.value,
+      phone_number: inputPhoneNumber.value,
+      avatar: login.user_info.user_profile[0].avatar,
+    }),
+    data: {
+      id: login.user_info.user_profile[0].user_id,
+      name: inputUserName.value,
+      phone_number: inputPhoneNumber.value,
+      avatar: login.user_info.user_profile[0].avatar,
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      const data1 = data;
+      // window.localStorage.removeItem("login");
+      window.localStorage.setItem("login", JSON.stringify(data));
+      // const profile = JSON.parse(window.localStorage.getItem("dataa"));
+      renderTSInfo(data1);
+      console.log("Cập nhật thông tin thành công");
+      window.location.reload();
+    })
+    .catch(error => {
+      alert(error)
+    });
+}
 
 btnUpdate.onclick = () => {
   getInfoTS();
-  window.location.reload(true);
 };
 
 // ------------------------------------------------------------------
