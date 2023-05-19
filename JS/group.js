@@ -229,3 +229,48 @@ const createToast = (id, message) => {
   // Setting a timeout to remove the toast after the specified duration
   toast.timeoutId = setTimeout(() => removeToast(toast), toastDetails.timer);
 };
+
+
+// --------- validate ---------
+const numberPeople = document.querySelector('.numberPeople')
+const description = document.querySelector('.description')
+const nameGroup = document.querySelector('.nameGroup')
+
+function checkNumberPeople(e) {
+  let peopleValue = Number(e.target.value)
+  if (peopleValue <= 0) {
+    e.target.classList.add("error");
+    document.querySelector(
+      `.${[...e.target.classList].join(".")} ~ p`
+    ).innerText = `Số người không hợp lệ`;
+  } else if(peopleValue > 100) {
+    e.target.classList.add("error");
+    document.querySelector(
+      `.${[...e.target.classList].join(".")} ~ p`
+    ).innerText = `không được nhập quá 100 người`;
+  } else {
+    e.target.classList.remove("error");
+    document.querySelector(
+      `.${[...e.target.classList].join(".")} ~ p`
+    ).innerText = "";
+  }
+}
+
+function validateMaxlength(e, length) {
+  if (e.target.value.length > length) {
+    e.target.classList.add("error");
+    document.querySelector(
+      `.${[...e.target.classList].join(".")} ~ p`
+    ).innerText = `Không quá ${length} kí tự`;
+  } else {
+    e.target.classList.remove("error");
+    document.querySelector(
+      `.${[...e.target.classList].join(".")} ~ p`
+    ).innerText = "";
+  }
+}
+
+numberPeople.onchange = (e) => checkNumberPeople(e)
+description.onchange = (e) => validateMaxlength(e, 50);
+nameGroup.onchange = (e) => validateMaxlength(e, 40);
+
