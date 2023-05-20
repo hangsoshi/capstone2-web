@@ -98,7 +98,7 @@ function renderListTour() {
                 <div class="blog-slider__content">
                     <div class="blog-slider__title">${tour.name}</div>
                     <div class="blog-slider__trip">
-                        <p><b>Từ:</b> ${tour.from_where} - <b>Đến:</b> ${tour.to_where}</p>
+                        <p><b>Từ:</b> ${tour.from_where} - <b>Đến:</b class="towhere"> ${tour.to_where}</p>
                         <p class="tao-them">${tour.from_date}</p>
                     </div>
                     <div class="blog-slider__host"><b>Người tạo: </b>${login.user_info.name}</div>
@@ -226,31 +226,33 @@ if (login.status === 200) {
 const apiUserProfile = "http://127.0.0.1:8000/api/user/profile/update";
 
 function getInfoUser() {
-    fetch(apiUserProfile, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            id: login.user_info.user_profile[0].user_id,
-            name: inputUserName.value,
-            phone_number: inputPhoneNumber.value,
-            gender: inputGender.value,
-            about: inputAbout.value,
-            avatar: avatar.src
-        }),
+  fetch(apiUserProfile, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      id: login.user_info.user_profile[0].user_id,
+      name: inputUserName.value,
+      phone_number: inputPhoneNumber.value,
+      gender: inputGender.value,
+      about: inputAbout.value,
+      avatar: avatar.src,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.status === 200) {
+        localStorage.setItem("login", data.user_info);
+        createToast("success");
+        setTimeout(()=>{
+          window.location.reload();
+          renderUserInfo(data.user_info);
+        },5000)
+      }
     })
-        .then((response) => response.json())
-        .then((data) => {
-            if (data.status === 200) {
-                localStorage.setItem('login', data.user_info)
-                createToast("success");
-                renderUserInfo(user_info);
-            }
-        })
-        .catch((error) => alert(error));
+    .catch((error) => alert(error));
 }
-
 var html_UserInfo = $(".profile-genaral");
 
 // ----------------------- render user info ------------------------------

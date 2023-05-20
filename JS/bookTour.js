@@ -44,8 +44,8 @@ const names = z(".header-name1");
 const avatarUser = document.getElementById("avatar_user");
 if (login.msg === "Đăng nhập thành công") {
 
-names.innerText = login.user_info.name;
-avatarUser.src = login.user_info.user_profile[0].avatar;
+  names.innerText = login.user_info.name;
+  avatarUser.src = login.user_info.user_profile[0].avatar;
 
   console.log(login);
   names.innerText = login.user_info.name;
@@ -138,11 +138,11 @@ function getTours(api) {
       const tours = data;
       const tourDetails = document.querySelectorAll('.book-tour-places .find-container')
       tourDetails.forEach(tourr => {
-          tourr.onclick = (e) => {
-            console.log(e);
-              localStorage.setItem('detailTourId', e)
-              // window.location.href = 'http://localhost:3000/detailTour.html'
-          }
+        tourr.onclick = (e) => {
+          console.log(e);
+          localStorage.setItem('detailTourId', e)
+          // window.location.href = 'http://localhost:3000/detailTour.html'
+        }
       })
       window.localStorage.setItem("dataTSTour", JSON.stringify(data));
       htmls = tours.map((tour) => {
@@ -212,8 +212,8 @@ getTours(api);
 const idPage = 0;
 function tranFormPage(idPage) {
   const listTourDetail = JSON.parse(window.localStorage.getItem("dataTSTour"));
-    window.localStorage.setItem("detail-tour", idPage)
-    window.location.href = 'http://localhost:3000/detailTour.html';
+  window.localStorage.setItem("detail-tour", idPage)
+  window.location.href = 'http://localhost:3000/detailTour.html';
 }
 
 
@@ -263,38 +263,11 @@ function getTourUser() {
         `;
       });
       renderListTourUser[0].innerHTML = htmlss.join("");
-      $(".popular-slides").slick({
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        autoplay: true,
-      });
-      slickPrev.onclick = () => {
-        pre1[1].click();
-      };
-      slickNextt.onclick = () => {
-        next1[1].click();
-      };
     });
 }
 
 getTourUser();
 const dataTSTour = window.localStorage.getItem("dataTSTour");
 
-
 getTourUser();
 
-// $(".slides3").slick({
-//   infinite: true,
-//   slidesToShow: 1,
-//   slidesToScroll: 1,
-//   speed: 1000,
-//   autoplay: true,
-// });
-// prev2.onclick = () => {
-//   console.log(1);
-//   slickPrev2.click();
-// };
-// next2.onclick = () => {
-//   slickNext2.click();
-//   console.log(1);
-// };

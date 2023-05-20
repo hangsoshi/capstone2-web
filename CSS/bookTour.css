@@ -1142,9 +1142,14 @@ body {
   color: #7edd03;
 }
 
-.text-places{
+.text-places {
   display: -webkit-box;
   -webkit-line-clamp: 1;
- -webkit-box-orient: vertical;
- overflow: hidden;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.popular-slides {
+  height: 577px;
+  overflow-x: scroll;
 }

@@ -85,9 +85,7 @@ group.onclick = function () {
 
 const createRoom = $(".btn-create");
 const roomName = $("#name-room");
-roomName.onchange = (e) => {
-  console.log(e.target.value);
-};
+const numberMember = $("#numberMember");
 const roomDescription = $("#description-room");
 if (login) {
   createRoom.onclick = (e) => {
@@ -98,16 +96,16 @@ if (login) {
     inputs.forEach((item) => {
       requestValues[item.attributes.name.value] = item.value;
     });
+
+    let formData = new FormData();
+    formData.append('name', roomName.value);
+    formData.append('owner_id', login.user_info.user_profile[0].user_id);
+    formData.append('description', roomDescription.value);
+    formData.append('image', "https://img5.thuthuatphanmem.vn/uploads/2021/11/12/hinh-anh-anime-don-gian-hinh-nen-anime-don-gian-ma-dep_092443354.png");
+    formData.append('slot', numberMember.value);
     fetch("http://127.0.0.1:8000/api/personal/room/create", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        owner_id: login.user_info.user_profile[0].user_id,
-        name: roomName.value,
-        description: roomDescription.value,
-      }),
+      body: formData,
     })
       .then((response) => response.json())
       .then((val) => {
@@ -138,7 +136,7 @@ function getTours() {
       const tours = data.allRoom;
       console.log(tours);
       htmlss = tours
-        .map((tour) => { 
+        .map((tour) => {
           return `<div class="group-item">
            <div class="group-img">
                <img src="../IMAGES/slides/slide-5.png" alt="">

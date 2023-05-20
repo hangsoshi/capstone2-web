@@ -22,7 +22,7 @@ loginButton.addEventListener("click", (e) => {
     requestValues[item.attributes.name.value] = item.value;
   });
   console.log(requestValues);
-  fetch("http://127.0.0.1:8000/api/auth/login", {
+  fetch("http://127.0.0.1:8000/api/auth/loginUser", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
