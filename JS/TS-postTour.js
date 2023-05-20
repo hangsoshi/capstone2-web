@@ -6,18 +6,24 @@ let schedules = [];
 createTourButton.onclick = () => {
   const request = {
     name: "",
-    ts_id: localStorage.getItem("id"),
+    ts_id: Number(localStorage.getItem("id")),
     description: "",
     address: "",
     from_date: "",
     to_date: "",
-    price: "",
-    slot: "",
-    schedule: "",
+    price: 0,
+    slot: 0, 
+    schedule: [],
+    images: [],
   };
   requestInputs.forEach((input) => {
     const { key } = input.dataset;
-    request[key] = input.value;
+    if(key === 'price' || key === 'slot')
+    {
+      request[key] = Number(input.value);
+    } else {
+      request[key] = input.value;
+    }
   });
   fetch("http://127.0.0.1:8000/api/ts/tour/create", {
     method: "post",
@@ -26,6 +32,7 @@ createTourButton.onclick = () => {
     },
     body: JSON.stringify({
       ...request,
+      images: JSON.stringify(countImages),
       schedule: JSON.stringify(
         schedules.map((item, index) => {
           delete item.id;
@@ -225,7 +232,7 @@ postSchedualAdd.onclick = () => {
       const id = input.dataset.id;
       schedules = schedules.map((schedule) =>
         schedule.id === id ? { ...schedule, desc: e.target.value } : schedule
-      );
+      );  
       console.log(schedules);
     };
   });

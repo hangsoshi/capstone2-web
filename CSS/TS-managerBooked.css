@@ -39,11 +39,11 @@ button {
   padding: 8px 0;
 }
 
-.detail-header > a {
+.detail-header>a {
   width: 16%;
 }
 
-.detail-header > a > img {
+.detail-header>a>img {
   width: 70%;
   object-fit: contain;
   display: flex;
@@ -51,7 +51,7 @@ button {
   align-items: center;
 }
 
-.detail-header > ul {
+.detail-header>ul {
   width: 65%;
   justify-content: space-evenly;
   margin-left: -140px;
@@ -68,7 +68,7 @@ button {
   font-size: 1.05rem;
 }
 
-.detail-header > img {
+.detail-header>img {
   width: 50px;
   height: 50px;
 }
@@ -132,7 +132,7 @@ button {
   z-index: -1;
 }
 
-.header-form-login > ul > li > a {
+.header-form-login>ul>li>a {
   font-weight: normal;
   line-height: 10px;
   color: #333;
@@ -155,7 +155,20 @@ button {
 .header-form-login ul li a:hover {
   color: var(--main-color);
 }
+.p-date {
+  padding: 0 20px 0 65px;
+}
 
+.p-date-to {
+  margin: 0 20px 0 9px;
+}
+
+.p-jojned {
+  margin: 0 30px;
+}
+.icon-action {
+  margin-left: 37px;
+}
 /* ----------------logout----------- */
 .header-form-logout {
   position: absolute;
@@ -370,8 +383,26 @@ button {
 
 .list-info {
   line-height: 30px;
+  padding: 0 25px;
 }
 
+.list-date-to {
+  padding: 0 10px;
+}
+
+.list-name-tour {
+  width: 17%;
+  text-align: left;
+}
+
+.list-joined-number{
+  padding: 0 65px;
+}
+
+th:nth-child(2){
+  width: 30%;
+    padding-left: 38px;
+}
 .list-info-content {
   width: 70%;
   line-height: 30px;
@@ -425,17 +456,26 @@ button {
   background-color: #f44336;
 }
 
+.list-tour {
+  height: 400px;
+  overflow-x: hidden;
+}
+
 table {
   width: 100%;
   margin-top: 20px;
   font-size: 15px;
   border-collapse: collapse;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  column-width: 700px;
 }
 
 table tr th {
   text-align: center;
   font-size: 16px;
-} 
+}
 
 th {
   border-bottom: 1px solid black;
@@ -455,14 +495,14 @@ th:nth-child(1) {
 
 th,
 td {
-  padding: 10px 0;
+  padding: 0 !important;
 }
 
 td {
   border-bottom: 1px solid #b4b2b2;
   padding: 20px 0;
   text-align: center;
-} 
+}
 
 /* ---------------pagination------------ */
 .pagination {
