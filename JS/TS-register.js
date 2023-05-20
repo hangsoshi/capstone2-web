@@ -19,7 +19,7 @@ loginButton.onclick = () => {
   inputs.forEach((item) => {
     requestValues[item.attributes.name.value] = item.value;
   });
-  fetch("http://127.0.0.1:8000/api/auth/login", {
+  fetch("http://127.0.0.1:8000/api/auth/loginTS", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

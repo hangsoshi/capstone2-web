@@ -654,7 +654,7 @@ body {
   position: fixed;
   display: flex;
   width: 50%;
-  height: 80%;
+  height: fit-content;
   background-color: #fff;
   top: 110px;
   left: 0;
@@ -750,7 +750,7 @@ body {
   width: 100%;
   font-size: 18px;
   padding: 10px 20px;
-  margin: 30px 0;
+  margin: 30px 0 0 0;
   outline: chartreuse;
   background-color: azure;
   border-radius: 10px;
@@ -776,6 +776,7 @@ body {
   border: none;
   border-radius: 10px;
   cursor: pointer;
+  margin-top: 20px;
 }
 
 .room-close {
@@ -998,6 +999,15 @@ body {
   }
 }
 
+/* ----------Validate-------- */
+.form-group p {
+  color: red;
+  font-size: 14px;
+}
+
+.form-group .error {
+  border-bottom: 1px solid red;
+}
 .group-info-name {
   display: -webkit-box;
   -webkit-line-clamp: 1;

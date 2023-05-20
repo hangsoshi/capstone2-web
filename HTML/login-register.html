@@ -17,10 +17,22 @@
         <div class="form-container register-container">
             <form>
                 <h1>Register here.</h1>
-                <input type="text" placeholder="Name" name="name" class="form-input">
-                <input type="email" placeholder="Email" name="email" class="form-input">
-                <input type="password" placeholder="Password" name="password" class="form-input">
-                <input type="number" placeholder="Phone" name="phone_number" class="form-input">
+                <div class="item-input">
+                    <input type="text" placeholder="Name" name="name" class="form-input nameUser">
+                    <small></small>
+                </div>
+                <div class="item-input">
+                    <input type="email" placeholder="Email" name="email" class="form-input emailUser">
+                    <small></small>
+                </div>
+                <div class="item-input">
+                    <input type="password" placeholder="Password" name="password" class="form-input passwordUser">
+                    <small></small>
+                </div>
+                <div class="item-input">
+                    <input type="number" placeholder="Phone" name="phone_number" class="form-input phoneUser">
+                    <small></small>
+                </div>
                 <button class="resgister-1" type="submit">Register</button>
                 <span>or use your account</span>
                 <div class="social-container">
@@ -33,8 +45,14 @@
             <form>
                 <div>
                     <h1>Login here.</h1>
-                    <input type="email" placeholder="Email" class="form-control" name="email">
-                    <input type="password" placeholder="Password" class="form-control" name="password">
+                    <div class="item">
+                        <input type="email" placeholder="Email" class="form-control emailLogin" name="email">
+                        <small></small>
+                    </div>
+                    <div class="item">
+                        <input type="password" placeholder="Password" class="form-control passwordLogin" name="password">
+                        <small></small>
+                    </div>
                     <div class="content">
                         <div class="checkbox">
                             <input type="checkbox" name="checkbox" id="checkbox">

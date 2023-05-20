@@ -1,7 +1,3 @@
-// const headerNavForm = document.querySelector(".header-nav-form");
-// const headerForm = document.querySelector(".header-form");
-// const headerFormLogin = headerNavForm.querySelector(".header-form-login");
-// const headerFormLogout = document.querySelector(".header-form-logout");
 const login = JSON.parse(window.localStorage.getItem("login"));
 const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document);
@@ -15,26 +11,32 @@ const socketRoom = io("http://localhost:3002/room", {
 socketRoom.on("connect", () => {
   localStorage.setItem("socketId", socketRoom.id);
 });
-
+const createGroup = {
+  owner_id: login.user_info.user_profile[0].user_id,
+  name: "",
+  description: "",
+  image: "",
+};
 const avatar = document.querySelector(".CR-room-image");
-const avatarInputFile = document.querySelector('.avatar-input-file')
+const avatarInputFile = document.querySelector(".avatar-input-file");
 avatar.onclick = () => {
-    avatarInputFile.click()
-}
+  avatarInputFile.click();
+};
 avatarInputFile.onchange = (e) => {
-    const formdata = new FormData()
-    formdata.append('directory', 'avatar')
-    formdata.append('file', e.target.files[0])
-    fetch('http://localhost:3000/upload', {
-        method: 'post',
-        body: formdata
-    })
-        .then(res => res.json())
-        .then(data => {
-            avatar.src = data.data.fileUrl;
-            // login.user_info.user_profile[0].avatar = data.data.fileUrl;
-        })
-}
+  const formdata = new FormData();
+  formdata.append("directory", "avatar");
+  formdata.append("file", e.target.files[0]);
+  fetch("http://localhost:3000/upload", {
+    method: "post",
+    body: formdata,
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      const image = avatar.querySelector("img");
+      image.src = data.data.fileUrl;
+      createGroup.image = data.data.fileUrl;
+    });
+};
 
 // ----------- ẩn hiện create group-----------
 const group = document.querySelector(".group");
@@ -59,10 +61,13 @@ group.onclick = function () {
 
 const createRoom = $(".btn-create");
 const roomName = $("#name-room");
-roomName.onchange = (e) => {
-  console.log(e.target.value);
+roomName.onblur = (e) => {
+  createGroup.name = e.target.value;
 };
 const roomDescription = $("#description-room");
+roomDescription.onblur = (e) => {
+  createGroup.description = e.target.value;
+};
 if (login) {
   createRoom.onclick = (e) => {
     e.preventDefault();
@@ -77,11 +82,7 @@ if (login) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        owner_id: login.user_info.user_profile[0].user_id,
-        name: roomName.value,
-        description: roomDescription.value,
-      }),
+      body: JSON.stringify(createGroup),
     })
       .then((response) => response.json())
       .then((val) => {
@@ -203,3 +204,46 @@ const createToast = (id, message) => {
   // Setting a timeout to remove the toast after the specified duration
   toast.timeoutId = setTimeout(() => removeToast(toast), toastDetails.timer);
 };
+
+// --------- validate ---------
+const numberPeople = document.querySelector(".numberPeople");
+const description = document.querySelector(".description");
+const nameGroup = document.querySelector(".nameGroup");
+
+function checkNumberPeople(e) {
+  let peopleValue = Number(e.target.value);
+  if (peopleValue <= 0) {
+    e.target.classList.add("error");
+    document.querySelector(
+      `.${[...e.target.classList].join(".")} ~ p`
+    ).innerText = `Số người không hợp lệ`;
+  } else if (peopleValue > 100) {
+    e.target.classList.add("error");
+    document.querySelector(
+      `.${[...e.target.classList].join(".")} ~ p`
+    ).innerText = `không được nhập quá 100 người`;
+  } else {
+    e.target.classList.remove("error");
+    document.querySelector(
+      `.${[...e.target.classList].join(".")} ~ p`
+    ).innerText = "";
+  }
+}
+
+function validateMaxlength(e, length) {
+  if (e.target.value.length > length) {
+    e.target.classList.add("error");
+    document.querySelector(
+      `.${[...e.target.classList].join(".")} ~ p`
+    ).innerText = `Không quá ${length} kí tự`;
+  } else {
+    e.target.classList.remove("error");
+    document.querySelector(
+      `.${[...e.target.classList].join(".")} ~ p`
+    ).innerText = "";
+  }
+}
+
+numberPeople.onchange = (e) => checkNumberPeople(e);
+description.onchange = (e) => validateMaxlength(e, 50);
+nameGroup.onchange = (e) => validateMaxlength(e, 40);
