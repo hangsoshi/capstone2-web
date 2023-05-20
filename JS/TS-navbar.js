@@ -178,7 +178,7 @@
   const avatarUser = document.getElementById("avatar_user");
   if (login) {
     names[0].innerText = login.user_info.name;
-    avatarUser.src = login.user_info.user_profile[0].avatar;
+    avatarUser.src = login.user_info.user_profile[0]?.avatar;
   }
 
   const logout = document.getElementsByClassName("form-logout");
