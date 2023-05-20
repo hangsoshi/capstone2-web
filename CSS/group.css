@@ -999,7 +999,6 @@ body {
   }
 }
 
-<<<<<<< HEAD
 /* ----------Validate-------- */
 .form-group p {
   color: red;
@@ -1008,11 +1007,10 @@ body {
 
 .form-group .error {
   border-bottom: 1px solid red;
-=======
+}
 .group-info-name {
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
->>>>>>> 28a6e2b6f537bbf342abf5dcc54ab379712d0d1c
 }
