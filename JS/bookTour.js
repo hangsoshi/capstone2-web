@@ -203,21 +203,6 @@ function getTourUser() {
           window.location.href = "http://localhost:3000/detailFind.html";
         };
       });
-      if (renderListTourUser[0].innerHTML) {
-        $(".popular-slides").slick({
-          infinite: true,
-          slidesToShow: 3,
-          slidesToScroll: 1,
-          speed: 800,
-        });
-        findSlickPrevv.onclick = () => {
-          pre1.click();
-        };
-
-        findSlickNextt.onclick = () => {
-          next1.click();
-        };
-      }
     });
 }
 

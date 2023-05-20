@@ -22,7 +22,6 @@ const createTourState = {
   to_where: "",
   room_id: 0,
   image: "",
-
 };
 
 console.log(localStorage.getItem("id"));
@@ -267,14 +266,13 @@ btnCreateTrip.onclick = () => {
   if (updateTour) {
     console.log(updateTour);
     fetch(`http://127.0.0.1:8000/api/personal/tour/update/${updateTour}`, {
-      method: "POST",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         ...createTourState,
-        owner_id: Number(localStorage.getItem("id")),
-        room_id : Number(localStorage.getItem("page-detail")),
+        owner_id: Number(localStorage.getItem('id'))
       }),
     })
       .then((res) => res.json())
@@ -293,7 +291,6 @@ btnCreateTrip.onclick = () => {
       body: JSON.stringify({
         ...createTourState,
         owner_id: Number(localStorage.getItem("id")),
-        room_id : Number(localStorage.getItem("page-detail")),
       }),
     })
       .then((response) => response.json())
