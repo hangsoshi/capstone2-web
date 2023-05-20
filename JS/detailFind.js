@@ -84,7 +84,7 @@ function RenderTourDetail(obj) {
             <h4 style="font-size: 22px; display: flex; align-items: center;">Chuyến đi được tạo bởi: <span style="color: #000; margin-left: 10px;">${target.owner_name}</span></h4>
             <div class="detail-host-inf">
                 <div class="detail-host-img">
-                    <img src="../IMAGES/default/avatar.jpg" alt="avatar" style="border-radius: 50%;">
+                    <img src="${target.owner_avatar}" alt="avatar" style="border-radius: 50%;">
                 </div>
                 <div class="detail-confirm" style="position: relative">
                     <div class="detail-confirm-icon detail-confirm-email">
@@ -130,19 +130,20 @@ function RenderTourDetail(obj) {
   });
 
   htmlPersonTour.innerHTML = htmls;
+  console.log(target);
 
   const memberContainer = document.querySelector(".detail-member");
 
   const mapDOM = document.querySelector("#map");
-  const map = L.map(mapDOM).setView([target.lat, target.lon], 5);
+  const map = L.map(mapDOM).setView([Number(target.lat.replaceAll(',', '.')),Number(target.lon.replaceAll(',', '.'))], 5);
   L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 10,
     attribution:
       '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
   }).addTo(map);
 
-  L.marker([target.lat, target.lon]).addTo(map);
-
+  L.marker([Number(target.lat.replaceAll(',', '.')),Number(target.lon.replaceAll(',', '.'))]).addTo(map);
+  console.log(target.member_list);
   memberContainer.innerHTML = target.member_list
     .map(
       (member) => `<div class="detail-member-wraper">
@@ -203,6 +204,7 @@ const handleAddFriend = (id) => {
 fetch("http://127.0.0.1:8000/api/personal/tour/show/" + pageDetail)
   .then((res) => res.json())
   .then((data) => {
+    console.log(data);
     RenderTourDetail(data);
   });
 
