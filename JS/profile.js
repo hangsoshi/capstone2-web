@@ -26,8 +26,6 @@ const avatar = document.querySelector(".avatar_user_header");
 const avatarInputFile = document.querySelector(".avatar-input-file");
 
 const groups = document.querySelector(".myGroups .card-wrapper");
-console.log(login);
-
 avatar.onclick = () => {
   avatarInputFile.click();
 };
@@ -75,7 +73,6 @@ function renderListTour() {
     })
     .then((data) => {
       const tours = data.all_tour;
-      console.log(tours);
       window.localStorage.setItem(
         "dataPersonTour",
         JSON.stringify(data.all_tour)
@@ -449,3 +446,4 @@ fetch(
     );
     groups.innerHTML += htmls.join("");
   });
+
