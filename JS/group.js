@@ -16,6 +16,7 @@ const createGroup = {
   name: "",
   description: "",
   image: "",
+  slot: 0,
 };
 const avatar = document.querySelector(".CR-room-image");
 const avatarInputFile = document.querySelector(".avatar-input-file");
@@ -63,6 +64,10 @@ const createRoom = $(".btn-create");
 const roomName = $("#name-room");
 roomName.onblur = (e) => {
   createGroup.name = e.target.value;
+};
+const slotInput = $("#slot-room");
+slotInput.onblur = (e) => {
+  createGroup.slot = Number(e.target.value);
 };
 const roomDescription = $("#description-room");
 roomDescription.onblur = (e) => {
