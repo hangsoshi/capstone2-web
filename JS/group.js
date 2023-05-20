@@ -16,6 +16,7 @@ const createGroup = {
   name: "",
   description: "",
   image: "",
+  slot: 0,
 };
 const avatar = document.querySelector(".CR-room-image");
 const avatarInputFile = document.querySelector(".avatar-input-file");
@@ -63,6 +64,10 @@ const createRoom = $(".btn-create");
 const roomName = $("#name-room");
 roomName.onblur = (e) => {
   createGroup.name = e.target.value;
+};
+const slotInput = $("#slot-room");
+slotInput.onblur = (e) => {
+  createGroup.slot = Number(e.target.value);
 };
 const roomDescription = $("#description-room");
 roomDescription.onblur = (e) => {
@@ -134,28 +139,15 @@ function getTours() {
 getTours();
 
 function joinRoom(idRoom) {
-  fetch("http://127.0.0.1:8000/api/personal/room/join", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      user_id: login.user_info.user_profile[0].user_id,
-      room_id: idRoom,
-    }),
-  })
-    .then((response) => response.json())
-    .then((val) => {
-      createToast("success", val.msg);
-      socketRoom.emit("join-room", {
-        roomId: idRoom,
-        joiner: login.user_info.user_profile[0].user_id,
-      });
-    })
-    .catch((error) => {
-      createToast("error");
-    });
+  socketRoom.emit("join-room", {
+    roomId: idRoom,
+    joiner: login.user_info.user_profile[0].user_id,
+  });
 }
+
+socketRoom.on("join-room-response", (response) => {
+  createToast(response.status, response.message);
+});
 
 socketRoom.on("join-room", (users) => {
   console.log(users);
