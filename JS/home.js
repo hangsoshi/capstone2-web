@@ -8,51 +8,6 @@ const findSlickNext = document.getElementsByClassName(" find-slick-right");
 const pre1 = document.getElementsByClassName(" slick-prev");
 const next1 = document.getElementsByClassName(" slick-next");
 
-// const becomeSupplier = document.getElementsByClassName("become-supplier");
-// console.log(becomeSupplier);
-// const apiTSProfile = "http://127.0.0.1:8000/api/user/profile/update";
-// becomeSupplier  .onclick  = (e) => {
-//   fetch(apiTSProfile,{
-//     method: 'PUT',
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify({
-//         id: login.user_info.user_profile[0].id,
-//         name: login.user_info.name,
-//         phone_number: login.user_info.phone_number,
-//         avatar: login.user_info.user_profile[0].avatar,
-//         gender: login.user_info.user_profile[0].gender,
-//         about: login.user_info,
-//       }),
-//       data: ({
-//         id: login.user_info.user_profile[0].id,
-//         name: login.user_info.name,
-//         phone_number: login.user_info.phone_number,
-//         avatar: login.user_info.user_profile[0].avatar,
-//         gender: login.user_info.user_profile[0].gender,
-//         about: login.user_info,
-//       }),
-//   })
-//   .then(res => res.json())
-//   .then((data)=>{
-//     data.user_info.user_roles = "ts";
-//     window.localStorage.setItem("login",JSON.stringify(data));
-//     console.log(data);
-//     alert(1)
-//   })
-// }
-
-// const names = $('.header-name1');
-// const avatarUser = document.getElementsByClassName("avatar_user");
-// if(login.msg === "Đăng nhập thành công"){
-//   names[0].innerText = login.user_info.name;
-//   avatarUser[0].src = login.user_info.user_profile[0].avatar;
-// } else {
-//   names[0].innerText = login.user.name;
-//   avatarUser[0].src = "https://scontent.fdad1-2.fna.fbcdn.net/v/t39.30808-6/323952197_567233611560466_7304591525322997827_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=PdWsTXpElkEAX9IVL9U&_nc_ht=scontent.fdad1-2.fna&oh=00_AfBGaaF1sKuii3DajDaAxGsPyrPBf8lHeo2HgE45lER7hA&oe=643E53C4";
-// }
-
 // ---------------------------------------------------
 
 // const ss = document.querySelector.bind(document);
@@ -116,3 +71,87 @@ function getTours() {
 }
 
 getTours();
+
+const searchState = {
+  place: "",
+  fromDate: "",
+  toDate: "",
+  slot: "",
+};
+const searchLocation = document.querySelector(".search-location");
+const searchFromDate = document.querySelector(".search-from-date");
+const searchToDate = document.querySelector(".search-to-date");
+const searchMember = document.querySelector(".search-member");
+const searchSubmit = document.querySelector(".search-submit");
+
+searchLocation.onblur = (e) => {
+  if (specialValidate(e.target.value)) {
+    e.target.value = "";
+    const error = document.querySelector(".search-location-error");
+    error.innerText = "Địa điểm không hợp lệ";
+    return;
+  }
+  searchState.place = e.target.value;
+};
+
+searchFromDate.onblur = (e) => {
+  if (searchState.toDate) {
+    const error = document.querySelector(".search-from-date-error");
+    const errorTo = document.querySelector(".search-to-date-error");
+    if (dateValidate(e.target.value, searchState.toDate)) {
+      error.innerText = "Ngày không hợp lệ";
+      e.target.value = null;
+      return;
+    } else {
+      error.innerText = "";
+      errorTo.innerText = "";
+    }
+  }
+  searchState.fromDate = e.target.value;
+};
+
+searchToDate.onblur = (e) => {
+  if (searchState.fromDate) {
+    const error = document.querySelector(".search-to-date-error");
+    const errorFrom = document.querySelector(".search-from-date-error");
+    if (dateValidate(searchState.fromDate, e.target.value)) {
+      error.innerText = "Ngày không hợp lệ";
+      e.target.value = null;
+      return;
+    } else {
+      error.innerText = "";
+      errorFrom.innerText = "";
+    }
+  }
+  searchState.toDate = e.target.value;
+};
+
+searchMember.onblur = (e) => {
+  if (e.target.value < 0) {
+    e.target.value = 0;
+  }
+  searchState.slot = Number(e.target.value);
+};
+
+searchSubmit.onclick = () => {
+  const querystring = Object.keys(searchState)
+    .map((item) => `${item}=${searchState[item]}`)
+    .join("&");
+  fetch(`http://localhost:8000/api/search?${querystring}`)
+    .then((res) => res.json())
+    .then((data) => {
+      localStorage.setItem("search-tour", JSON.stringify(data));
+      location.href = "bookTour.html";
+    });
+};
+
+const specialValidate = (string) => {
+  const regex = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+  return regex.test(string);
+};
+
+const dateValidate = (date1, date2) => {
+  const converted1 = new Date(date1).getTime();
+  const converted2 = new Date(date2).getTime();
+  return converted1 > converted2;
+};
