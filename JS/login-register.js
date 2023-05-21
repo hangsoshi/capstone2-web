@@ -22,7 +22,7 @@ loginButton.addEventListener("click", (e) => {
     requestValues[item.attributes.name.value] = item.value;
   });
   console.log(requestValues);
-  fetch("http://127.0.0.1:8000/api/auth/login", {
+  fetch("http://127.0.0.1:8000/api/auth/loginUser", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -77,7 +77,8 @@ const emailLogin = document.querySelector(".emailLogin");
 const passwordLogin = document.querySelector(".passwordLogin");
 
 function checkEmailLogin(e) {
-  const regexEmailLogin = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const regexEmailLogin =
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   if (!regexEmailLogin.test(e.target.value)) {
     document.querySelector(
       `.${[...e.target.classList].join(".")} ~ small`

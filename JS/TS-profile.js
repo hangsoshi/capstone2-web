@@ -47,7 +47,38 @@ avatarInputFile.onchange = (e) => {
 }
 
 
-avatar.src = login.user_info.user_profile[0].avatar;
+if (login) {
+  avatar.src = login.user_info.user_profile[0].avatar;
+  userName[0].innerHTML = login.user_info.name;
+  userName[1].innerHTML = login.user_info.name;
+  userPhone.innerHTML = login.user_info.phone_number;
+  userEmail.innerHTML = login.user_info.email;
+}
+
+console.log(userName);
+profileTitleBtn.onclick = function () {
+  if (profileGenaralEdit) {
+    if (profileGenaralEdit.style.display === "block") {
+      profileGenaralEdit.style.display = "none";
+      profileGenaral.style.display = "block";
+    } else {
+      profileGenaralEdit.style.display = "block";
+      profileGenaral.style.display = "none";
+    }
+  }
+};
+
+function edit() {
+  profileGenaralEdit.style.display = "none";
+  profileGenaral.style.display = "block";
+}
+
+btnProfileCancel.onclick = () => {
+  if (profileGenaralEdit.style.display === "block") {
+    profileGenaralEdit.style.display = "none";
+    profileGenaral.style.display = "block";
+  }
+};
 
 // ----- my trip----------
 // new Swiper(".blog-slider", {
@@ -280,12 +311,14 @@ function getInfoTS() {
       // window.localStorage.removeItem("login");
       window.localStorage.setItem("login", JSON.stringify(data));
       // const profile = JSON.parse(window.localStorage.getItem("dataa"));
+      createToast('success')
+      setTimeout(() => {
+        window.location.reload(true);
+      }, 5000)
       renderTSInfo(data1);
-      console.log("Cập nhật thông tin thành công");
-      window.location.reload();
     })
     .catch(error => {
-      alert(error)
+      createToast('error')
     });
 }
 
@@ -351,4 +384,49 @@ tourNames.forEach((tourr) => {
 const createGroup = $(".create-group");
 createGroup.onclick = () => {
   window.location.href = "http://localhost:3000/TS-postTour.html";
+};
+
+
+// ----------------------- toást message --------------------------------
+const notifications = document.querySelector(".notifications"),
+  buttons = document.querySelectorAll(".buttons .btn");
+// Object containing details for different types of toasts
+const toastDetails = {
+  timer: 5000,
+  success: {
+    icon: "fa-circle-check",
+    text: "Success: Update profile success...",
+  },
+  error: {
+    icon: "fa-circle-xmark",
+    text: "Error: Update profile error....",
+  },
+  warning: {
+    icon: "fa-triangle-exclamation",
+    text: "Warning: This is a warning toast.",
+  },
+  info: {
+    icon: "fa-circle-info",
+    text: "Info: This is an information toast.",
+  },
+};
+const removeToast = (toast) => {
+  toast.classList.add("hide");
+  if (toast.timeoutId) clearTimeout(toast.timeoutId); // Clearing the timeout for the toast
+  setTimeout(() => toast.remove(), 500); // Removing the toast after 500ms
+};
+const createToast = (id) => {
+  // Getting the icon and text for the toast based on the id passed
+  const { icon, text } = toastDetails[id];
+  const toast = document.createElement("li"); // Creating a new 'li' element for the toast
+  toast.className = `toast ${id}`; // Setting the classes for the toast
+  // Setting the inner HTML for the toast
+  toast.innerHTML = `<div class="column">
+                           <i class="fa-solid ${icon}"></i>
+                           <span>${text}</span>
+                        </div>
+                        <i class="fa-solid fa-xmark" onclick="removeToast(this.parentElement)"></i>`;
+  notifications.appendChild(toast); // Append the toast to the notification ul
+  // Setting a timeout to remove the toast after the specified duration
+  toast.timeoutId = setTimeout(() => removeToast(toast), toastDetails.timer);
 };

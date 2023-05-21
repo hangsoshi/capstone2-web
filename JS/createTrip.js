@@ -13,16 +13,15 @@ const rooms = document.querySelector(".what-room");
 
 const createTourState = {
   name: "",
-  owner_id: "",
+  owner_id: 0,
   description: "",
   from_date: "",
   to_date: "",
   lat: "",
   lon: "",
   to_where: "",
-  room_id: "",
+  room_id: 0,
   image: "",
-
 };
 
 console.log(localStorage.getItem("id"));
@@ -265,6 +264,7 @@ if (updateTour) {
 
 btnCreateTrip.onclick = () => {
   if (updateTour) {
+    console.log(updateTour);
     fetch(`http://127.0.0.1:8000/api/personal/tour/update/${updateTour}`, {
       method: "PUT",
       headers: {
@@ -272,7 +272,7 @@ btnCreateTrip.onclick = () => {
       },
       body: JSON.stringify({
         ...createTourState,
-        owner_id: localStorage.getItem("id"),
+        owner_id: Number(localStorage.getItem('id'))
       }),
     })
       .then((res) => res.json())
@@ -290,7 +290,7 @@ btnCreateTrip.onclick = () => {
       },
       body: JSON.stringify({
         ...createTourState,
-        owner_id: localStorage.getItem("id"),
+        owner_id: Number(localStorage.getItem("id")),
       }),
     })
       .then((response) => response.json())

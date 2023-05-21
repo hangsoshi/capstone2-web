@@ -26,7 +26,6 @@ const avatar = document.querySelector(".avatar_user_header");
 const avatarInputFile = document.querySelector(".avatar-input-file");
 
 const groups = document.querySelector(".myGroups .card-wrapper");
-
 avatar.onclick = () => {
   avatarInputFile.click();
 };
@@ -247,7 +246,10 @@ function getInfoUser() {
       if (data.status === 200) {
         localStorage.setItem("login", data.user_info);
         createToast("success");
-        renderUserInfo(user_info);
+        setTimeout(()=>{
+          window.location.reload();
+          renderUserInfo(data.user_info);
+        },5000)
       }
     })
     .catch((error) => alert(error));
@@ -444,3 +446,4 @@ fetch(
     );
     groups.innerHTML += htmls.join("");
   });
+

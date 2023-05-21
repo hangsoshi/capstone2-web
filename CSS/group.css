@@ -654,7 +654,7 @@ body {
   position: fixed;
   display: flex;
   width: 50%;
-  height: 80%;
+  height: fit-content;
   background-color: #fff;
   top: 110px;
   left: 0;
