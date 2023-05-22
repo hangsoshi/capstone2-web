@@ -4,6 +4,11 @@ const loginButton = document.getElementById("login-1");
 const container = document.getElementById("container");
 const names = document.getElementsByClassName("header-name1");
 const $ = document.querySelector.bind(document);
+const currentUser = localStorage.getItem("id");
+
+if (currentUser) {
+  location.href = "home.html";
+}
 
 registerButton1.addEventListener("click", () => {
   container.classList.add("right-panel-active");
@@ -39,7 +44,7 @@ loginButton.addEventListener("click", (e) => {
       );
       window.location.href = "home.html";
     })
-    .catch((error) => console.log(error));
+    .catch((error) => alert(error.msg));
 });
 
 // --------------------------------------------------------------------
