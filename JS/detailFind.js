@@ -135,14 +135,23 @@ function RenderTourDetail(obj) {
   const memberContainer = document.querySelector(".detail-member");
 
   const mapDOM = document.querySelector("#map");
-  const map = L.map(mapDOM).setView([Number(target.lat.replaceAll(',', '.')),Number(target.lon.replaceAll(',', '.'))], 5);
+  const map = L.map(mapDOM).setView(
+    [
+      Number(target.lat.replaceAll(",", ".")),
+      Number(target.lon.replaceAll(",", ".")),
+    ],
+    5
+  );
   L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 10,
     attribution:
       '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
   }).addTo(map);
 
-  L.marker([Number(target.lat.replaceAll(',', '.')),Number(target.lon.replaceAll(',', '.'))]).addTo(map);
+  L.marker([
+    Number(target.lat.replaceAll(",", ".")),
+    Number(target.lon.replaceAll(",", ".")),
+  ]).addTo(map);
   console.log(target.member_list);
   memberContainer.innerHTML = target.member_list
     .map(
@@ -197,14 +206,13 @@ const handleAddFriend = (id) => {
   )
     .then((res) => res.json())
     .then((data) => {
-      console.log(data);
+      createToast("success", data.msg);
     });
 };
 
 fetch("http://127.0.0.1:8000/api/personal/tour/show/" + pageDetail)
   .then((res) => res.json())
   .then((data) => {
-    console.log(data);
     RenderTourDetail(data);
   });
 

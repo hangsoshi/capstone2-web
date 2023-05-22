@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="CSS/root.css" />
     <link rel="stylesheet" href="CSS/home.css" />
     <link rel="stylesheet" href="CSS/navbar.css" />
+    <link rel="stylesheet" href="CSS/chat-direction.css">
     <title>CJB</title>
     <script
       src="https://cdn.socket.io/4.6.0/socket.io.min.js"
@@ -24,7 +25,6 @@
     ></script>
   </head>
 
-  <body>
     <div class="main" id="main">
       <div id="render-nav"></div>
 
@@ -228,9 +228,8 @@
       </div>
     </div>
 
-    <div class="chatCJB">
-      <a href="./chat.html">Chat CJB</a>
-    </div>
+    <span id="render-chat-direction">
+    </span>
 
     <footer class="footer">
       <div class="wrap-footer">
@@ -335,5 +334,7 @@
     ></script>
     <script src="JS/home.js"></script>
     <script src="JS/navbar.js"></script>
+    <script src="JS/search.js"></script>
+    <script src="JS/chat-direction.js"></script>
   </body>
 </html>
