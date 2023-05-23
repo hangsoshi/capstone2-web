@@ -30,10 +30,6 @@ loginButton.onclick = () => {
     .then((data) => {
       if (data.status === 200) {
         window.localStorage.setItem("login", JSON.stringify(data));
-        window.localStorage.setItem(
-          "id",
-          JSON.stringify(data.user_info.user_profile[0].id)
-        );
         window.location.href = "http://localhost:3000/TS-home.html";
       } else {
         alert(data.msg);
@@ -66,7 +62,7 @@ registerButton.onclick = (e) => {
     .then((response) => response.json())
     .then((data) => {
       alert("success......");
-      window.location.href = "http://localhost:3000/TS-home.html";
+      window.location.href = "http://localhost:3000/TS-register.html";
     })
     .catch((error) => {
       alert(error);

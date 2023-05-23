@@ -1010,6 +1010,11 @@ body {
   margin: 100px;
 }
 
+.popular-slides {
+  height: 400px;
+  overflow-y: scroll;
+}
+
 .popular-heading,
 .find-heading {
   display: flex;
@@ -1142,9 +1147,9 @@ body {
   color: #7edd03;
 }
 
-.text-places{
+.text-places {
   display: -webkit-box;
   -webkit-line-clamp: 1;
- -webkit-box-orient: vertical;
- overflow: hidden;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }

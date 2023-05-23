@@ -22,6 +22,7 @@ var findSlickNext = document.getElementsByClassName(".next1");
 var pre = document.getElementsByClassName("slick-prev");
 var next = document.getElementsByClassName("slick-next");
 
+
 slickPre[0].onclick = () => {
   pre[0].click();
 };
@@ -65,7 +66,6 @@ const pre1 = document.getElementsByClassName("slick-prev");
 const next1 = document.getElementsByClassName("slick-next");
 var renderListTourUser = document.getElementsByClassName("popular-slides");
 let htmlss = "";
-
 const dataTSTour = window.localStorage.getItem("dataTSTour");
 
 const searchTour = JSON.parse(localStorage.getItem("search-tour"));

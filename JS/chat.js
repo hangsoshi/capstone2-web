@@ -93,7 +93,7 @@ socket.on("rooms", (rooms) => {
       </div>
   </div>
 </li>`
-  );
+  ).join("");
   const roomsDom = document.querySelectorAll(".room");
   roomsDom.forEach((room) => {
     room.onclick = () => {

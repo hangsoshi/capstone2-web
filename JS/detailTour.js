@@ -94,6 +94,6 @@ function handlePayment(price) {
   console.log(price);
   window.localStorage.setItem("priceTour", price);
   console.log(pageDetail);
-  console.log(login.user_info.user_profile[0].user_id);
+  // console.log(login.user_info.user_profile[0].user_id);
   window.location.href = "http://localhost:3000/payment.html";
 }
