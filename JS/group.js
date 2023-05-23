@@ -2,9 +2,11 @@ const login = JSON.parse(window.localStorage.getItem("login"));
 const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document);
 
+console.log(login);
+
 const socketRoom = io("http://localhost:3002/room", {
   auth: {
-    token: localStorage.getItem("id"),
+    token: login.user_info.user_profile[0].user_id,
   },
 });
 
@@ -126,7 +128,7 @@ function getTours() {
            <div class="group-info">
                <h4 class="group-info-name">${tour.name}</h4>
                <p>30 thành viên</p>
-               <p>host:${tour.room_owner_name}</p>
+               <p class="host">host:${tour.room_owner_name}</p>
                <button onclick="joinRoom(${tour.id})">Tham gia</button>
            </div>
        </div>`;
@@ -139,6 +141,7 @@ function getTours() {
 getTours();
 
 function joinRoom(idRoom) {
+  console.log(1);
   socketRoom.emit("join-room", {
     roomId: idRoom,
     joiner: login.user_info.user_profile[0].user_id,

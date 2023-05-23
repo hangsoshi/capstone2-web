@@ -36,13 +36,16 @@ loginButton.addEventListener("click", (e) => {
   })
     .then((response) => response.json())
     .then((data) => {
-      window.localStorage.setItem("login", JSON.stringify(data));
-      window.localStorage.setItem("access_token", data.token);
-      window.localStorage.setItem(
-        "id",
-        JSON.stringify(data.user_info.user_profile[0].user_id)
-      );
-      window.location.href = "home.html";
+      if (data.status === 200) {
+        window.localStorage.setItem("login", JSON.stringify(data));
+        window.localStorage.setItem("access_token", data.token);
+        window.localStorage.setItem(
+          "id",
+          JSON.stringify(data.user_info.user_profile[0].user_id)
+        );
+        window.location.href = "http://localhost:3000/home.html";
+        console.log(1);
+      }
     })
     .catch((error) => alert(error.msg));
 });
@@ -56,6 +59,7 @@ registerButton.onclick = (e) => {
   const inputs = document.querySelectorAll("input.form-input");
   const requestValues = {};
 
+  console.log(1);
   inputs.forEach((item) => {
     requestValues[item.attributes.name.value] = item.value;
   });
@@ -70,11 +74,10 @@ registerButton.onclick = (e) => {
     .then((data) => {
       if (data.status === 200) {
         alert("success......");
-        window.location.reload();
-      } else {
-        alert(data.message);
+        window.location.href = "http://localhost:3000/login-register.html";
       }
-    });
+    })
+    .catch(error => { alert(error) })
 };
 
 // --------- Validate form login -----------
@@ -82,6 +85,7 @@ const emailLogin = document.querySelector(".emailLogin");
 const passwordLogin = document.querySelector(".passwordLogin");
 
 function checkEmailLogin(e) {
+  console.log(e.target.classList);
   const regexEmailLogin =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   if (!regexEmailLogin.test(e.target.value)) {
@@ -116,6 +120,7 @@ function emptyValue(e) {
 }
 
 function checkEmail(e) {
+  console.log(e.target.classList);
   const regexEmail =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   emailUser.onchange = function (e) {
@@ -162,3 +167,66 @@ emailUser.onchange = (e) => checkEmail(e);
 passwordUser.onchange = (e) => checkPassword(e);
 passwordLogin.onchange = (e) => checkPassword(e);
 phoneUser.onchange = (e) => checkPhone(e);
+
+// const controlList = document.querySelectorAll('.form-input')
+// controlList.forEach((control) => {
+//   control.onkeyup = (e) => {
+//     switch (e.target.classList[1]) {
+//       case 'nameUser': {
+//         validateForm(e.target, ["required"]);
+//         break;
+//       }
+//       case 'emailUser': {
+//         validateForm(e.target, ["required", "email"]);
+//         break;
+//       }
+//       case 'passwordUser': {
+//         validateForm(e.target, ["required"]);
+//         break;
+//       }
+//       case 'phoneUser': {
+//         validateForm(e.target, ["required", "phone"]);
+//         break;
+//       }
+//       default: break;
+//     }
+//   }
+// })
+// const phoneRegex =
+//   /^\(?[0]{1}?([0-9]{2})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+// const regexEmail =
+//   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+// const listError = ["required", "maxLength", "phone", "email", "emoji", "specialCharacter"]
+// let valid;
+// function validateForm(control, listError) {
+//   let warning = [];
+//   valid = listError.every((error) => {
+//     if (error === 'required' && !control.value) {
+//       warning.push('Không được để trống');
+//       return false;
+//     }
+//     if (error === 'phone' && !phoneRegex.test(control.value)) {
+//       warning.push('sdt không hợp lệ');
+//       return false;
+//     }
+//     if (error === 'email' && !regexEmail.test(control.value)) {
+//       warning.push('Email k hợp lệ');
+//       return false;
+//     }
+//     return true;
+//   })
+//   // console.log(valid);
+//   document.querySelector(
+//     `.${[...control.classList].join(".")} ~ small`
+//   ).innerText = warning.join(', ');
+// }
+
+// document.querySelector('.resgister-1').onclick = (e) => {
+//   e.preventDefault();
+//   valid = true;
+//   var keyupEvent = new Event('keyup');
+//   controlList.forEach((control) => {
+//     control.dispatchEvent(keyupEvent);
+//   })
+//   console.log(valid);
+// } 

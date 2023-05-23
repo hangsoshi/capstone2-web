@@ -6,27 +6,26 @@ let schedules = [];
 createTourButton.onclick = () => {
   const request = {
     name: "",
-    ts_id: Number(localStorage.getItem("id")),
+    ts_id: Number(login.user_info.user_profile[0].id),
     description: "",
     address: "",
     from_date: "",
     to_date: "",
     price: 0,
-    slot: 0, 
+    slot: 0,
     schedule: [],
     images: [],
   };
   requestInputs.forEach((input) => {
     const { key } = input.dataset;
-    if(key === 'price' || key === 'slot')
-    {
+    if (key === 'price' || key === 'slot') {
       request[key] = Number(input.value);
     } else {
       request[key] = input.value;
     }
   });
   fetch("http://127.0.0.1:8000/api/ts/tour/create", {
-    method: "post",
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
@@ -46,9 +45,9 @@ createTourButton.onclick = () => {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
+      createToast("success")
     })
-    .catch((error) => console.log(error));
+    .catch((error) => createToast("error"));
 };
 
 // --------- next- prev --------------
@@ -56,6 +55,25 @@ const postImgWrap = document.querySelector(".post-img-wrap");
 const wraperPostInf = document.querySelector(".wraper-post-inf");
 const controlNext = document.querySelector(".control-next button");
 const controlPrev = document.querySelector(".control-prev");
+
+
+// const avatar = document.querySelector(".img-tour");
+// console.log(avatar);
+// const avatarInputFile = document.querySelector('.drop-input')
+// console.log(avatarInputFile);
+// avatarInputFile.onchange = (e) => {
+//   const formdata = new FormData()
+//   formdata.append('directory', 'avatar')
+//   formdata.append('file', e.target.files[0])
+//   fetch('http://localhost:3000/upload', {
+//     method: 'post',
+//     body: formdata
+//   })
+//     .then(res => res.json())
+//     .then(data => {
+//       avatar.src = data.data.fileUrl
+//     })
+// }
 
 controlNext.onclick = function () {
   postImgWrap.style.display = "none";
@@ -104,14 +122,8 @@ const renderSchedules = () =>
       <i data-id="${schedule.id}" class="fa-solid fa-trash remove-schedule"></i>
     </div>
     <div class="post-control-input">
-      <textarea
-        data-id="${schedule.id}"
-        data-type="description"
-        cols="30"
-        rows="10"
-        placeholder="Mô tả nội dung chuyến đi..."
-        class="schedule-description"
-      >${schedule.desc}</textarea>
+    <textarea data-id="${schedule.id}" data-type="description" cols="30" rows="10"
+    placeholder="Mô tả nội dung chuyến đi..." class="schedule-description"></textarea>
     </div>
   </div>
 </div>`;
@@ -232,7 +244,7 @@ postSchedualAdd.onclick = () => {
       const id = input.dataset.id;
       schedules = schedules.map((schedule) =>
         schedule.id === id ? { ...schedule, desc: e.target.value } : schedule
-      );  
+      );
       console.log(schedules);
     };
   });
@@ -256,26 +268,49 @@ chooseFiles.onclick = function () {
   dropInput.click();
 };
 
+const dataShow = document.querySelector(".drop-input");
+const avatarShow = document.querySelector(".img_listTour");
+// const avatarInputFile = document.querySelector('.drop-input')
+console.log(avatarShow);
+var aaaa = document.querySelectorAll(".img_listTour")
+
 let countImages = [];
 let objectURL = [];
 var a = [];
 dropInput.onchange = function (e) {
-  files = e.target.files;
-  for (const file of files) {
-    countImages = [...countImages, URL.createObjectURL(file)];
+  var listImg = e.target.files;
+  for(var i=0 ; i<listImg.length ; i++){
+    const formdata = new FormData()
+    formdata.append('directory', 'avatarShow')
+    console.log(listImg[i]);
+    formdata.append('file',listImg[i])
+    fetch('http://localhost:3000/upload', {
+      method: 'post',
+      body: formdata
+    })
+      .then(res => res.json())
+      .then(data => {
+          countImages.push(data.data.fileUrl) 
+          files = e.target.files;
+    // countImages = [...countImages];
+    // console.log(countImages);
+    var index = 0;
     const renderUI = countImages.map((item, index) => {
+      console.log(item);
       return `<div class="list-images" data-remove="${index}" onclick="handleDelete(${index})">
     <img src="${item}" alt="">
     <i class="fa-solid fa-xmark"></i>
     </div>`;
     });
     showImages.innerHTML = renderUI.join("");
-  }
+    if (countImages.length > 0) {
+      showImages.style.display = "flex";
+      postImages.style.alignItems = "start";
+    }
+      })
+    }
+ 
 
-  if (countImages.length > 0) {
-    showImages.style.display = "flex";
-    postImages.style.alignItems = "start";
-  }
 };
 
 function handleDelete(id) {
@@ -387,7 +422,7 @@ function checkNumberPeople(e) {
     document.querySelector(
       `.${[...e.target.classList].join(".")} ~ p`
     ).innerText = `Số người không hợp lệ`;
-  } else if(peopleValue > 100) {
+  } else if (peopleValue > 100) {
     e.target.classList.add("error");
     document.querySelector(
       `.${[...e.target.classList].join(".")} ~ p`
@@ -406,3 +441,32 @@ fromDate.onchange = (e) => validateDateFrom(e);
 toDate.onchange = (e) => validateDateTo(e);
 cost.onchange = (e) => checkCost(e)
 numberPeople.onchange = (e) => checkNumberPeople(e)
+
+
+// const dataShow = document.querySelector(".drop-input");
+// const avatarShow = document.querySelector(".img_listTour");
+// // const avatarInputFile = document.querySelector('.drop-input')
+// console.log(avatarShow);
+// var aaaa = document.querySelectorAll(".img_listTour")
+// dataShow.onchange = (e) => {
+//   var listImg = e.target.files;
+//   for(var i=0 ; i<listImg.length ; i++){
+//     const formdata = new FormData()
+//     formdata.append('directory', 'avatarShow')
+//     console.log(listImg[i]);
+//     formdata.append('file',listImg[i])
+//     fetch('http://localhost:3000/upload', {
+//       method: 'post',
+//       body: formdata
+//     })
+//       .then(res => res.json())
+//       .then(data => {
+//         for(var i=0 ; i<listImg.length ; i++){
+//           aaaa[i].src = data.data.fileUrl;
+//           countImages.push(data.data.fileUrl)
+//         }
+//         console.log();
+//       })
+      
+//     }console.log(formdata); 
+//   }

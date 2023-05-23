@@ -783,3 +783,10 @@ section.card:first-child .blog-post img {
     transform: translatey(0px);
   }
 } */
+
+.find-bottom-name {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+ -webkit-box-orient: vertical;
+ overflow: hidden;
+}
