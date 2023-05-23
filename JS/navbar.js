@@ -98,6 +98,122 @@
     },
   });
 
+  socket.emit("load", localStorage.getItem("id"));
+  socket.on("load", (data) => {
+    notificationContainer.innerHTML += data
+      .map((item) => {
+        if (item.type === "verify") {
+          const id = item.content.substring(
+            item.content.indexOf("{") + 1,
+            item.content.length - 1
+          );
+          return `
+          <div class="notification-item" data-notiid="${id}">
+            <div class="wrap-show-content">
+              <div class="show-avatar">
+                  <img src="IMAGES/slides/slide-1.jpg" alt="">
+              </div>
+              <div class="show-content">
+                  <div class="show-content-top">
+                      <p>${item.content.substring(
+                        0,
+                        item.content.indexOf("{")
+                      )}</p>
+                      <div class="show-content-top-btn">
+                          <button data-verifyid="${id}" data-notiid="${
+            item.id
+          }" class="confirm">Xác nhận</button>
+                          <button data-verifyid="${id}" data-notiid="${
+            item.id
+          } class="denied">Từ chối</button>
+                      </div>
+                  </div>
+              </div>
+            </div>
+          </div>`;
+        }
+        if (item.type === "none") {
+          return `
+          <div class="notification-item-noaction" data-notiid="${item.id}">
+              <div class="wrap-show-content">
+              <div class="show-avatar">
+                  <img src="IMAGES/slides/slide-1.jpg" alt="">
+              </div>
+              <div class="show-content">
+                  <div class="show-content-top">
+                      <p>${item.content}</p>
+                  </div>
+              </div>
+            </div>
+          </div>`;
+        }
+      })
+      .join("");
+    const acceptButtons =
+      notificationContainer.querySelectorAll("button.confirm");
+    const deniedButtons =
+      notificationContainer.querySelectorAll("button.denied");
+    const notificationNoActions = notificationContainer.querySelectorAll(
+      ".notification-item-noaction"
+    );
+
+    acceptButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const id = button.dataset.verifyid;
+        const noti = button.dataset.notiid;
+        verfiyJoinRoom(Number(id), true);
+        fetch(`http://localhost:3002/api/client/notifications`, {
+          method: "put",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: noti,
+            value: true,
+          }),
+        })
+          .then((res) => res.json())
+          .then((data) => console.log(data));
+      });
+    });
+    deniedButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const id = button.dataset.verifyid;
+        const noti = button.dataset.notiid;
+        verfiyJoinRoom(Number(id), false);
+        fetch(`http://localhost:3002/api/client/notifications`, {
+          method: "put",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: noti,
+            value: true,
+          }),
+        })
+          .then((res) => res.json())
+          .then((data) => console.log(data));
+      });
+    });
+    notificationNoActions.forEach((item) => {
+      item.addEventListener("click", () => {
+        const noti = item.dataset.notiid;
+        fetch(`http://localhost:3002/api/client/notifications`, {
+          method: "put",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: noti,
+            value: true,
+          }),
+        })
+          .then((res) => res.json())
+          .then((data) => notificationContainer.removeChild(item));
+      });
+    });
+  });
+
   socket.on("verify-join-room", ({ message, room }) => {
     const notification = `<div class="wrap-show-content">
           <div class="show-avatar">

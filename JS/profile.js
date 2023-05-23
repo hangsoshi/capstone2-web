@@ -22,6 +22,7 @@ const inputAbout = $(".form-bio");
 const inputHobbies = $(".input-hobbies");
 const inputGender = $("#input-gender");
 var login = JSON.parse(window.localStorage.getItem("login"));
+console.log(login);
 const avatar = document.querySelector(".avatar_user_header");
 const avatarInputFile = document.querySelector('.avatar-input-file')
 
@@ -422,9 +423,7 @@ const createToast = (id, message) => {
 const groups = document.querySelector(".myGroups .card-wrapper");
 
 fetch(
-    `http://localhost:8000/api/personal/room/roomUserJoin?user_id=${localStorage.getItem(
-        "id"
-    )}`
+    `http://localhost:8000/api/personal/room/roomUserJoin?user_id=${login.user_info.user_profile[0].user_id}`
 )
     .then((res) => res.json())
     .then((data) => {

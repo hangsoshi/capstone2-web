@@ -1,60 +1,10 @@
-const headerNavForm = document.querySelector(".header-nav-form");
-const headerForm = document.querySelector(".header-form");
-const headerFormLogin = headerNavForm.querySelector(".header-form-login");
-const headerFormLogout = document.querySelector(".header-form-logout");
-const login = JSON.parse(window.localStorage.getItem("login"));
-console.log(login);
 const pageDetail = window.localStorage.getItem("detail-tour");
-const z = document.querySelector.bind(document);
-const zz = document.querySelectorAll.bind(document);
-
-
-if (login) {
-    headerNavForm.onclick = function () {
-        if (headerForm.style.display === "none") {
-            headerForm.style.display = "block";
-            headerFormLogout.style.display = "block";
-            headerFormLogin.style.display = "none";
-        } else {
-            headerForm.style.display = "none";
-            headerFormLogout.style.display = "none";
-        }
-    };
-} else {
-    headerNavForm.onclick = function () {
-        if (headerForm.style.display === "none") {
-            headerForm.style.display = "block";
-            headerFormLogin.style.display = "block";
-            headerFormLogout.style.display = "none";
-        } else {
-            headerForm.style.display = "none";
-            headerFormLogin.style.display = "none";
-        }
-    };
-}
-const names = z('.header-name1');
-const avatarUser = z(".header-form-avatar #avatar_user");
-if (login) {
-    names.innerText = login.user_info.name;
-    avatarUser.src = login.user_info.user_profile[0].avatar;
-}
-
-
-//   ----------------------------------------------------------------------
-const logout = document.getElementsByClassName('form-logout');
-logout.onclick = () => {
-    alert('Bạn chắc chắn muốn thoát ?')
-    window.localStorage.clear();
-    window.location.reload(true);
-    window.location.href = 'http://localhost:3000/login-register.html';
-}
-// ---------------------------------------
 
 const apiPersonTourDetail = "http://127.0.0.1:8000/api/ts/tour/";
-var htmlPersonTour = document.querySelector('.detail-tours-container');
+var htmlPersonTour = document.querySelector(".detail-tours-container");
 
 function RenderTourDetail(obj) {
-    const htmls = `
+  const htmls = `
     <div class="detail-tour-image">
     <div class="detail-tour-header">
         <div class="detail-tour-title">
@@ -104,52 +54,46 @@ function RenderTourDetail(obj) {
             </li>
         </div>
     </ul>
-    <div style="flex: 1; position: relative;">
-        <button style="position: absolute; right: 0; font-size: 16px; top: 50%; transform: translateY(-50%); padding: 14px 20px; border-radius: 20px; border: none; background-color: #03a9f4; color: #fff; cursor: pointer;">THANH TOÁN</button>
-    </div>
 </div>
   `;
-    //   console.log(htmls);
-    return htmlPersonTour.innerHTML = htmls;
+  //   console.log(htmls);
+  return (htmlPersonTour.innerHTML = htmls);
 }
 
 fetch("http://127.0.0.1:8000/api/ts/tour/" + pageDetail)
-    .then(res => res.json())
-    .then(
-        data => {
-            console.log(data.data);
-            window.localStorage.setItem("data", JSON.stringify(data));
-            const dataa = window.localStorage.getItem("data");
-            RenderTourDetail(data.data);
-        })
+  .then((res) => res.json())
+  .then((data) => {
+    console.log(data.data);
+    window.localStorage.setItem("data", JSON.stringify(data));
+    const dataa = window.localStorage.getItem("data");
+    RenderTourDetail(data.data);
+  });
 const dataa = window.localStorage.getItem("data");
 
-
-
 $(".open").click(function () {
-    var container = $(this).parents(".topic");
-    var answer = container.find(".answer");
-    var trigger = container.find(".faq-t");
+  var container = $(this).parents(".topic");
+  var answer = container.find(".answer");
+  var trigger = container.find(".faq-t");
 
-    answer.slideToggle(200);
+  answer.slideToggle(200);
 
-    if (trigger.hasClass("faq-o")) {
-        trigger.removeClass("faq-o");
-    } else {
-        trigger.addClass("faq-o");
-    }
+  if (trigger.hasClass("faq-o")) {
+    trigger.removeClass("faq-o");
+  } else {
+    trigger.addClass("faq-o");
+  }
 
-    if (container.hasClass("expanded")) {
-        container.removeClass("expanded");
-    } else {
-        container.addClass("expanded");
-    }
+  if (container.hasClass("expanded")) {
+    container.removeClass("expanded");
+  } else {
+    container.addClass("expanded");
+  }
 });
 
 function handlePayment(price) {
-    console.log(price);
-    window.localStorage.setItem("priceTour",price);
-    console.log(pageDetail);
-    console.log(login.user_info.user_profile[0].user_id);
-    window.location.href = "http://localhost:3000/payment.html";
+  console.log(price);
+  window.localStorage.setItem("priceTour", price);
+  console.log(pageDetail);
+  // console.log(login.user_info.user_profile[0].user_id);
+  window.location.href = "http://localhost:3000/payment.html";
 }

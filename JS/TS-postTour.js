@@ -6,7 +6,7 @@ let schedules = [];
 createTourButton.onclick = () => {
   const request = {
     name: "",
-    ts_id: Number(localStorage.getItem("id")),
+    ts_id: Number(login.user_info.user_profile[0].id),
     description: "",
     address: "",
     from_date: "",
@@ -25,7 +25,7 @@ createTourButton.onclick = () => {
     }
   });
   fetch("http://127.0.0.1:8000/api/ts/tour/create", {
-    method: "post",
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
@@ -45,9 +45,9 @@ createTourButton.onclick = () => {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
+      createToast("success")
     })
-    .catch((error) => console.log(error));
+    .catch((error) => createToast("error"));
 };
 
 // --------- next- prev --------------

@@ -27,9 +27,10 @@ const createTourState = {
 console.log(localStorage.getItem("id"));
 
 fetch(
-  "http://127.0.0.1:8000/api/personal/room/roomOfUser?user_id=" + localStorage.getItem("id"))
+  "http://127.0.0.1:8000/api/personal/room/roomOfUser?user_id=" + `${login.user_info.user_profile[0].user_id}`)
   .then((res) => res.json())
   .then((data) => {
+    console.log(data);
     rooms.innerHTML = `<option value="" selected disabled hidden>Chọn nhóm</option>`;
     rooms.innerHTML += data
       .map(
@@ -272,7 +273,7 @@ btnCreateTrip.onclick = () => {
       },
       body: JSON.stringify({
         ...createTourState,
-        owner_id: Number(localStorage.getItem('id'))
+        owner_id: Number(login.user_info.user_profile[0].user_id)
       }),
     })
       .then((res) => res.json())
@@ -290,7 +291,7 @@ btnCreateTrip.onclick = () => {
       },
       body: JSON.stringify({
         ...createTourState,
-        owner_id: Number(localStorage.getItem("id")),
+        owner_id: Number(login.user_info.user_profile[0].user_id),
       }),
     })
       .then((response) => response.json())
