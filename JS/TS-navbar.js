@@ -1,7 +1,7 @@
 (() => {
   const navbar = () => {
     return `<header class="header">
-    <div class="container" style="background-color: rgba(2, 127, 255, 1); padding: 10px 0">
+    <div class="container" style="background-color: rgba(2, 127, 255, 1);background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(0,184,185,1) 100%);; padding: 10px 0">
         <a href="home.html" class="logo"> <img src="IMAGES/logo/logo-removebg-preview.png" alt=""> </a>
   
         <ul class="nav-menu">

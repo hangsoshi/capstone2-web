@@ -39,11 +39,11 @@ button {
   padding: 8px 0;
 }
 
-.detail-header > a {
+.detail-header>a {
   width: 16%;
 }
 
-.detail-header > a > img {
+.detail-header>a>img {
   width: 70%;
   object-fit: contain;
   display: flex;
@@ -51,7 +51,7 @@ button {
   align-items: center;
 }
 
-.detail-header > ul {
+.detail-header>ul {
   width: 65%;
   justify-content: space-evenly;
   margin-left: -140px;
@@ -68,7 +68,7 @@ button {
   font-size: 1.06rem;
 }
 
-.detail-header > img {
+.detail-header>img {
   width: 50px;
   height: 50px;
 }
@@ -132,7 +132,7 @@ button {
   z-index: -1;
 }
 
-.header-form-login > ul > li > a {
+.header-form-login>ul>li>a {
   font-weight: normal;
   line-height: 10px;
   color: #333;
@@ -382,7 +382,8 @@ button {
   justify-content: space-between;
 }
 
-.post-img-control button, .control-next button {
+.post-img-control button,
+.control-next button {
   padding: 14px 20px;
   font-size: 16px;
   background-color: rgba(2, 127, 255, 1);
@@ -492,7 +493,8 @@ button {
   background-color: #2f4e84;
 }
 
-.post-control-input input, .post-control-input textarea {
+.post-control-input input,
+.post-control-input textarea {
   width: 100%;
   padding: 10px;
   font-size: 15px;
@@ -580,12 +582,14 @@ button {
   fill: #2f4e84;
 }
 
-.destination-schedules {
+/* .destination-schedules {
   position: absolute;
   z-index: 99999;
   list-style: none;
   width: 100%;
-}
+  height: 300px;
+  overflow-y: scroll;
+} */
 
 .destination-schedule {
   margin-top: 2px;

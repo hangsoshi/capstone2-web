@@ -188,7 +188,6 @@ function getTourUser() {
                 <p><b>Ngày xuất phát:</b> ${tour.from_date}</p>
             </div>
             <div class="popular-container-right">
-                <button class="btn" id="btn1">JOIN</button>
             </div>
         </div>
     </div>      

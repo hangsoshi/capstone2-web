@@ -15,11 +15,12 @@ function getTours(api) {
             console.log(tours);
             const statusTour = 'Đang đi';
             htmls = tours.map((tour, index) => {
+                console.log(tour.images[0]?.image_url);
                 return `
         <tr class="list-residence">
                         <td class="list-content list-info data-id="${index}">
                             <div class="list-info-img">
-                                <img src="" alt="">
+                                <img src =${tour.images[0]?.image_url}>
                             </div>
                             <div class="list-info-content">
                                 <h3>${tour.name}</h3>

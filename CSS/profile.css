@@ -788,9 +788,12 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 30px;
+  height: 400px;
+  overflow-y: scroll;
 }
 
 .card {
+  height: 266px;
   width: 22%;
   border-radius: 25px;
   background: #fff;

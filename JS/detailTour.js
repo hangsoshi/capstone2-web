@@ -3,6 +3,7 @@ const headerForm = document.querySelector(".header-form");
 const headerFormLogin = headerNavForm.querySelector(".header-form-login");
 const headerFormLogout = document.querySelector(".header-form-logout");
 const login = JSON.parse(window.localStorage.getItem("login"));
+console.log(login);
 const pageDetail = window.localStorage.getItem("detail-tour");
 const z = document.querySelector.bind(document);
 const zz = document.querySelectorAll.bind(document);

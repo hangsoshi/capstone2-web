@@ -21,7 +21,7 @@ const inputEmail = $(".input-email");
 const inputAbout = $(".form-bio");
 const inputHobbies = $(".input-hobbies");
 const inputGender = $("#input-gender");
-const login = JSON.parse(window.localStorage.getItem("login"));
+var login = JSON.parse(window.localStorage.getItem("login"));
 const avatar = document.querySelector(".avatar_user_header");
 const avatarInputFile = document.querySelector('.avatar-input-file')
 
@@ -62,6 +62,8 @@ var sliderFind = $(".swiper-wrapper");
 // const api = "http://127.0.0.1:8000/api/personal/tour/all/" + login.user_info.user_profile[0].user_id;
 let htmls = "";
 
+// ------------------------- render list tour of User ---------------------------------------
+
 function renderListTour() {
     fetch(
         "http://127.0.0.1:8000/api/personal/tour/all/" +
@@ -72,6 +74,7 @@ function renderListTour() {
         })
         .then((data) => {
             const tours = data.all_tour;
+            console.log(tours);
             window.localStorage.setItem(
                 "dataPersonTour",
                 JSON.stringify(data.all_tour)
@@ -91,14 +94,12 @@ function renderListTour() {
                 <div class="blog-slider__item swiper-slide data-id='${tour.id}'">
                 
                 <div class="blog-slider__img">
-
-                    <img src="https://images.unsplash.com/photo-1512633017083-67231aba710d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=765&q=80"
-                        alt="">
+                    <img class="imgTour" src="${tour.image}" alt="">
                 </div>
                 <div class="blog-slider__content">
                     <div class="blog-slider__title">${tour.name}</div>
                     <div class="blog-slider__trip">
-                        <p><b>Từ:</b> ${tour.from_where} - <b>Đến:</b> ${tour.to_where}</p>
+                        <p><b>Đến:</b> ${tour.to_where}</p>
                         <p class="tao-them">${tour.from_date}</p>
                     </div>
                     <div class="blog-slider__host"><b>Người tạo: </b>${login.user_info.name}</div>
@@ -243,9 +244,15 @@ function getInfoUser() {
         .then((response) => response.json())
         .then((data) => {
             if (data.status === 200) {
-                localStorage.setItem('login', data.user_info)
+                console.log(data.user_info);
+                window.localStorage.setItem("login", JSON.stringify(data));
+                var datas = JSON.parse(window.localStorage.getItem("login"));
+                console.log(datas);
                 createToast("success");
-                renderUserInfo(user_info);
+                setTimeout(() => {
+                    window.location.reload();
+                    renderUserInfo(datas);
+                }, 5000)
             }
         })
         .catch((error) => alert(error));
@@ -268,21 +275,18 @@ function renderUserInfo(obj) {
     <form class="form-profile">
       <div class="form-profile-info">
           <label for="">Họ và tên</label>
-          <div class="form-profile-content user_name">${
-        obj.user_info.name
-    }</div>
+          <div class="form-profile-content user_name">${obj.user_info.name
+        }</div>
       </div>
       <div class="form-profile-info">
           <label for="">Số điện thoại</label>
-          <div class="form-profile-conten user_phone">${
-        obj.user_info.phone_number
-    }</div>
+          <div class="form-profile-conten user_phone">${obj.user_info.phone_number
+        }</div>
       </div>
       <div class="form-profile-info">
           <label for="">Email</label>
-          <div class="form-profile-content user_email">${
-        obj.user_info.email
-    }</div>
+          <div class="form-profile-content user_email">${obj.user_info.email
+        }</div>
       </div>
       <div class="form-profile-info">
           <label for="">Giới tính/ Tuổi</label>
@@ -379,11 +383,11 @@ const toastDetails = {
     timer: 5000,
     success: {
         icon: "fa-circle-check",
-        text: "Success: Delete tour success...",
+        text: "Success: update profile success...",
     },
     error: {
         icon: "fa-circle-xmark",
-        text: "Error: Delete tour error....",
+        text: "Error: update profile error....",
     },
     warning: {
         icon: "fa-triangle-exclamation",
@@ -401,7 +405,7 @@ const removeToast = (toast) => {
 };
 const createToast = (id, message) => {
     // Getting the icon and text for the toast based on the id passed
-    const {icon, text} = toastDetails[id];
+    const { icon, text } = toastDetails[id];
     const toast = document.createElement("li"); // Creating a new 'li' element for the toast
     toast.className = `toast ${id}`; // Setting the classes for the toast
     // Setting the inner HTML for the toast
@@ -414,3 +418,33 @@ const createToast = (id, message) => {
     // Setting a timeout to remove the toast after the specified duration
     toast.timeoutId = setTimeout(() => removeToast(toast), toastDetails.timer);
 };
+
+const groups = document.querySelector(".myGroups .card-wrapper");
+
+fetch(
+    `http://localhost:8000/api/personal/room/roomUserJoin?user_id=${localStorage.getItem(
+        "id"
+    )}`
+)
+    .then((res) => res.json())
+    .then((data) => {
+        console.log(data);
+        const htmls = data.map(
+            (item) => `<div class="card">
+      <div class="image-content">
+          <span class="overlay"></span>
+          <div class="card-image">
+              <img src="${item.image || "IMAGES/slides/slide-5.png"
+                }" alt="" class="card-img">
+          </div>
+      </div>
+  
+      <div class="card-content">
+          <h3 class="name-group">${item.name}</h3>
+          <p>${item.members} thành viên</p>
+          <p>Host: ${item.host_name}</p>
+      </div>
+  </div>`
+        );
+        groups.innerHTML += htmls.join("");
+    });
