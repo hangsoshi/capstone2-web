@@ -76,8 +76,9 @@ socket.on("rooms", (rooms) => {
   targetMessage = { ...rooms[0], t: "room" };
   renderMessages(targetMessage.id);
   targetMessageInfo.querySelector("span").innerText = targetMessage.name;
-  contacts.innerHTML = myRooms.map(
-    (room) => `<li class="active">
+  contacts.innerHTML = myRooms
+    .map(
+      (room) => `<li class="active">
   <div class="room d-flex bd-highlight" data-roomId="${room.id}">
       <div class="img_cont">
           <img src=${
@@ -93,7 +94,8 @@ socket.on("rooms", (rooms) => {
       </div>
   </div>
 </li>`
-  ).join("");
+    )
+    .join("");
   const roomsDom = document.querySelectorAll(".room");
   roomsDom.forEach((room) => {
     room.onclick = () => {
@@ -130,7 +132,6 @@ const renderMessages = async (id) => {
     .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
   messages.innerHTML = mess
     .map((message) => {
-      console.log(message);
       if (message.to_id === currentUser) {
         return `<div class="d-flex justify-content-start mb-4">
       <div class="img_cont_msg">
