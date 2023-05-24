@@ -17,15 +17,11 @@ function RenderTourDetail(obj) {
     </div>
     <div class="detail-img">
         <div class="detail-img-left">
-            <img src="../IMAGES/slides/slide-0.png" alt="">
         </div>
         <div class="detail-img-right">
-            <div class="detail-img-right-top">
-                <img src="../IMAGES/slides/slide-0.png" alt="">
-                <img src="../IMAGES/slides/slide-0.png" alt="">
+            <div class="detail-img-right-top" style="overflow: scroll">
             </div>
-            <div class="detail-img-right-bottom">
-                <img src="../IMAGES/slides/slide-0.png" alt="">
+            <div class="detail-img-right-bottom" style="overflow: scroll">
             </div>
         </div>
     </div>
@@ -55,6 +51,16 @@ function RenderTourDetail(obj) {
         </div>
     </ul>
 </div>
+
+<div class="detail-tour-schedual">
+  <div class="title-schedual">
+    <h1>Lịch trình</h1>
+    <h1>Lịch trình</h1>
+  </div>
+  <div class="detail-schedual-content">
+  
+  </div>
+</div>
   `;
   //   console.log(htmls);
   return (htmlPersonTour.innerHTML = htmls);
@@ -63,10 +69,51 @@ function RenderTourDetail(obj) {
 fetch("http://127.0.0.1:8000/api/ts/tour/" + pageDetail)
   .then((res) => res.json())
   .then((data) => {
-    console.log(data.data);
     window.localStorage.setItem("data", JSON.stringify(data));
-    const dataa = window.localStorage.getItem("data");
     RenderTourDetail(data.data);
+    const scheduleDOM = document.querySelector(".detail-schedual-content");
+    const scheduleRender = data.data.schedule
+      .map(
+        (item, index) => `
+    <div class="day-content" data-value="${item.id}">
+            <p>
+              <b>Ngày ${index + 1}: ${item.name}</b>
+              <br />
+              ${item.description}
+            </p>
+          </div>`
+      )
+      .join("");
+    scheduleDOM.innerHTML = scheduleRender;
+    const imageDOM = document.querySelector(".detail-img");
+    const imageDOMLeft = imageDOM.querySelector(".detail-img-left");
+    const imageDOMRightTop = imageDOM.querySelector(
+      ".detail-img-right .detail-img-right-top"
+    );
+    const imageDOMRightBottom = imageDOM.querySelector(
+      ".detail-img-right .detail-img-right-bottom"
+    );
+    const images = data.data.images;
+    images.forEach((image, index) => {
+      console.log(image, index);
+      if (index === 0) {
+        imageDOMLeft.innerHTML = `<img src=${image.image_url.replaceAll(
+          '""',
+          ""
+        )}>`;
+      }
+      if (index % 2 === 0) {
+        imageDOMRightTop.innerHTML += `<img src=${image.image_url.replaceAll(
+          '""',
+          ""
+        )}>`;
+      } else {
+        imageDOMRightBottom.innerHTML += `<img src=${image.image_url.replaceAll(
+          '""',
+          ""
+        )}>`;
+      }
+    });
   });
 const dataa = window.localStorage.getItem("data");
 
