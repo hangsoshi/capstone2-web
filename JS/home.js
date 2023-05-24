@@ -11,6 +11,7 @@ const next1 = document.getElementsByClassName(" slick-next");
 // ---------------------------------------------------
 
 // const ss = document.querySelector.bind(document);
+const locationSearching = document.querySelectorAll(".location-searching");
 var sliderFind = document.getElementsByClassName("slides");
 const api = "http://127.0.0.1:8000/api/ts/tour";
 
@@ -71,3 +72,15 @@ function getTours() {
 }
 
 getTours();
+
+locationSearching.forEach((loca) => {
+  loca.addEventListener("click", () => {
+    const value = loca.dataset.value;
+    fetch(`http://localhost:8000/api/search?place=${value}`)
+      .then((res) => res.json())
+      .then((data) => {
+        localStorage.setItem("search-tour", JSON.stringify(data));
+        location.href = "bookTour.html";
+      });
+  });
+});

@@ -299,6 +299,12 @@ header ul li a {
   display: flex;
   justify-content: space-between;
   text-align: end;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.detail-img-right-top::-webkit-scrollbar {
+  display: none;
 }
 
 .detail-img-right-top img {
@@ -309,6 +315,12 @@ header ul li a {
 .detail-img-right-bottom {
   height: 250px;
   margin-top: 10px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.detail-img-right-bottom::-webkit-scrollbar {
+  display: none;
 }
 
 .detail-img-right-bottom img {
