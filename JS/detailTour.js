@@ -117,27 +117,31 @@ fetch("http://127.0.0.1:8000/api/ts/tour/" + pageDetail)
 
     const schedules = data.data.schedule;
     const mapDOM = document.querySelector("#map");
-    const map = L.map(mapDOM).setView(
-      [data.data.schedule[0].lat, data.data.schedule[0].lon],
-      5
-    );
-    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      maxZoom: 10,
-      attribution:
-        '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    }).addTo(map);
-    schedules.forEach((item) => {
-      L.marker([
-        Number(item.lat.replaceAll(",", ".")),
-        Number(item.lon.replaceAll(",", ".")),
-      ]).addTo(map);
-    });
-    const polyline = L.polyline(
-      schedules.reduce((prev, next) => {
-        return [...prev, [next.lat, next.lon]];
-      }, [])
-    ).addTo(map);
-    map.fitBounds(polyline.getBounds());
+    if (schedules.length > 0) {
+      const map = L.map(mapDOM).setView(
+        [data.data.schedule[0].lat, data.data.schedule[0].lon],
+        5
+      );
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 10,
+        attribution:
+          '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      }).addTo(map);
+      schedules.forEach((item) => {
+        L.marker([
+          Number(item.lat.replaceAll(",", ".")),
+          Number(item.lon.replaceAll(",", ".")),
+        ]).addTo(map);
+      });
+      const polyline = L.polyline(
+        schedules.reduce((prev, next) => {
+          return [...prev, [next.lat, next.lon]];
+        }, [])
+      ).addTo(map);
+      map.fitBounds(polyline.getBounds());
+    } else {
+      mapDOM.style.display = "none";
+    }
   });
 const dataa = window.localStorage.getItem("data");
 
