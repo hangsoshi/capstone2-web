@@ -61,6 +61,7 @@ function RenderTourDetail(obj) {
   
   </div>
 </div>
+<div id="map" style="height: 500px; position: relative; z-index: 10"></div>
   `;
   //   console.log(htmls);
   return (htmlPersonTour.innerHTML = htmls);
@@ -95,7 +96,6 @@ fetch("http://127.0.0.1:8000/api/ts/tour/" + pageDetail)
     );
     const images = data.data.images;
     images.forEach((image, index) => {
-      console.log(image, index);
       if (index === 0) {
         imageDOMLeft.innerHTML = `<img src=${image.image_url.replaceAll(
           '""',
@@ -114,6 +114,30 @@ fetch("http://127.0.0.1:8000/api/ts/tour/" + pageDetail)
         )}>`;
       }
     });
+
+    const schedules = data.data.schedule;
+    const mapDOM = document.querySelector("#map");
+    const map = L.map(mapDOM).setView(
+      [data.data.schedule[0].lat, data.data.schedule[0].lon],
+      5
+    );
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 10,
+      attribution:
+        '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    }).addTo(map);
+    schedules.forEach((item) => {
+      L.marker([
+        Number(item.lat.replaceAll(",", ".")),
+        Number(item.lon.replaceAll(",", ".")),
+      ]).addTo(map);
+    });
+    const polyline = L.polyline(
+      schedules.reduce((prev, next) => {
+        return [...prev, [next.lat, next.lon]];
+      }, [])
+    ).addTo(map);
+    map.fitBounds(polyline.getBounds());
   });
 const dataa = window.localStorage.getItem("data");
 
