@@ -23,9 +23,11 @@ function getTours() {
     })
     .then((data) => {
       const tours = data;
-      htmls = tours.map((tour) => {
-        return `
-          <div class="find-container" data-id="${tour.id}" style="cursor: pointer">
+      htmls = tours
+        .map((tour) => ({ ...tour, type: "ts" }))
+        .map((tour) => {
+          return `
+          <div class="find-container" data-type="${tour.type}" data-id="${tour.id}" style="cursor: pointer">
                 <div class="find-container-top">
                     <img src="../IMAGES/slides/slide-5.png" alt="">
                 </div>
@@ -46,7 +48,7 @@ function getTours() {
                 </div>
             </div>
       `;
-      });
+        });
       sliderFind[0].innerHTML = htmls.join("");
       $(".slides").slick({
         slidesToShow: 4,
@@ -64,8 +66,13 @@ function getTours() {
       findContainers.forEach((item) => {
         item.onclick = () => {
           const id = item.dataset.id;
-          localStorage.setItem("page-detail", id);
-          location.href = "detailFind.html";
+          const type = item.dataset.type;
+          if (type === "ts") {
+            // localStorage.setItem("page-detail", id);
+            localStorage.setItem("detail-tour", id);
+            // location.href = "detailFind.html";
+            location.href = "detailTour.html";
+          }
         };
       });
     });

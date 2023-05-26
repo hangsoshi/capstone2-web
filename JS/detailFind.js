@@ -150,7 +150,6 @@ function RenderTourDetail(obj) {
     Number(target.lat.replaceAll(",", ".")),
     Number(target.lon.replaceAll(",", ".")),
   ]).addTo(map);
-  console.log(target.member_list);
   memberContainer.innerHTML = target.member_list
     .map(
       (member) => `<div class="detail-member-wraper">
