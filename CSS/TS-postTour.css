@@ -586,7 +586,7 @@ button {
   position: absolute;
   list-style: none;
   width: 100%;
-  height: 150px;
+  max-height: 150px;
   overflow-y: scroll;
 }
 
