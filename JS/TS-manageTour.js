@@ -13,9 +13,16 @@ function getTours(api) {
         .then(data => {
             const tours = data.all_tour;
             console.log(tours);
-            const statusTour = 'Đang đi';
+            var statusTour = '';
             htmls = tours.map((tour, index) => {
-                console.log(tour.images[0]?.image_url);
+                const toDate = new Date(tour.to_date);
+                const frommDate = new Date(tour.from_date);
+                const nowDate = new Date();
+                if(nowDate < frommDate){
+                    statusTour = 'Chưa đi'
+                } else if (nowDate > frommDate) {
+                    statusTour = 'Đã đi'
+                }
                 return `
         <tr class="list-residence">
                         <td class="list-content list-info data-id="${index}">
@@ -173,7 +180,6 @@ function getSearchTours(api) {
         })
         .then(data => {
             const tours = data.tours;
-            console.log(tours);
             const statusTour = 'Đang đi';
             htmls = tours.map((tour, index) => {
                 return `

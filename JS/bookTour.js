@@ -127,7 +127,7 @@ const renderPSTour = (tours) => {
         </div>
         <div class="popular-container-center">
             <h1 class="ps-tour-name" data-id="${tour.id}">${tour.name}</h1>
-            <p><b>Thành viên:</b> ${tour.room .member}</p>
+            <p><b>Thành viên:</b> ${tour.room.member}</p>
             <p><b>Từ:</b> ${tour.from_where} - <b>Đến:</b> ${tour.to_where}</p>
             <p><b>Ngày xuất phát:</b> ${tour.from_date}</p>
         </div>

@@ -25,13 +25,15 @@ html {
 }
 
 .msg_card_body {
-  overflow-y: auto;
+  overflow: hidden;
+  overflow-y: scroll;
+  height: 300px;
 }
 
 .card-header {
   border-radius: 15px 15px 0 0 !important;
   border-bottom: 0 !important;
-  background-color: rgba(0,0,0,.3);
+  background-color: rgba(0, 0, 0, .3);
 }
 
 .card-footer {
@@ -263,7 +265,7 @@ html {
   }
 }
 
-.acacaca{
+.acacaca {
   background: #1AAB8A;
   color: #fff;
   border: none;
@@ -275,31 +277,38 @@ html {
   transition: 800ms ease all;
   outline: none;
 }
-.acacaca:hover{
-  background:#fff;
-  color:#1AAB8A;
+
+.acacaca:hover {
+  background: #fff;
+  color: #1AAB8A;
 }
+
 .acacaca:focus {
-  border: none; 
+  border: none;
   outline: none;
 }
-.acacaca:before,.acacaca:after{
-  content:'';
-  position:absolute;
-  top:0;
-  right:0;
-  height:2px;
-  width:0;
+
+.acacaca:before,
+.acacaca:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 2px;
+  width: 0;
   background: #1AAB8A;
-  transition:400ms ease all;
+  transition: 400ms ease all;
 }
-.acacaca:after{
-  right:inherit;
-  top:inherit;
-  left:0;
-  bottom:0;
+
+.acacaca:after {
+  right: inherit;
+  top: inherit;
+  left: 0;
+  bottom: 0;
 }
-.acacaca:hover:before,.acacaca:hover:after{
-  width:100%;
-  transition:800ms ease all;
+
+.acacaca:hover:before,
+.acacaca:hover:after {
+  width: 100%;
+  transition: 800ms ease all;
 }

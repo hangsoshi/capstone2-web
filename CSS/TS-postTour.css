@@ -590,10 +590,6 @@ button {
   overflow-y: scroll;
 }
 
-.destination-schedules:focus {
-  display: none;
-}
-
 .destination-schedule {
   margin-top: 2px;
   border: 1px solid #777;

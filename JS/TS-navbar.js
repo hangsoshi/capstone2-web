@@ -9,7 +9,6 @@
             <li> <a href="TS-postTour.html" class="nav-link">Đăng tours</a> </li>
             <li> <a href="TS-managerTours.html" class="nav-link">Quản lý tours</a> </li>
             <li> <a href="TS-managerBooked.html" class="nav-link">Quản lý đặt tours</a> </li>
-            <li> <a href="login-register.html" onclick="transformUserPage()" class="nav-link">Trở thành người dùng</a> </li>
             <li><i class="fa-solid fa-bell"></i>
                 <div style="display: none;" class="container-notification">
                     <div class="wrap-notification">
@@ -64,7 +63,7 @@
                                 <i class="fa-regular fa-heart"></i>
                                 <span>Lịch sử chuyến đi</span>
                             </div>
-                            <div class="form-logout">Đăng xuất</div>
+                            <div onclick= "transformUserPage()" class="form-logout">Đăng xuất</div>
                         </div>
                     </div>
                 </div>
@@ -186,7 +185,7 @@
     alert("Bạn chắc chắn muốn thoát ?");
     window.localStorage.clear();
     window.location.reload(true);
-    window.location.href = "http://localhost:3000/TS-home.html";
+    window.location.href = "http://localhost:3000/home.html";
   };
 
   // --------- ẩn hiện thông báo----------

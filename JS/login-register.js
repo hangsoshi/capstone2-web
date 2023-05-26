@@ -18,88 +18,125 @@ loginButton1.addEventListener("click", () => {
   container.classList.remove("right-panel-active");
 });
 
+
+
+// ----------------------------------------------------------------------
+
+const controlList = document.querySelectorAll('.form-input')
+controlList.forEach((control) => {
+  control.onkeyup = (e) => {
+    switch (e.target.classList[1]) {
+      case 'nameUser': {
+        validateForm(e.target, ["required"]);
+        break;
+      }
+      case 'emailUser': {
+        validateForm(e.target, ["required", "email"]);
+        break;
+      }
+      case 'passwordUser': {
+        validateForm(e.target, ["required"]);
+        break;
+      }
+      case 'phoneUser': {
+        validateForm(e.target, ["required", "phone"]);
+        break;
+      }
+      default: break;
+    }
+  }
+})
+const phoneRegex =
+  /^\(?[0]{1}?([0-9]{2})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+const regexEmail =
+  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+const listError = ["required", "maxLength", "phone", "email", "emoji", "specialCharacter"]
+let valid;
+function validateForm(control, listError) {
+  let warning = [];
+  valid = listError.every((error) => {
+    if (error === 'required' && !control.value) {
+      warning.push('Không được để trống');
+      return false;
+    }
+    if (error === 'phone' && !phoneRegex.test(control.value)) {
+      warning.push('sdt không hợp lệ');
+      return false;
+    }
+    if (error === 'email' && !regexEmail.test(control.value)) {
+      warning.push('Email k hợp lệ');
+      return false;
+    }
+    return true;
+  })
+  document.querySelector(
+    `.${[...control.classList].join(".")} ~ small`
+  ).innerText = warning.join(', ');
+}
+
+// ----------------------------------------------------------------------
+
+const emailLogin = document.querySelector(".emailLogin");
+const passwordLogin = document.querySelector(".passwordLogin");
+
+
+var controlLists = document.querySelectorAll('.form-control')
+controlLists.forEach((control) => {
+  control.onkeyup = (e) => {
+    switch (e.target.classList[1]) {
+
+      case 'emailLogin': {
+        validateForm(e.target, ["required", "email"]);
+        break;
+      }
+      case 'passwordLogin': {
+        validateForm(e.target, ["required"]);
+        break;
+      }
+    }
+  }
+})
 loginButton.addEventListener("click", (e) => {
   e.preventDefault();
-  const inputs = document.querySelectorAll("input.form-control");
-  const requestValues = {};
-
-  inputs.forEach((item) => {
-    requestValues[item.attributes.name.value] = item.value;
-  });
-  console.log(requestValues);
-  fetch("http://127.0.0.1:8000/api/auth/loginUser", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(requestValues),
+  var keyupEvent = new Event('keyup');
+  controlLists.forEach((control) => {
+    control.dispatchEvent(keyupEvent);
   })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.status === 200) {
-        window.localStorage.setItem("login", JSON.stringify(data));
-        window.localStorage.setItem("access_token", data.token);
-        window.localStorage.setItem(
-          "id",
-          JSON.stringify(data.user_info.user_profile[0].user_id)
-        );
-        window.location.href = "http://localhost:3000/home.html";
-        console.log(1);
-      }
+  if (valid) {
+    e.preventDefault();
+    const inputs = document.querySelectorAll("input.form-control");
+    const requestValues = {};
+
+    inputs.forEach((item) => {
+      requestValues[item.attributes.name.value] = item.value;
+    });
+    fetch("http://127.0.0.1:8000/api/auth/loginUser", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestValues),
     })
-    .catch((error) => alert(error.msg));
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === 200) {
+          window.localStorage.setItem("login", JSON.stringify(data));
+          window.localStorage.setItem("access_token", data.token);
+          window.location.href = "http://localhost:3000/home.html";
+          window.localStorage.setItem(
+            "id",
+            JSON.stringify(data.user_info.user_profile[0].user_id)
+          );
+        }
+      })
+      .catch((error) => alert(error.msg));
+  }
 });
 
 // --------------------------------------------------------------------
 
 const registerButton = $(".resgister-1");
 
-registerButton.onclick = (e) => {
-  e.preventDefault();
-  const inputs = document.querySelectorAll("input.form-input");
-  const requestValues = {};
-
-  console.log(1);
-  inputs.forEach((item) => {
-    requestValues[item.attributes.name.value] = item.value;
-  });
-  fetch("http://127.0.0.1:8000/api/auth/userRegister", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(requestValues),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.status === 200) {
-        alert("success......");
-        window.location.href = "http://localhost:3000/login-register.html";
-      }
-    })
-    .catch(error => { alert(error) })
-};
-
-// --------- Validate form login -----------
-const emailLogin = document.querySelector(".emailLogin");
-const passwordLogin = document.querySelector(".passwordLogin");
-
-function checkEmailLogin(e) {
-  console.log(e.target.classList);
-  const regexEmailLogin =
-    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  if (!regexEmailLogin.test(e.target.value)) {
-    document.querySelector(
-      `.${[...e.target.classList].join(".")} ~ small`
-    ).innerText = `Trường này phải là email`;
-  } else {
-    document.querySelector(
-      `.${[...e.target.classList].join(".")} ~ small`
-    ).innerText = "";
-  }
-}
-
-emailLogin.onchange = (e) => checkEmailLogin(e);
 
 // --------- Validate form register -----------
 const nameUser = document.querySelector(".nameUser");
@@ -107,126 +144,34 @@ const emailUser = document.querySelector(".emailUser");
 const passwordUser = document.querySelector(".passwordUser");
 const phoneUser = document.querySelector(".phoneUser");
 
-function emptyValue(e) {
-  if (e.target.value == "") {
-    document.querySelector(
-      `.${[...e.target.classList].join(".")} ~ small`
-    ).innerText = `Bạn không được để trống`;
-  } else {
-    document.querySelector(
-      `.${[...e.target.classList].join(".")} ~ small`
-    ).innerText = "";
+
+document.querySelector('.resgister-1').onclick = (e) => {
+  e.preventDefault();
+  var keyupEvent = new Event('keyup');
+  controlList.forEach((control) => {
+    control.dispatchEvent(keyupEvent);
+  })
+  if (valid) {
+    const inputs = document.querySelectorAll("input.form-input");
+    const requestValues = {};
+
+    inputs.forEach((item) => {
+      requestValues[item.attributes.name.value] = item.value;
+    });
+    fetch("http://127.0.0.1:8000/api/auth/userRegister", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestValues),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === 200) {
+          alert("success......");
+          window.location.href = "http://localhost:3000/login-register.html";
+        }
+      })
+      .catch(error => { alert(error) })
   }
-}
-
-function checkEmail(e) {
-  console.log(e.target.classList);
-  const regexEmail =
-    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  emailUser.onchange = function (e) {
-    if (!regexEmail.test(e.target.value)) {
-      document.querySelector(
-        `.${[...e.target.classList].join(".")} ~ small`
-      ).innerText = `Trường này phải là email`;
-    } else {
-      document.querySelector(
-        `.${[...e.target.classList].join(".")} ~ small`
-      ).innerText = "";
-    }
-  };
-}
-
-function checkPassword(e) {
-  if (e.target.value.length < 6) {
-    document.querySelector(
-      `.${[...e.target.classList].join(".")} ~ small`
-    ).innerText = `Vui lòng nhập tối thiểu 6 kí tự`;
-  } else {
-    document.querySelector(
-      `.${[...e.target.classList].join(".")} ~ small`
-    ).innerText = "";
-  }
-}
-
-function checkPhone(e) {
-  const phoneRegex =
-    /^\(?[0]{1}?([0-9]{2})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-  if (!phoneRegex.test(e.target.value)) {
-    document.querySelector(
-      `.${[...e.target.classList].join(".")} ~ small`
-    ).innerText = `Trường này phải là số điện thoại`;
-  } else {
-    document.querySelector(
-      `.${[...e.target.classList].join(".")} ~ small`
-    ).innerText = "";
-  }
-}
-
-nameUser.onchange = (e) => emptyValue(e);
-emailUser.onchange = (e) => checkEmail(e);
-passwordUser.onchange = (e) => checkPassword(e);
-passwordLogin.onchange = (e) => checkPassword(e);
-phoneUser.onchange = (e) => checkPhone(e);
-
-// const controlList = document.querySelectorAll('.form-input')
-// controlList.forEach((control) => {
-//   control.onkeyup = (e) => {
-//     switch (e.target.classList[1]) {
-//       case 'nameUser': {
-//         validateForm(e.target, ["required"]);
-//         break;
-//       }
-//       case 'emailUser': {
-//         validateForm(e.target, ["required", "email"]);
-//         break;
-//       }
-//       case 'passwordUser': {
-//         validateForm(e.target, ["required"]);
-//         break;
-//       }
-//       case 'phoneUser': {
-//         validateForm(e.target, ["required", "phone"]);
-//         break;
-//       }
-//       default: break;
-//     }
-//   }
-// })
-// const phoneRegex =
-//   /^\(?[0]{1}?([0-9]{2})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-// const regexEmail =
-//   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-// const listError = ["required", "maxLength", "phone", "email", "emoji", "specialCharacter"]
-// let valid;
-// function validateForm(control, listError) {
-//   let warning = [];
-//   valid = listError.every((error) => {
-//     if (error === 'required' && !control.value) {
-//       warning.push('Không được để trống');
-//       return false;
-//     }
-//     if (error === 'phone' && !phoneRegex.test(control.value)) {
-//       warning.push('sdt không hợp lệ');
-//       return false;
-//     }
-//     if (error === 'email' && !regexEmail.test(control.value)) {
-//       warning.push('Email k hợp lệ');
-//       return false;
-//     }
-//     return true;
-//   })
-//   // console.log(valid);
-//   document.querySelector(
-//     `.${[...control.classList].join(".")} ~ small`
-//   ).innerText = warning.join(', ');
-// }
-
-// document.querySelector('.resgister-1').onclick = (e) => {
-//   e.preventDefault();
-//   valid = true;
-//   var keyupEvent = new Event('keyup');
-//   controlList.forEach((control) => {
-//     control.dispatchEvent(keyupEvent);
-//   })
-//   console.log(valid);
-// } 
+} 
