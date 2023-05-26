@@ -39,12 +39,6 @@ function renderListTourBooked() {
                                     <td class="list-content list-jojned list-joined-number">
                                         <p class="p-jojned">${res.tickets}</p>
                                     </td>
-                                    <td class="list-content list-action">
-                                        <a class="icon-action" href="./TS-postTour.html">
-                                            <i class="fa-solid fa-pencil"></i>
-                                        </a>
-                                        <i class="fa-solid fa-trash-can"></i>
-                                    </td>
                                 </tr>
             `;
             })

@@ -152,13 +152,13 @@ function handle_delete(e, v) {
     )
         .then((res) => res.json())
         .then((data) => {
-            createToast("success");
+            createToast("success" , "Delete tour success");
             setTimeout(() => {
                 window.location.reload(true);
             }, 3000);
         })
         .catch((error) => {
-            createToast("error");
+            createToast("error" , "Delete tour error");
         });
 }
 

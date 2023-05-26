@@ -57,10 +57,8 @@ function RenderTourDetail(obj) {
     <div class="detail-inf-tour">
     <div class="detail-inf-wraper">
         <div class="detail-inf">
-            <h1>${target.to_where}</h1>
+            <h1>${target.name}</h1>
             <div class="detail-inf-all detail-inf-time">
-                <i class="fa-solid fa-location-dot"></i>
-                <p><b>Điểm xuất phát: </b>${target.from_where}</p>
             </div>
             <div class="detail-inf-all detail-inf-time">
                 <i class="fa-solid fa-location-dot"></i>

@@ -46,6 +46,9 @@ createTourButton.onclick = () => {
     .then((response) => response.json())
     .then((data) => {
       createToast("success", data.msg);
+      setTimeout(()=>{
+        window.location.reload();
+      },5000)
     })
     .catch((error) => createToast("error"));
 };

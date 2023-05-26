@@ -115,23 +115,23 @@ const renderTSTour = (tours) => {
 
 const renderPSTour = (tours) => {
   let htmlss = tours.map((tour) => {
+    console.log(tour);
     return `
     <div>
       <div class="popular-container">
         <div class="popular-container-left">
             <img src="../IMAGES/slides/slide-0.png" alt="">
             <div class="popular-container-host">
-                <p><b>Host:</b> ${tour.owner_name}</p>
+                <p><b>Host:</b> ${tour.host}</p>
             </div>
         </div>
         <div class="popular-container-center">
             <h1 class="ps-tour-name" data-id="${tour.id}">${tour.name}</h1>
-            <p><b>Thành viên:</b> ${tour.members}</p>
+            <p><b>Thành viên:</b> ${tour.room.member}</p>
             <p><b>Từ:</b> ${tour.from_where} - <b>Đến:</b> ${tour.to_where}</p>
             <p><b>Ngày xuất phát:</b> ${tour.from_date}</p>
         </div>
         <div class="popular-container-right">
-            <button class="btn" id="btn1">JOIN</button>
         </div>
     </div>
 </div>      
