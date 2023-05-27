@@ -12,29 +12,29 @@ loginButton1.addEventListener("click", () => {
   container.classList.remove("right-panel-active");
 });
 
-inputs.forEach((item) => {
-  requestValues[item.attributes.name.value] = item.value;
-});
-fetch("http://127.0.0.1:8000/api/auth/loginTS", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify(requestValues),
-})
-  .then((response) => response.json())
-  .then((data) => {
-    if (data.status === 200) {
-      window.localStorage.setItem("login", JSON.stringify(data));
-      localStorage.setItem(
-        "login-ts-id",
-        data.user_info.user_profile[0].user_id
-      );
-      window.location.href = "http://localhost:3000/TS-home.html";
-    } else {
-      alert(data.msg);
-    }
-  });
+// inputs.forEach((item) => {
+//   requestValues[item.attributes.name.value] = item.value;
+// });
+// fetch("http://127.0.0.1:8000/api/auth/loginTS", {
+//   method: "POST",
+//   headers: {
+//     "Content-Type": "application/json",
+//   },
+//   body: JSON.stringify(requestValues),
+// })
+//   .then((response) => response.json())
+//   .then((data) => {
+//     if (data.status === 200) {
+//       window.localStorage.setItem("login", JSON.stringify(data));
+//       localStorage.setItem(
+//         "login-ts-id",
+//         data.user_info.user_profile[0].user_id
+//       );
+//       window.location.href = "http://localhost:3000/TS-home.html";
+//     } else {
+//       alert(data.msg);
+//     }
+//   });
 
 // -------------------------------------------------------------------
 

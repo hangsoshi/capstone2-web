@@ -53,6 +53,7 @@ var htmlPersonTour = z(".detail-container");
 
 function RenderTourDetail(obj) {
   const target = obj[0];
+  console.log(target);
   const htmls = `
     <div class="detail-inf-tour">
     <div class="detail-inf-wraper">

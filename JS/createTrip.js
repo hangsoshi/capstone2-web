@@ -205,21 +205,29 @@ const tungay = $(".tungay");
 const denngay = $(".denngay");
 const description = $(".description");
 
-denngay.onblur = (e) => {
+denngay.addEventListener('blur', (e) => {
   createTourState.to_date = e.target.value;
-};
+})
 
-tungay.onblur = (e) => {
+tungay.addEventListener('blur', (e) => {
   createTourState.from_date = e.target.value;
-};
+  console.log(createTourState.from_date)
+})
 
-tenchuyendi.onkeydown = (e) => {
+tenchuyendi.addEventListener('change', (e) => {
   createTourState.name = e.target.value;
-};
+})
 
-description.onkeydown = (e) => {
+// tenchuyendi.onkeydown = (e) => {
+//   createTourState.name = e.target.value;
+// };
+description.addEventListener('change', (e) => {
   createTourState.description = e.target.value;
-};
+})
+
+// description.onkeydown = (e) => {
+//   createTourState.description = e.target.value;
+// };
 
 // ------------------------------- image -----------------------
 
@@ -267,7 +275,7 @@ function validateForm(control, listError) {
     }
     if (
       error === "dateFrom" &&
-      (dateFromValue < dateNow || dateFromValue > dateToValue)
+      (dateFromValue < dateNow)
     ) {
       warning.push("Ngày đi không hợp lệ");
       return false;
@@ -423,9 +431,3 @@ if (!login) {
 } else {
   btnCreateTrip.enabled = true;
 }
-
-tungay.onchange = (e) => {
-  console.log(e.target.value);
-  const a = new Date(e.target.value);
-  console.log(a);
-};

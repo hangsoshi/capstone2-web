@@ -185,7 +185,7 @@
     alert("Bạn chắc chắn muốn thoát ?");
     window.localStorage.clear();
     window.location.reload(true);
-    window.location.href = "http://localhost:3000/TS-home.html";
+    window.location.href = "http://localhost:3000/home.html";
   };
 
   // --------- ẩn hiện thông báo----------
@@ -206,4 +206,5 @@
 
 function transformUserPage() {
   window.localStorage.clear();
+  
 }
