@@ -22,39 +22,39 @@ const inputAbout = $(".form-bio");
 const inputHobbies = $(".input-hobbies");
 const inputGender = $("#input-gender");
 var login = JSON.parse(window.localStorage.getItem("login"));
-console.log(login);
 const avatar = document.querySelector(".avatar_user_header");
-const avatarInputFile = document.querySelector('.avatar-input-file')
+const targetProfileId = localStorage.getItem("target-profile-id");
+const avatarInputFile = document.querySelector(".avatar-input-file");
 
 avatar.onclick = () => {
-    avatarInputFile.click()
-}
+  avatarInputFile.click();
+};
 avatarInputFile.onchange = (e) => {
-    const formdata = new FormData()
-    formdata.append('directory', 'avatar')
-    formdata.append('file', e.target.files[0])
-    fetch('http://localhost:3000/upload', {
-        method: 'post',
-        body: formdata
-    })
-        .then(res => res.json())
-        .then(data => {
-            avatar.src = data.data.fileUrl
-        })
-}
+  const formdata = new FormData();
+  formdata.append("directory", "avatar");
+  formdata.append("file", e.target.files[0]);
+  fetch("http://localhost:3000/upload", {
+    method: "post",
+    body: formdata,
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      avatar.src = data.data.fileUrl;
+    });
+};
 
 // -------------------- render list tour ------------------------
 
 function getListTour() {
-    fetch(
-        "http://127.0.0.1:8000/api/personal/tour/all/" +
-        login.user_info.user_profile[0].user_id
-    )
-        .then((res) => res.json())
-        .then((data) => {
-            window.localStorage.setItem("ListTour", JSON.stringify(data.all_tour));
-            return;
-        });
+  fetch(
+    "http://127.0.0.1:8000/api/personal/tour/all/" + targetProfileId
+    // login.user_info.user_profile[0].user_id
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      window.localStorage.setItem("ListTour", JSON.stringify(data.all_tour));
+      return;
+    });
 }
 
 var sliderFind = $(".swiper-wrapper");
@@ -66,32 +66,32 @@ let htmls = "";
 // ------------------------- render list tour of User ---------------------------------------
 
 function renderListTour() {
-    fetch(
-        "http://127.0.0.1:8000/api/personal/tour/all/" +
-        login.user_info.user_profile[0].user_id
-    )
-        .then((response) => {
-            return response.json();
-        })
-        .then((data) => {
-            const tours = data.all_tour;
-            console.log(tours);
-            window.localStorage.setItem(
-                "dataPersonTour",
-                JSON.stringify(data.all_tour)
-            );
+  fetch(
+    "http://127.0.0.1:8000/api/personal/tour/all/" + targetProfileId
+    // login.user_info.user_profile[0].user_id
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      const tours = data.all_tour;
+      console.log(tours);
+      window.localStorage.setItem(
+        "dataPersonTour",
+        JSON.stringify(data.all_tour)
+      );
 
-            const tourNames = document.querySelectorAll(
-                ".blog-slider__item .blog-slider__content .profile-control .blog-slider__button"
-            );
-            tourNames.forEach((tourr) => {
-                tourr.onclick = (e) => {
-                    localStorage.setItem("targetTourId", e.target.dataset.tourr);
-                    window.location.href = "http://localhost:3000/detailFind.html";
-                };
-            });
-            htmls = tours.map((tour) => {
-                return `
+      const tourNames = document.querySelectorAll(
+        ".blog-slider__item .blog-slider__content .profile-control .blog-slider__button"
+      );
+      tourNames.forEach((tourr) => {
+        tourr.onclick = (e) => {
+          localStorage.setItem("targetTourId", e.target.dataset.tourr);
+          window.location.href = "http://localhost:3000/detailFind.html";
+        };
+      });
+      htmls = tours.map((tour) => {
+        return `
                 <div class="blog-slider__item swiper-slide data-id='${tour.id}'">
                 
                 <div class="blog-slider__img">
@@ -121,61 +121,61 @@ function renderListTour() {
                 </div>
             </div>
         `;
-            });
-            sliderFind.innerHTML = htmls.join("");
-            if (sliderFind.innerHTML) {
-                new Swiper(".blog-slider", {
-                    spaceBetween: 30,
-                    effect: "fade",
-                    loop: true,
-                    mousewheel: {
-                        invert: false,
-                    },
-                    pagination: {
-                        el: ".blog-slider__pagination",
-                        clickable: true,
-                    },
-                });
-            }
+      });
+      sliderFind.innerHTML = htmls.join("");
+      if (sliderFind.innerHTML) {
+        new Swiper(".blog-slider", {
+          spaceBetween: 30,
+          effect: "fade",
+          loop: true,
+          mousewheel: {
+            invert: false,
+          },
+          pagination: {
+            el: ".blog-slider__pagination",
+            clickable: true,
+          },
         });
+      }
+    });
 }
 
 function handle_delete(e, v) {
-    const listTour = JSON.parse(window.localStorage.getItem("dataPersonTour"));
-    window.localStorage.setItem("page-detail", e);
-    console.log(window.localStorage.getItem("page-detail"));
-    fetch(
-        "http://127.0.0.1:8000/api/personal/tour/delete/" + e + "?owner_id=" + v,
-        {
-            method: "DELETE",
-        }
-    )
-        .then((res) => res.json())
-        .then((data) => {
-            createToast("success" , "Delete tour success");
-            setTimeout(() => {
-                window.location.reload(true);
-            }, 3000);
-        })
-        .catch((error) => {
-            createToast("error" , "Delete tour error");
-        });
+  const listTour = JSON.parse(window.localStorage.getItem("dataPersonTour"));
+  window.localStorage.setItem("page-detail", e);
+  console.log(window.localStorage.getItem("page-detail"));
+  fetch(
+    "http://127.0.0.1:8000/api/personal/tour/delete/" + e + "?owner_id=" + v,
+    {
+      method: "DELETE",
+    }
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      createToast("success", "Delete tour success");
+      setTimeout(() => {
+        window.location.reload(true);
+      }, 3000);
+    })
+    .catch((error) => {
+      createToast("error", "Delete tour error");
+    });
 }
 
 function handle_detail_page(e) {
-    const listTour = JSON.parse(window.localStorage.getItem("dataPersonTour"));
-    window.localStorage.setItem("page-detail", e);
-    console.log(window.localStorage.getItem("page-detail"));
-    // e.href = 'http://localhost:3000/detailFind.html';
+  const listTour = JSON.parse(window.localStorage.getItem("dataPersonTour"));
+  window.localStorage.setItem("page-detail", e);
+  console.log(window.localStorage.getItem("page-detail"));
+  // e.href = 'http://localhost:3000/detailFind.html';
 }
 
 function handleUpdateTours(e) {
-    localStorage.setItem("TourIdUpdate", e);
-    location.href = "createTrip.html";
+  localStorage.setItem("TourIdUpdate", e);
+  location.href = "createTrip.html";
 }
 
 function start() {
-    renderListTour();
+  renderListTour();
 }
 
 start();
@@ -183,80 +183,96 @@ start();
 // // ---------------------------------------
 
 profileTitleBtn.onclick = function () {
-    if (profileGenaralEdit) {
-        if (profileGenaralEdit.style.display === "block") {
-            profileGenaralEdit.style.display = "none";
-            profileGenaral.style.display = "block";
-        } else {
-            profileGenaralEdit.style.display = "block";
-            profileGenaral.style.display = "none";
-        }
+  if (profileGenaralEdit) {
+    if (profileGenaralEdit.style.display === "block") {
+      profileGenaralEdit.style.display = "none";
+      profileGenaral.style.display = "block";
+    } else {
+      profileGenaralEdit.style.display = "block";
+      profileGenaral.style.display = "none";
     }
+  }
 };
 
 function edit() {
-    profileGenaralEdit.style.display = "none";
-    profileGenaral.style.display = "block";
+  profileGenaralEdit.style.display = "none";
+  profileGenaral.style.display = "block";
 }
 
 btnProfileCancel.onclick = () => {
-    if (profileGenaralEdit.style.display === "block") {
-        profileGenaralEdit.style.display = "none";
-        profileGenaral.style.display = "block";
-    }
+  if (profileGenaralEdit.style.display === "block") {
+    profileGenaralEdit.style.display = "none";
+    profileGenaral.style.display = "block";
+  }
 };
 
-if (login.status === 200) {
-    userName[0].innerText = login.user_info.name;
-    userName[1].innerText = login.user_info.name;
-    userPhone.innerText = login.user_info.phone_number;
-    userEmail.innerText = login.user_info.email;
-    userGender.innerText = login.user_info.user_profile[0].gender;
-    userAbout.innerText = login.user_info.about;
-    avatar.src = login.user_info.user_profile[0].avatar
-} else {
-    userName[0].innerText = login.user_info.name;
-    userName[1].innerText = login.user_info.name;
-    userPhone.innerText = login.user_info.phone_number;
-    userEmail.innerText = login.user_info.email;
-    userGender.innerText = login.user_info.user_profile[0].gender;
-    userAbout.innerText = login.user_info.about;
-}
+fetch(`http://localhost:8000/api/user/${targetProfileId}`)
+  .then((res) => res.json())
+  .then((data) => {
+    console.log(data);
+    const user_info = data.user_info;
+    console.log(info);
+    userName[0].innerText = user_info.user.name;
+    userName[1].innerText = user_info.user.name;
+    userPhone.innerText = user_info.user.phone_number;
+    userEmail.innerText = user_info.user.email;
+    userGender.innerText = user_info.gender;
+    userAbout.innerText = user_info.user.about;
+    avatar.src = user_info.avatar;
+  });
+
+// if (login.status === 200) {
+//   userName[0].innerText = login.user_info.name;
+//   userName[1].innerText = login.user_info.name;
+//   userPhone.innerText = login.user_info.phone_number;
+//   userEmail.innerText = login.user_info.email;
+//   userGender.innerText = login.user_info.user_profile[0].gender;
+//   userAbout.innerText = login.user_info.about;
+//   avatar.src = login.user_info.user_profile[0].avatar;
+// } else {
+//   userName[0].innerText = login.user_info.name;
+//   userName[1].innerText = login.user_info.name;
+//   userPhone.innerText = login.user_info.phone_number;
+//   userEmail.innerText = login.user_info.email;
+//   userGender.innerText = login.user_info.user_profile[0].gender;
+//   userAbout.innerText = login.user_info.about;
+// }
 
 // // -----------------------  update profile user ------------------------------------
 
 const apiUserProfile = "http://127.0.0.1:8000/api/user/profile/update";
 
 function getInfoUser() {
-    fetch(apiUserProfile, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            id: login.user_info.user_profile[0].user_id,
-            name: inputUserName.value,
-            phone_number: inputPhoneNumber.value,
-            gender: inputGender.value,
-            about: inputAbout.value,
-            avatar: avatar.src
-        }),
+  fetch(apiUserProfile, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      // id: login.user_info.user_profile[0].user_id,
+      id: targetProfileId,
+      name: inputUserName.value,
+      phone_number: inputPhoneNumber.value,
+      gender: inputGender.value,
+      about: inputAbout.value,
+      avatar: avatar.src,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.status === 200) {
+        console.log(data.user_info);
+        window.localStorage.setItem("login", JSON.stringify(data));
+        var datas = JSON.parse(window.localStorage.getItem("login"));
+        console.log(datas);
+        createToast("success");
+        setTimeout(() => {
+          window.location.reload();
+          renderUserInfo(datas);
+        }, 5000);
+      }
     })
-        .then((response) => response.json())
-        .then((data) => {
-            if (data.status === 200) {
-                console.log(data.user_info);
-                window.localStorage.setItem("login", JSON.stringify(data));
-                var datas = JSON.parse(window.localStorage.getItem("login"));
-                console.log(datas);
-                createToast("success");
-                setTimeout(() => {
-                    window.location.reload();
-                    renderUserInfo(datas);
-                }, 5000)
-            }
-        })
-        .catch((error) => alert(error));
+    .catch((error) => alert(error));
 }
 
 var html_UserInfo = $(".profile-genaral");
@@ -264,7 +280,7 @@ var html_UserInfo = $(".profile-genaral");
 // ----------------------- render user info ------------------------------
 
 function renderUserInfo(obj) {
-    const html = `
+  const html = `
   <div class="profile-title">
   <h2>Hồ sơ của tôi</h2>
   <div class="profile-save">
@@ -276,18 +292,21 @@ function renderUserInfo(obj) {
     <form class="form-profile">
       <div class="form-profile-info">
           <label for="">Họ và tên</label>
-          <div class="form-profile-content user_name">${obj.user_info.name
-        }</div>
+          <div class="form-profile-content user_name">${
+            obj.user_info.name
+          }</div>
       </div>
       <div class="form-profile-info">
           <label for="">Số điện thoại</label>
-          <div class="form-profile-conten user_phone">${obj.user_info.phone_number
-        }</div>
+          <div class="form-profile-conten user_phone">${
+            obj.user_info.phone_number
+          }</div>
       </div>
       <div class="form-profile-info">
           <label for="">Email</label>
-          <div class="form-profile-content user_email">${obj.user_info.email
-        }</div>
+          <div class="form-profile-content user_email">${
+            obj.user_info.email
+          }</div>
       </div>
       <div class="form-profile-info">
           <label for="">Giới tính/ Tuổi</label>
@@ -317,38 +336,38 @@ function renderUserInfo(obj) {
       </div>
   </form>
 </div> `;
-    return (html_UserInfo.innerHTML = html);
+  return (html_UserInfo.innerHTML = html);
 }
 
 // if (login.status === 200) {
 btnUpdate.onclick = () => {
-    getInfoUser();
-    // window.location.reload(true);
+  getInfoUser();
+  // window.location.reload(true);
 };
 // }
 
 // ------------------------------------------------------------------
 
 inputUserName.onchange = (e) => {
-    console.log(e.target.value);
+  console.log(e.target.value);
 };
 inputPhoneNumber.onchange = (e) => {
-    console.log(e.target.value);
+  console.log(e.target.value);
 };
 inputEmail.disabled = true;
 
 if (login.msg === "Update thành công" || login.status === 200) {
-    inputEmail.value = login.user_info.email;
+  inputEmail.value = login.user_info.email;
 } else {
-    inputEmail.value = login.user_info.email;
+  inputEmail.value = login.user_info.email;
 }
 
 inputGender.onchange = (e) => {
-    console.log(e.target.value);
+  console.log(e.target.value);
 };
 
 inputAbout.onchange = (e) => {
-    console.log(e.target.value);
+  console.log(e.target.value);
 };
 
 // // ------ lịch sử đặt tours------------------------------------------------
@@ -358,8 +377,8 @@ const supplierPages = document.querySelector(".supplierPages");
 const profile = document.querySelector(".profileGenaral");
 
 const newLocal = (historyTour.onclick = function () {
-    supplierPages.style.display = "block";
-    profile.style.display = "none";
+  supplierPages.style.display = "block";
+  profile.style.display = "none";
 });
 
 // const TourID = $('.blog-slider__button');
@@ -373,68 +392,70 @@ const newLocal = (historyTour.onclick = function () {
 
 const createGroup = $(".create-group");
 createGroup.onclick = () => {
-    window.location.href = "http://localhost:3000/group.html";
+  window.location.href = "http://localhost:3000/group.html";
 };
 
 // ----------------------- toást message --------------------------------
 const notifications = document.querySelector(".notifications"),
-    buttons = document.querySelectorAll(".buttons .btn");
+  buttons = document.querySelectorAll(".buttons .btn");
 // Object containing details for different types of toasts
 const toastDetails = {
-    timer: 5000,
-    success: {
-        icon: "fa-circle-check",
-        text: "Success: update profile success...",
-    },
-    error: {
-        icon: "fa-circle-xmark",
-        text: "Error: update profile error....",
-    },
-    warning: {
-        icon: "fa-triangle-exclamation",
-        text: "Warning: This is a warning toast.",
-    },
-    info: {
-        icon: "fa-circle-info",
-        text: "Info: This is an information toast.",
-    },
+  timer: 5000,
+  success: {
+    icon: "fa-circle-check",
+    text: "Success: update profile success...",
+  },
+  error: {
+    icon: "fa-circle-xmark",
+    text: "Error: update profile error....",
+  },
+  warning: {
+    icon: "fa-triangle-exclamation",
+    text: "Warning: This is a warning toast.",
+  },
+  info: {
+    icon: "fa-circle-info",
+    text: "Info: This is an information toast.",
+  },
 };
 const removeToast = (toast) => {
-    toast.classList.add("hide");
-    if (toast.timeoutId) clearTimeout(toast.timeoutId); // Clearing the timeout for the toast
-    setTimeout(() => toast.remove(), 500); // Removing the toast after 500ms
+  toast.classList.add("hide");
+  if (toast.timeoutId) clearTimeout(toast.timeoutId); // Clearing the timeout for the toast
+  setTimeout(() => toast.remove(), 500); // Removing the toast after 500ms
 };
 const createToast = (id, message) => {
-    // Getting the icon and text for the toast based on the id passed
-    const { icon, text } = toastDetails[id];
-    const toast = document.createElement("li"); // Creating a new 'li' element for the toast
-    toast.className = `toast ${id}`; // Setting the classes for the toast
-    // Setting the inner HTML for the toast
-    toast.innerHTML = `<div class="column">
+  // Getting the icon and text for the toast based on the id passed
+  const { icon, text } = toastDetails[id];
+  const toast = document.createElement("li"); // Creating a new 'li' element for the toast
+  toast.className = `toast ${id}`; // Setting the classes for the toast
+  // Setting the inner HTML for the toast
+  toast.innerHTML = `<div class="column">
                          <i class="fa-solid ${icon}"></i>
                          <span>${message || text}</span>
                       </div>
                       <i class="fa-solid fa-xmark" onclick="removeToast(this.parentElement)"></i>`;
-    notifications.appendChild(toast); // Append the toast to the notification ul
-    // Setting a timeout to remove the toast after the specified duration
-    toast.timeoutId = setTimeout(() => removeToast(toast), toastDetails.timer);
+  notifications.appendChild(toast); // Append the toast to the notification ul
+  // Setting a timeout to remove the toast after the specified duration
+  toast.timeoutId = setTimeout(() => removeToast(toast), toastDetails.timer);
 };
 
 const groups = document.querySelector(".myGroups .card-wrapper");
 
 fetch(
-    `http://localhost:8000/api/personal/room/roomUserJoin?user_id=${login.user_info.user_profile[0].user_id}`
+  // `http://localhost:8000/api/personal/room/roomUserJoin?user_id=${login.user_info.user_profile[0].user_id}`
+  `http://localhost:8000/api/personal/room/roomUserJoin?user_id=${targetProfileId}`
 )
-    .then((res) => res.json())
-    .then((data) => {
-        console.log(data);
-        const htmls = data.map(
-            (item) => `<div class="card">
+  .then((res) => res.json())
+  .then((data) => {
+    console.log(data);
+    const htmls = data.map(
+      (item) => `<div class="card">
       <div class="image-content">
           <span class="overlay"></span>
           <div class="card-image">
-              <img src="${item.image || "IMAGES/slides/slide-5.png"
-                }" alt="" class="card-img">
+              <img src="${
+                item.image || "IMAGES/slides/slide-5.png"
+              }" alt="" class="card-img">
           </div>
       </div>
   
@@ -444,6 +465,6 @@ fetch(
           <p>Host: ${item.host_name}</p>
       </div>
   </div>`
-        );
-        groups.innerHTML += htmls.join("");
-    });
+    );
+    groups.innerHTML += htmls.join("");
+  });
