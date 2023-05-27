@@ -152,13 +152,13 @@ function handle_delete(e, v) {
     )
         .then((res) => res.json())
         .then((data) => {
-            createToast("success" , "Delete tour success");
+            createToast("success", "Delete tour success");
             setTimeout(() => {
                 window.location.reload(true);
             }, 3000);
         })
         .catch((error) => {
-            createToast("error" , "Delete tour error");
+            createToast("error", "Delete tour error");
         });
 }
 
@@ -206,29 +206,137 @@ btnProfileCancel.onclick = () => {
     }
 };
 
-if (login.status === 200) {
-    userName[0].innerText = login.user_info.name;
-    userName[1].innerText = login.user_info.name;
-    userPhone.innerText = login.user_info.phone_number;
-    userEmail.innerText = login.user_info.email;
-    userGender.innerText = login.user_info.user_profile[0].gender;
-    userAbout.innerText = login.user_info.about;
-    avatar.src = login.user_info.user_profile[0].avatar
-} else {
-    userName[0].innerText = login.user_info.name;
-    userName[1].innerText = login.user_info.name;
-    userPhone.innerText = login.user_info.phone_number;
-    userEmail.innerText = login.user_info.email;
-    userGender.innerText = login.user_info.user_profile[0].gender;
-    userAbout.innerText = login.user_info.about;
+fetch(`http://localhost:8000/api/user/${targetProfileId}`)
+    .then((res) => res.json())
+    .then((data) => {
+        console.log(data);
+        const user_info = data.user_info;
+        console.log(info);
+        userName[0].innerText = user_info.user.name;
+        userName[1].innerText = user_info.user.name;
+        userPhone.innerText = user_info.user.phone_number;
+        userEmail.innerText = user_info.user.email;
+        userGender.innerText = user_info.gender;
+        userAbout.innerText = user_info.user.about;
+        avatar.src = user_info.avatar;
+    });
+
+// if (login.status === 200) {
+//   userName[0].innerText = login.user_info.name;
+//   userName[1].innerText = login.user_info.name;
+//   userPhone.innerText = login.user_info.phone_number;
+//   userEmail.innerText = login.user_info.email;
+//   userGender.innerText = login.user_info.user_profile[0].gender;
+//   userAbout.innerText = login.user_info.about;
+//   avatar.src = login.user_info.user_profile[0].avatar;
+// } else {
+//   userName[0].innerText = login.user_info.name;
+//   userName[1].innerText = login.user_info.name;
+//   userPhone.innerText = login.user_info.phone_number;
+//   userEmail.innerText = login.user_info.email;
+//   userGender.innerText = login.user_info.user_profile[0].gender;
+//   userAbout.innerText = login.user_info.about;
+// }
+
+// // -----------------------  update profile user ------------------------------------
+
+const controlList = document.querySelectorAll('.form-profile-text')
+controlList.forEach((control) => {
+    control.onkeyup = (e) => {
+        console.log(e.target.classList[1]);
+        switch (e.target.classList[1]) {
+            case 'input-username': {
+                validateForm(e.target, ["required"]);
+                break;
+            }
+            case 'form-bio': {
+                validateForm(e.target, ["required"]);
+                break;
+            }
+            case 'input-phonenumber': {
+                validateForm(e.target, ["required", "phone"]);
+                break;
+            }
+            default: break;
+        }
+    }
+})
+const phoneRegex =
+    /^\(?[0]{1}?([0-9]{2})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+const regexEmail =
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+const listError = ["required", "maxLength", "phone", "email", "emoji", "specialCharacter"]
+let valid;
+function validateForm(control, listError) {
+    let warning = [];
+    valid = listError.every((error) => {
+        if (error === 'required' && !control.value) {
+            warning.push('Không được để trống');
+            return false;
+        }
+        if (error === 'phone' && !phoneRegex.test(control.value)) {
+            warning.push('sdt không hợp lệ');
+            return false;
+        }
+        if (error === 'email' && !regexEmail.test(control.value)) {
+            warning.push('Email k hợp lệ');
+            return false;
+        }
+        return true;
+    })
+    document.querySelector(
+        `.${[...control.classList].join(".")} ~ small`
+    ).innerText = warning.join(', ');
 }
 
-var html_UserInfo = $(".profile-genaral");
 
-// ----------------------- render user info ------------------------------
+const apiUserProfile = "http://127.0.0.1:8000/api/user/profile/update";
 
-function renderUserInfo(obj) {
-    const html = `
+function getInfoUser() {
+    var keyupEvent = new Event('keyup');
+    controlList.forEach((control) => {
+        control.dispatchEvent(keyupEvent);
+    })
+    if (valid) {
+        fetch(apiUserProfile, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                // id: login.user_info.user_profile[0].user_id,
+                id: targetProfileId,
+                name: inputUserName.value,
+                phone_number: inputPhoneNumber.value,
+                gender: inputGender.value,
+                about: inputAbout.value,
+                avatar: avatar.src,
+            }),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.status === 200) {
+                    console.log(data.user_info);
+                    window.localStorage.setItem("login", JSON.stringify(data));
+                    var datas = JSON.parse(window.localStorage.getItem("login"));
+                    console.log(datas);
+                    createToast("success");
+                    setTimeout(() => {
+                        window.location.reload();
+                        renderUserInfo(datas);
+                    }, 5000);
+                }
+            })
+            .catch((error) => alert(error));
+    }
+}
+
+    var html_UserInfo = $(".profile-genaral");
+
+    // ----------------------- render user info ------------------------------
+
+    function renderUserInfo(obj) {
+        const html = `
   <div class="profile-title">
   <h2>Hồ sơ của tôi</h2>
   <div class="profile-save">
@@ -241,17 +349,17 @@ function renderUserInfo(obj) {
       <div class="form-profile-info">
           <label for="">Họ và tên</label>
           <div class="form-profile-content user_name">${obj.user_info.name
-        }</div>
+            }</div>
       </div>
       <div class="form-profile-info">
           <label for="">Số điện thoại</label>
           <div class="form-profile-conten user_phone">${obj.user_info.phone_number
-        }</div>
+            }</div>
       </div>
       <div class="form-profile-info">
           <label for="">Email</label>
           <div class="form-profile-content user_email">${obj.user_info.email
-        }</div>
+            }</div>
       </div>
       <div class="form-profile-info">
           <label for="">Giới tính/ Tuổi</label>
@@ -281,124 +389,124 @@ function renderUserInfo(obj) {
       </div>
   </form>
 </div> `;
-    return (html_UserInfo.innerHTML = html);
-}
+        return (html_UserInfo.innerHTML = html);
+    }
 
-// if (login.status === 200) {
-btnUpdate.onclick = () => {
-    getInfoUser();
-    // window.location.reload(true);
-};
-// }
+    // if (login.status === 200) {
+    btnUpdate.onclick = () => {
+        getInfoUser();
+        // window.location.reload(true);
+    };
+    // }
 
-// ------------------------------------------------------------------
+    // ------------------------------------------------------------------
 
-inputUserName.onchange = (e) => {
-    console.log(e.target.value);
-};
-inputPhoneNumber.onchange = (e) => {
-    console.log(e.target.value);
-};
-inputEmail.disabled = true;
+    inputUserName.onchange = (e) => {
+        console.log(e.target.value);
+    };
+    inputPhoneNumber.onchange = (e) => {
+        console.log(e.target.value);
+    };
+    inputEmail.disabled = true;
 
-if (login.msg === "Update thành công" || login.status === 200) {
-    inputEmail.value = login.user_info.email;
-} else {
-    inputEmail.value = login.user_info.email;
-}
+    if (login.msg === "Update thành công" || login.status === 200) {
+        inputEmail.value = login.user_info.email;
+    } else {
+        inputEmail.value = login.user_info.email;
+    }
 
-inputGender.onchange = (e) => {
-    console.log(e.target.value);
-};
+    inputGender.onchange = (e) => {
+        console.log(e.target.value);
+    };
 
-inputAbout.onchange = (e) => {
-    console.log(e.target.value);
-};
+    inputAbout.onchange = (e) => {
+        console.log(e.target.value);
+    };
 
-// // ------ lịch sử đặt tours------------------------------------------------
+    // // ------ lịch sử đặt tours------------------------------------------------
 
-const historyTour = document.querySelector(".history-tour");
-const supplierPages = document.querySelector(".supplierPages");
-const profile = document.querySelector(".profileGenaral");
+    const historyTour = document.querySelector(".history-tour");
+    const supplierPages = document.querySelector(".supplierPages");
+    const profile = document.querySelector(".profileGenaral");
 
-const newLocal = (historyTour.onclick = function () {
-    supplierPages.style.display = "block";
-    profile.style.display = "none";
-});
+    const newLocal = (historyTour.onclick = function () {
+        supplierPages.style.display = "block";
+        profile.style.display = "none";
+    });
 
-// const TourID = $('.blog-slider__button');
-// console.log(TourID);
-// TourID.onclick = (tours) => {
-//     console.dir(this.id);
-// }
+    // const TourID = $('.blog-slider__button');
+    // console.log(TourID);
+    // TourID.onclick = (tours) => {
+    //     console.dir(this.id);
+    // }
 
-// const listTours = JSON.parse(window.localStorage.getItem("ListTour"));
-// console.log(listTours);
+    // const listTours = JSON.parse(window.localStorage.getItem("ListTour"));
+    // console.log(listTours);
 
-const createGroup = $(".create-group");
-createGroup.onclick = () => {
-    window.location.href = "http://localhost:3000/group.html";
-};
+    const createGroup = $(".create-group");
+    createGroup.onclick = () => {
+        window.location.href = "http://localhost:3000/group.html";
+    };
 
-// ----------------------- toást message --------------------------------
-const notifications = document.querySelector(".notifications"),
-    buttons = document.querySelectorAll(".buttons .btn");
-// Object containing details for different types of toasts
-const toastDetails = {
-    timer: 5000,
-    success: {
-        icon: "fa-circle-check",
-        text: "Success: update profile success...",
-    },
-    error: {
-        icon: "fa-circle-xmark",
-        text: "Error: update profile error....",
-    },
-    warning: {
-        icon: "fa-triangle-exclamation",
-        text: "Warning: This is a warning toast.",
-    },
-    info: {
-        icon: "fa-circle-info",
-        text: "Info: This is an information toast.",
-    },
-};
-const removeToast = (toast) => {
-    toast.classList.add("hide");
-    if (toast.timeoutId) clearTimeout(toast.timeoutId); // Clearing the timeout for the toast
-    setTimeout(() => toast.remove(), 500); // Removing the toast after 500ms
-};
-const createToast = (id, message) => {
-    // Getting the icon and text for the toast based on the id passed
-    const { icon, text } = toastDetails[id];
-    const toast = document.createElement("li"); // Creating a new 'li' element for the toast
-    toast.className = `toast ${id}`; // Setting the classes for the toast
-    // Setting the inner HTML for the toast
-    toast.innerHTML = `<div class="column">
+    // ----------------------- toást message --------------------------------
+    const notifications = document.querySelector(".notifications"),
+        buttons = document.querySelectorAll(".buttons .btn");
+    // Object containing details for different types of toasts
+    const toastDetails = {
+        timer: 5000,
+        success: {
+            icon: "fa-circle-check",
+            text: "Success: update profile success...",
+        },
+        error: {
+            icon: "fa-circle-xmark",
+            text: "Error: update profile error....",
+        },
+        warning: {
+            icon: "fa-triangle-exclamation",
+            text: "Warning: This is a warning toast.",
+        },
+        info: {
+            icon: "fa-circle-info",
+            text: "Info: This is an information toast.",
+        },
+    };
+    const removeToast = (toast) => {
+        toast.classList.add("hide");
+        if (toast.timeoutId) clearTimeout(toast.timeoutId); // Clearing the timeout for the toast
+        setTimeout(() => toast.remove(), 500); // Removing the toast after 500ms
+    };
+    const createToast = (id, message) => {
+        // Getting the icon and text for the toast based on the id passed
+        const { icon, text } = toastDetails[id];
+        const toast = document.createElement("li"); // Creating a new 'li' element for the toast
+        toast.className = `toast ${id}`; // Setting the classes for the toast
+        // Setting the inner HTML for the toast
+        toast.innerHTML = `<div class="column">
                          <i class="fa-solid ${icon}"></i>
                          <span>${message || text}</span>
                       </div>
                       <i class="fa-solid fa-xmark" onclick="removeToast(this.parentElement)"></i>`;
-    notifications.appendChild(toast); // Append the toast to the notification ul
-    // Setting a timeout to remove the toast after the specified duration
-    toast.timeoutId = setTimeout(() => removeToast(toast), toastDetails.timer);
-};
+        notifications.appendChild(toast); // Append the toast to the notification ul
+        // Setting a timeout to remove the toast after the specified duration
+        toast.timeoutId = setTimeout(() => removeToast(toast), toastDetails.timer);
+    };
 
-const groups = document.querySelector(".myGroups .card-wrapper");
+    const groups = document.querySelector(".myGroups .card-wrapper");
 
-fetch(
-    `http://localhost:8000/api/personal/room/roomUserJoin?user_id=${login.user_info.user_profile[0].user_id}`
-)
-    .then((res) => res.json())
-    .then((data) => {
-        console.log(data);
-        const htmls = data.map(
-            (item) => `<div class="card">
+    fetch(
+        `http://localhost:8000/api/personal/room/roomUserJoin?user_id=${login.user_info.user_profile[0].user_id}`
+    )
+        .then((res) => res.json())
+        .then((data) => {
+            console.log(data);
+            const htmls = data.map(
+                (item) => `<div class="card">
       <div class="image-content">
           <span class="overlay"></span>
           <div class="card-image">
               <img src="${item.image || "IMAGES/slides/slide-5.png"
-                }" alt="" class="card-img">
+                    }" alt="" class="card-img">
           </div>
       </div>
   
@@ -408,104 +516,12 @@ fetch(
           <p>Host: ${item.host_name}</p>
       </div>
   </div>`
-        );
-        groups.innerHTML += htmls.join("");
-    });
+            );
+            groups.innerHTML += htmls.join("");
+        });
 
 
-// ----------------------------------------------------------------------------
+    // ----------------------------------------------------------------------------
 
 
-
-const controlList = document.querySelectorAll('.form-profile-text')
-controlList.forEach((control) => {
-  control.onkeyup = (e) => {
-    console.log(e.target.classList[1]);
-    switch (e.target.classList[1]) {
-      case 'input-username': {
-        validateForm(e.target, ["required"]);
-        break;
-      }
-      case 'form-bio': {
-        validateForm(e.target, ["required"]);
-        break;
-      }
-      case 'input-phonenumber': {
-        validateForm(e.target, ["required", "phone"]);
-        break;
-      }
-      default: break;
-    }
-  }
-})
-const phoneRegex =
-  /^\(?[0]{1}?([0-9]{2})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-const regexEmail =
-  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-const listError = ["required", "maxLength", "phone", "email", "emoji", "specialCharacter"]
-let valid;
-function validateForm(control, listError) {
-  let warning = [];
-  valid = listError.every((error) => {
-    if (error === 'required' && !control.value) {
-      warning.push('Không được để trống');
-      return false;
-    }
-    if (error === 'phone' && !phoneRegex.test(control.value)) {
-      warning.push('sdt không hợp lệ');
-      return false;
-    }
-    if (error === 'email' && !regexEmail.test(control.value)) {
-      warning.push('Email k hợp lệ');
-      return false;
-    }
-    return true;
-  })
-  document.querySelector(
-    `.${[...control.classList].join(".")} ~ small`
-  ).innerText = warning.join(', ');
-}
-
-
-
-// // -----------------------  update profile user ------------------------------------
-
-const apiUserProfile = "http://127.0.0.1:8000/api/user/profile/update";
-
-function getInfoUser() {
-    var keyupEvent = new Event('keyup');
-    controlList.forEach((control) => {
-      control.dispatchEvent(keyupEvent);
-    })
-    if (valid) {
-        fetch(apiUserProfile, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                id: login.user_info.user_profile[0].user_id,
-                name: inputUserName.value,
-                phone_number: inputPhoneNumber.value,
-                gender: inputGender.value,
-                about: inputAbout.value,
-                avatar: avatar.src
-            }),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.status === 200) {
-                    console.log(data.user_info);
-                    window.localStorage.setItem("login", JSON.stringify(data));
-                    var datas = JSON.parse(window.localStorage.getItem("login"));
-                    console.log(datas);
-                    createToast("success");
-                    setTimeout(() => {
-                        window.location.reload();
-                        renderUserInfo(datas);
-                    }, 5000)
-                }
-            })
-            .catch((error) => alert(error));
-    }
-}
+ 

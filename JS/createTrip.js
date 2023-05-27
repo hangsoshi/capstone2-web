@@ -27,7 +27,9 @@ const createTourState = {
 console.log(localStorage.getItem("id"));
 
 fetch(
-  "http://127.0.0.1:8000/api/personal/room/roomOfUser?user_id=" + `${login.user_info.user_profile[0].user_id}`)
+  "http://127.0.0.1:8000/api/personal/room/roomOfUser?user_id=" +
+    `${login.user_info.user_profile[0].user_id}`
+)
   .then((res) => res.json())
   .then((data) => {
     rooms.innerHTML = `<option value="" selected disabled hidden>Chọn nhóm</option>`;
@@ -72,7 +74,7 @@ const handleDestinationSuggestItemClick = (doms, parent) => {
       destinationInput.value = name;
       const marker = L.marker([lat, lon], { draggable: true }).addTo(map);
       map.flyTo([lat, lon], 19);
-      marker.on("dragend", (e) => { });
+      marker.on("dragend", (e) => {});
       parent.innerHTML = null;
     };
   });
@@ -86,7 +88,7 @@ const handleCurrentLocationSuggestItemClick = (doms, parent) => {
       // gán name của điểm xuất phát, ví dụ: a = name
       const marker = L.marker([lat, lon], { draggable: true }).addTo(map);
       map.flyTo([lat, lon], 10);
-      marker.on("dragend", (e) => { });
+      marker.on("dragend", (e) => {});
       parent.innerHTML = null;
     };
   });
@@ -243,7 +245,14 @@ uploadImage.onclick = () => {
 
 // ----------- Validate form ---------------
 
-const listError = ["required", "maxLength", "dateFrom", "dateTo", "emoji", "specialCharacter"]
+const listError = [
+  "required",
+  "maxLength",
+  "dateFrom",
+  "dateTo",
+  "emoji",
+  "specialCharacter",
+];
 let valid;
 function validateForm(control, listError) {
   var dateFromValue = new Date(tungay.value);
@@ -252,58 +261,71 @@ function validateForm(control, listError) {
 
   let warning = [];
   valid = listError.every((error) => {
-    if (error === 'required' && !control.value) {
-      warning.push('Không được để trống');
+    if (error === "required" && !control.value) {
+      warning.push("Không được để trống");
       return false;
     }
-    if (error === 'dateFrom' && (dateFromValue < dateNow || dateFromValue > dateToValue)) {
-      warning.push('Ngày đi không hợp lệ');
+    if (
+      error === "dateFrom" &&
+      (dateFromValue < dateNow || dateFromValue > dateToValue)
+    ) {
+      warning.push("Ngày đi không hợp lệ");
       return false;
     }
-    if (error === 'dateTo' && (dateToValue < dateFromValue)) {
-      warning.push('Ngày đến không hợp lệ');
+    if (
+      error === "dateTo" &&
+      (dateToValue < dateNow || dateToValue < dateFromValue)
+    ) {
+      warning.push("Ngày đến không hợp lệ");
       return false;
     }
-    if (error === 'maxLength' && control.value.length > 50) {
-      warning.push('Không quá 50 kí tự');
+    if (error === "maxLength" && control.value.length > 50) {
+      warning.push("Không quá 50 kí tự");
       return false;
     }
     return true;
-  })
+  });
   document.querySelector(
     `.${[...control.classList].join(".")} ~ small`
-  ).innerText = warning.join(', ');
+  ).innerText = warning.join(", ");
 }
-var controlLists = document.querySelectorAll('.form-control')
-console.log(controlLists);
+var controlLists = document.querySelectorAll(".form-control");
 controlLists.forEach((control) => {
   // console.log(control);
-  control.onkeyup = (e) => {
-    console.log(e.target.classList[1]);
-    switch (e.target.classList[1]) {
-      case 'tenchuyendi': {
-        validateForm(e.target, ["required"]);
-        break;
+  const classs = control.classList[1];
+  if (classs === "tungay" || classs === "denngay") {
+    control.onblur = (e) => {
+      switch (e.target.classList[1]) {
+        case "tungay": {
+          validateForm(e.target, ["dateFrom"]);
+          break;
+        }
+        case "denngay": {
+          validateForm(e.target, ["dateTo"]);
+          break;
+        }
       }
-      case 'tungay': {
-        validateForm(e.target, ["dateFrom"]);
-        break;
+    };
+  } else {
+    control.onkeyup = (e) => {
+      console.log(e.target.classList[1]);
+      switch (e.target.classList[1]) {
+        case "tenchuyendi": {
+          validateForm(e.target, ["required"]);
+          break;
+        }
+        case "diemden": {
+          validateForm(e.target, ["required"]);
+          break;
+        }
+        case "description": {
+          validateForm(e.target, ["required"]);
+          break;
+        }
       }
-      case 'denngay': {
-        validateForm(e.target, ["dateTo"]);
-        break;
-      }
-      case 'diemden': {
-        validateForm(e.target, ["required"]);
-        break;
-      }
-      case 'description': {
-        validateForm(e.target, ["required"]);
-        break;
-      }
-    }
+    };
   }
-})
+});
 
 // ---------------------------------   create trip   ----------------------------------------
 const btnCreateTrip = document.querySelector(".create-trip");
@@ -342,16 +364,16 @@ if (updateTour) {
         draggable: true,
       }).addTo(map);
       map.flyTo([createTourState.lat, createTourState.lon], 10);
-      marker.on("dragend", (e) => { });
+      marker.on("dragend", (e) => {});
     });
 }
 
 btnCreateTrip.onclick = (e) => {
   e.preventDefault();
-  var keyupEvent = new Event('keyup');
+  var keyupEvent = new Event("keyup");
   controlLists.forEach((control) => {
     control.dispatchEvent(keyupEvent);
-  })
+  });
   if (valid) {
     if (updateTour) {
       fetch(`http://127.0.0.1:8000/api/personal/tour/update/${updateTour}`, {
@@ -361,7 +383,7 @@ btnCreateTrip.onclick = (e) => {
         },
         body: JSON.stringify({
           ...createTourState,
-          owner_id: Number(login.user_info.user_profile[0].user_id)
+          owner_id: Number(login.user_info.user_profile[0].user_id),
         }),
       })
         .then((res) => res.json())
@@ -396,16 +418,14 @@ btnCreateTrip.onclick = (e) => {
   }
 };
 
-
 if (!login) {
   btnCreateTrip.disabled = true;
 } else {
   btnCreateTrip.enabled = true;
 }
 
-
 tungay.onchange = (e) => {
   console.log(e.target.value);
-  const a = new Date(e.target.value)
+  const a = new Date(e.target.value);
   console.log(a);
-}
+};

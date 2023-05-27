@@ -13,6 +13,7 @@ const createTourButton = document.querySelector(".create-tour-submit");
 let schedules = [];
 let updateImages = [];
 if (tsTourUpdate) {
+  console.log(tsTourUpdate);
   fetch(`http://localhost:8000/api/ts/tour/${tsTourUpdate}`)
     .then((res) => res.json())
     .then((data) => {
@@ -26,7 +27,7 @@ if (tsTourUpdate) {
       numberPeople.value = target.slot;
       postSchedualInput.innerHTML = renderSchedules(target.schedule).join("");
       schedules = target.schedule;
-      updateImages = target.images;
+      updateImages = target.images.map((item) => item.image_url);
     });
 }
 createTourButton.onclick = () => {
@@ -51,18 +52,36 @@ createTourButton.onclick = () => {
         request[key] = input.value;
       }
     });
-    const query =
-      Object.keys(request).reduce((prev, next) => {
-        return prev + next + "=" + request[next] + "&";
-      }, "") + `${JSON.stringify(updateImages)}&${JSON.stringify(schedules)}`;
-    fetch(
-      `http://localhost:8000/api/ts/tour/${tsTourUpdate}?${query}${JSON.stringify(
-        updateImages
-      )}&${JSON.stringify(schedules)}`
-    )
+    fetch(`http://localhost:8000/api/ts/tour/update/${tsTourUpdate}`, {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ...request,
+        schedule: JSON.stringify(
+          schedules.map((item, index) => {
+            delete item.id;
+            return {
+              ...item,
+              order: index + 1,
+            };
+          })
+        ),
+        images: JSON.stringify(updateImages),
+      }),
+    })
       .then((res) => res.json())
       .then((data) => {
-        localStorage.removeItem("ts-tour-update");
+        if (data.msg && data.status !== 200) {
+          createToast("error", data.msg);
+        } else {
+          localStorage.removeItem("ts-tour-update");
+          createToast("success", data.msg);
+          setTimeout(() => {
+            location.href = "TS-managerTours.html";
+          }, 5000);
+        }
       });
   } else {
     const request = {
@@ -109,7 +128,7 @@ createTourButton.onclick = () => {
         createToast("success", data.msg);
         setTimeout(() => {
           window.location.reload();
-        }, 5000);
+        }, 2000);
       })
       .catch((error) => createToast("error"));
   }
@@ -242,7 +261,7 @@ const searching = (value, listdom, itemclass) => {
               const id = input.dataset.id;
               schedules = schedules.map((schedule) =>
                 schedule.id === id
-                  ? { ...schedule, desc: e.target.value }
+                  ? { ...schedule, description: e.target.value }
                   : schedule
               );
               console.log(schedules);
@@ -293,7 +312,9 @@ postSchedualAdd.onclick = () => {
     input.onchange = (e) => {
       const id = input.dataset.id;
       schedules = schedules.map((schedule) =>
-        schedule.id === id ? { ...schedule, desc: e.target.value } : schedule
+        schedule.id === id
+          ? { ...schedule, description: e.target.value }
+          : schedule
       );
       console.log(schedules);
     };
