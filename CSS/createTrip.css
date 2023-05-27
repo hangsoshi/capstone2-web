@@ -479,6 +479,11 @@ iframe {
   justify-content: space-around;
 }
 
+.form-info small , .form-info1 small {
+  color: red;
+  
+}
+
 .form-back-start button {
   padding: 10px 20px;
   cursor: pointer;
@@ -695,6 +700,7 @@ iframe {
 } */
 
 .destination-list {
-  overflow-x: scroll;
+  overflow: hidden;
+  overflow-y: scroll;
   height: 200px;
 }
