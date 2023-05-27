@@ -30,7 +30,6 @@ fetch(
   "http://127.0.0.1:8000/api/personal/room/roomOfUser?user_id=" + `${login.user_info.user_profile[0].user_id}`)
   .then((res) => res.json())
   .then((data) => {
-    console.log(data);
     rooms.innerHTML = `<option value="" selected disabled hidden>Chọn nhóm</option>`;
     rooms.innerHTML += data
       .map(
@@ -202,15 +201,13 @@ const tenchuyendi = $(".tenchuyendi");
 const diemden = $(".diemden");
 const tungay = $(".tungay");
 const denngay = $(".denngay");
-const motachuyendi = $(".description");
+const description = $(".description");
 
 denngay.onblur = (e) => {
-  console.log(e.target);
   createTourState.to_date = e.target.value;
 };
 
 tungay.onblur = (e) => {
-  console.log(e.target.value);
   createTourState.from_date = e.target.value;
 };
 
@@ -218,9 +215,95 @@ tenchuyendi.onkeydown = (e) => {
   createTourState.name = e.target.value;
 };
 
-motachuyendi.onkeydown = (e) => {
+description.onkeydown = (e) => {
   createTourState.description = e.target.value;
 };
+
+// ------------------------------- image -----------------------
+
+let objImage;
+uploadImage.onclick = () => {
+  importImage.click();
+  importImage.onchange = (e) => {
+    const formdata = new FormData();
+    formdata.append("directory", "thumbnail");
+    formdata.append("file", e.target.files[0]);
+    fetch("http://localhost:3000/upload", {
+      method: "post",
+      body: formdata,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        createTourState.image = data.data.fileUrl;
+        uploadImage.innerText = null;
+        uploadImage.style.backgroundImage = `url('${data.data.fileUrl}')`;
+      });
+  };
+};
+
+// ----------- Validate form ---------------
+
+const listError = ["required", "maxLength", "dateFrom", "dateTo", "emoji", "specialCharacter"]
+let valid;
+function validateForm(control, listError) {
+  var dateFromValue = new Date(tungay.value);
+  var dateToValue = new Date(denngay.value);
+  var dateNow = new Date();
+
+  let warning = [];
+  valid = listError.every((error) => {
+    if (error === 'required' && !control.value) {
+      warning.push('Không được để trống');
+      return false;
+    }
+    if (error === 'dateFrom' && (dateFromValue < dateNow || dateFromValue > dateToValue)) {
+      warning.push('Ngày đi không hợp lệ');
+      return false;
+    }
+    if (error === 'dateTo' && (dateToValue < dateFromValue)) {
+      warning.push('Ngày đến không hợp lệ');
+      return false;
+    }
+    if (error === 'maxLength' && control.value.length > 50) {
+      warning.push('Không quá 50 kí tự');
+      return false;
+    }
+    return true;
+  })
+  document.querySelector(
+    `.${[...control.classList].join(".")} ~ small`
+  ).innerText = warning.join(', ');
+}
+var controlLists = document.querySelectorAll('.form-control')
+console.log(controlLists);
+controlLists.forEach((control) => {
+  // console.log(control);
+  control.onkeyup = (e) => {
+    console.log(e.target.classList[1]);
+    switch (e.target.classList[1]) {
+      case 'tenchuyendi': {
+        validateForm(e.target, ["required"]);
+        break;
+      }
+      case 'tungay': {
+        validateForm(e.target, ["dateFrom"]);
+        break;
+      }
+      case 'denngay': {
+        validateForm(e.target, ["dateTo"]);
+        break;
+      }
+      case 'diemden': {
+        validateForm(e.target, ["required"]);
+        break;
+      }
+      case 'description': {
+        validateForm(e.target, ["required"]);
+        break;
+      }
+    }
+  }
+})
 
 // ---------------------------------   create trip   ----------------------------------------
 const btnCreateTrip = document.querySelector(".create-trip");
@@ -251,7 +334,7 @@ if (updateTour) {
         .toISOString()
         .slice(0, 10);
       diemden.value = createTourState.to_where;
-      motachuyendi.value = createTourState.description;
+      description.value = createTourState.description;
       createTourState.image = data.image;
       uploadImage.innerText = null;
       uploadImage.style.backgroundImage = `url('${createTourState.image}')`;
@@ -263,71 +346,56 @@ if (updateTour) {
     });
 }
 
-btnCreateTrip.onclick = () => {
-  if (updateTour) {
-    console.log(updateTour);
-    fetch(`http://127.0.0.1:8000/api/personal/tour/update/${updateTour}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        ...createTourState,
-        owner_id: Number(login.user_info.user_profile[0].user_id)
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.status === 200) {
-          createToast("success", "Success: Cập nhật thành công");
-          localStorage.removeItem("tourIdUpdate");
-        }
-      });
-  } else {
-    fetch("http://127.0.0.1:8000/api/personal/tour/create", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        ...createTourState,
-        owner_id: Number(login.user_info.user_profile[0].user_id),
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        createToast("success");
-        setTimeout(() => {
-          window.location.reload(true);
-        }, 5000);
+btnCreateTrip.onclick = (e) => {
+  e.preventDefault();
+  var keyupEvent = new Event('keyup');
+  controlLists.forEach((control) => {
+    control.dispatchEvent(keyupEvent);
+  })
+  if (valid) {
+    if (updateTour) {
+      fetch(`http://127.0.0.1:8000/api/personal/tour/update/${updateTour}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...createTourState,
+          owner_id: Number(login.user_info.user_profile[0].user_id)
+        }),
       })
-      .catch((error) => {
-        createToast("error");
-      });
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.status === 200) {
+            createToast("success", "Success: Cập nhật thành công");
+            localStorage.removeItem("tourIdUpdate");
+          }
+        });
+    } else {
+      fetch("http://127.0.0.1:8000/api/personal/tour/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...createTourState,
+          owner_id: Number(login.user_info.user_profile[0].user_id),
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          createToast("success");
+          setTimeout(() => {
+            window.location.reload(true);
+          }, 5000);
+        })
+        .catch((error) => {
+          createToast("error");
+        });
+    }
   }
 };
 
-// ------------------------------- image -----------------------
-
-let objImage;
-uploadImage.onclick = () => {
-  importImage.click();
-  importImage.onchange = (e) => {
-    const formdata = new FormData();
-    formdata.append("directory", "thumbnail");
-    formdata.append("file", e.target.files[0]);
-    fetch("http://localhost:3000/upload", {
-      method: "post",
-      body: formdata,
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        createTourState.image = data.data.fileUrl;
-        uploadImage.innerText = null;
-        uploadImage.style.backgroundImage = `url('${data.data.fileUrl}')`;
-      });
-  };
-};
 
 if (!login) {
   btnCreateTrip.disabled = true;
@@ -335,57 +403,9 @@ if (!login) {
   btnCreateTrip.enabled = true;
 }
 
-// ----------- Validate form ---------------
-function validateMaxlength(e, length) {
-  if (e.target.value.length > length) {
-    e.target.classList.add("error");
-    document.querySelector(
-      `.${[...e.target.classList].join(".")} ~ p`
-    ).innerText = `Không quá ${length} kí tự`;
-  } else {
-    e.target.classList.remove("error");
-    document.querySelector(
-      `.${[...e.target.classList].join(".")} ~ p`
-    ).innerText = "";
-  }
+
+tungay.onchange = (e) => {
+  console.log(e.target.value);
+  const a = new Date(e.target.value)
+  console.log(a);
 }
-
-function validateDateFrom(e) {
-  var dateValue = new Date(e.target.value);
-  var dateNow = new Date();
-
-  if (dateNow >= dateValue) {
-    e.target.classList.add("error");
-    document.querySelector(
-      `.${[...e.target.classList].join(".")} ~ p`
-    ).innerText = `Ngày không hợp lệ`;
-  } else {
-    e.target.classList.remove("error");
-    document.querySelector(
-      `.${[...e.target.classList].join(".")} ~ p`
-    ).innerText = "";
-  }
-}
-
-function validateDateTo(e) {
-  let dateFrom = document.querySelector(".tungay").value;
-  let dateFromValue = new Date(dateFrom);
-  let dateToValue = new Date(e.target.value);
-
-  if (dateToValue < dateFromValue) {
-    e.target.classList.add("error");
-    document.querySelector(
-      `.${[...e.target.classList].join(".")} ~ p`
-    ).innerText = `Ngày không hợp lệ`;
-  } else {
-    e.target.classList.remove("error");
-    document.querySelector(
-      `.${[...e.target.classList].join(".")} ~ p`
-    ).innerText = "";
-  }
-}
-
-tenchuyendi.onchange = (e) => validateMaxlength(e, 40);
-motachuyendi.onchange = (e) => validateMaxlength(e, 50);
-tungay.onchange = (e) => validateDateFrom(e);
-denngay.onchange = (e) => validateDateTo(e);

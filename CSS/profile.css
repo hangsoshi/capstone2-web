@@ -242,7 +242,7 @@ body {
 .form-profile-input {
   width: 100%;
   margin-left: 55px;
-  display: flex;
+  /* display: flex; */
 }
 
 .form-profile-text {
@@ -1162,4 +1162,12 @@ td {
     font-size: 1.1rem;
     padding: 8px 15px;
   }
+}
+
+
+
+/* ------------------------------------------ */
+
+.form-profile-input small ,.form-profile-bio small{
+  color: red;
 }

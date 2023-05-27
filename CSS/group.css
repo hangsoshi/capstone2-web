@@ -1023,3 +1023,7 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.form-group small {
+  color: red;
+}
