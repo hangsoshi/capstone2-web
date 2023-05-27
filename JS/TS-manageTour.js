@@ -101,6 +101,7 @@ function handleDelete(id) {
   idDelete = id;
 }
 function handleUpdate(id) {
+  console.log(id);
   localStorage.setItem("ts-tour-update", id);
   location.href = "TS-postTour.html";
 }
