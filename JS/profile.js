@@ -471,9 +471,6 @@ function validateForm(control, listError) {
 // // -----------------------  update profile user ------------------------------------
 
 const apiUserProfile = "http://127.0.0.1:8000/api/user/profile/update";
-inputUserName.value = login.user_info.name;
-inputPhoneNumber.value = login.user_info.phone_number;
-inputAbout.value = login.user_info.about;
 
 function getInfoUser() {
     var keyupEvent = new Event('keyup');

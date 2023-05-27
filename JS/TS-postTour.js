@@ -1,56 +1,118 @@
 const login = JSON.parse(window.localStorage.getItem("login"));
+const tsTourUpdate = localStorage.getItem("ts-tour-update");
+
+const nameTrip = document.querySelector(".nameTrip");
+const startPlace = document.querySelector(".startPlace");
+const fromDate = document.querySelector(".fromDate");
+const toDate = document.querySelector(".toDate");
+const cost = document.querySelector(".cost");
+const numberPeople = document.querySelector(".numberPeople");
 
 const requestInputs = document.querySelectorAll(".request");
 const createTourButton = document.querySelector(".create-tour-submit");
 let schedules = [];
-createTourButton.onclick = () => {
-  const request = {
-    name: "",
-    ts_id: Number(login.user_info.user_profile[0].id),
-    description: "",
-    address: "",
-    from_date: "",
-    to_date: "",
-    price: 0,
-    slot: 0,
-    schedule: [],
-    images: [],
-  };
-  requestInputs.forEach((input) => {
-    const { key } = input.dataset;
-    if (key === "price" || key === "slot") {
-      request[key] = Number(input.value);
-    } else {
-      request[key] = input.value;
-    }
-  });
-  fetch("http://127.0.0.1:8000/api/ts/tour/create", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      ...request,
-      images: JSON.stringify(countImages),
-      schedule: JSON.stringify(
-        schedules.map((item, index) => {
-          delete item.id;
-          return {
-            ...item,
-            order: index + 1,
-          };
-        })
-      ),
-    }),
-  })
-    .then((response) => response.json())
+let updateImages = [];
+if (tsTourUpdate) {
+  fetch(`http://localhost:8000/api/ts/tour/${tsTourUpdate}`)
+    .then((res) => res.json())
     .then((data) => {
-      createToast("success", data.msg);
-      setTimeout(()=>{
-        window.location.reload();
-      },5000)
+      const target = data.data;
+      console.log(target);
+      nameTrip.value = target.name;
+      startPlace.value = target.address;
+      fromDate.value = target.from_date;
+      toDate.value = target.to_date;
+      cost.value = target.price;
+      numberPeople.value = target.slot;
+      postSchedualInput.innerHTML = renderSchedules(target.schedule).join("");
+      schedules = target.schedule;
+      updateImages = target.images;
+    });
+}
+createTourButton.onclick = () => {
+  if (tsTourUpdate) {
+    const request = {
+      name: "",
+      ts_id: Number(login.user_info.user_profile[0].id),
+      description: "",
+      address: "",
+      from_date: "",
+      to_date: "",
+      price: 0,
+      slot: 0,
+      schedule: [],
+      images: [],
+    };
+    requestInputs.forEach((input) => {
+      const { key } = input.dataset;
+      if (key === "price" || key === "slot") {
+        request[key] = Number(input.value);
+      } else {
+        request[key] = input.value;
+      }
+    });
+    const query =
+      Object.keys(request).reduce((prev, next) => {
+        return prev + next + "=" + request[next] + "&";
+      }, "") + `${JSON.stringify(updateImages)}&${JSON.stringify(schedules)}`;
+    fetch(
+      `http://localhost:8000/api/ts/tour/${tsTourUpdate}?${query}${JSON.stringify(
+        updateImages
+      )}&${JSON.stringify(schedules)}`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        localStorage.removeItem("ts-tour-update");
+      });
+  } else {
+    const request = {
+      name: "",
+      ts_id: Number(login.user_info.user_profile[0].id),
+      description: "",
+      address: "",
+      from_date: "",
+      to_date: "",
+      price: 0,
+      slot: 0,
+      schedule: [],
+      images: [],
+    };
+    requestInputs.forEach((input) => {
+      const { key } = input.dataset;
+      if (key === "price" || key === "slot") {
+        request[key] = Number(input.value);
+      } else {
+        request[key] = input.value;
+      }
+    });
+    fetch("http://127.0.0.1:8000/api/ts/tour/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ...request,
+        images: JSON.stringify(countImages),
+        schedule: JSON.stringify(
+          schedules.map((item, index) => {
+            delete item.id;
+            return {
+              ...item,
+              order: index + 1,
+            };
+          })
+        ),
+      }),
     })
-    .catch((error) => createToast("error"));
+      .then((response) => response.json())
+      .then((data) => {
+        createToast("success", data.msg);
+        setTimeout(() => {
+          window.location.reload();
+        }, 5000);
+      })
+      .catch((error) => createToast("error"));
+  }
 };
 
 // --------- next- prev --------------
@@ -58,24 +120,6 @@ const postImgWrap = document.querySelector(".post-img-wrap");
 const wraperPostInf = document.querySelector(".wraper-post-inf");
 const controlNext = document.querySelector(".control-next button");
 const controlPrev = document.querySelector(".control-prev");
-
-// const avatar = document.querySelector(".img-tour");
-// console.log(avatar);
-// const avatarInputFile = document.querySelector('.drop-input')
-// console.log(avatarInputFile);
-// avatarInputFile.onchange = (e) => {
-//   const formdata = new FormData()
-//   formdata.append('directory', 'avatar')
-//   formdata.append('file', e.target.files[0])
-//   fetch('http://localhost:3000/upload', {
-//     method: 'post',
-//     body: formdata
-//   })
-//     .then(res => res.json())
-//     .then(data => {
-//       avatar.src = data.data.fileUrl
-//     })
-// }
 
 controlNext.onclick = function () {
   postImgWrap.style.display = "none";
@@ -94,8 +138,8 @@ const postSchedualInput = document.querySelector(".post-schedual");
 let postControl = document.querySelectorAll(".post-control i");
 
 const ID = () => "_" + Math.random().toString(36).substring(2, 9);
-const renderSchedules = () =>
-  schedules.map((schedule, index) => {
+const renderSchedules = (list) =>
+  list.map((schedule, index) => {
     return `<div class="post-schedual-input">
   <div class="post-item">
     <div class="post-control">
@@ -127,7 +171,9 @@ const renderSchedules = () =>
     <textarea data-id="${
       schedule.id
     }" data-type="description" cols="30" rows="10"
-    placeholder="Mô tả nội dung chuyến đi..." class="schedule-description"></textarea>
+    placeholder="Mô tả nội dung chuyến đi..." class="schedule-description" >${
+      schedule?.description || ""
+    }</textarea>
     </div>
   </div>
 </div>`;
@@ -172,7 +218,7 @@ const searching = (value, listdom, itemclass) => {
               ? { ...schedule, name: text, lat, lon }
               : schedule
           );
-          postSchedualInput.innerHTML = renderSchedules().join("");
+          postSchedualInput.innerHTML = renderSchedules(schedules).join("");
           const scheduleNames = document.querySelectorAll(".schedule-name");
           const scheduleDescriptions = document.querySelectorAll(
             ".schedule-description"
@@ -208,7 +254,7 @@ const searching = (value, listdom, itemclass) => {
             button.onclick = () => {
               const id = button.dataset.id;
               schedules = schedules.filter((schedule) => schedule.id !== id);
-              postSchedualInput.innerHTML = renderSchedules().join("");
+              postSchedualInput.innerHTML = renderSchedules(schedules).join("");
             };
           });
         };
@@ -224,7 +270,7 @@ postSchedualAdd.onclick = () => {
     lat: null,
     lon: null,
   });
-  postSchedualInput.innerHTML = renderSchedules().join("");
+  postSchedualInput.innerHTML = renderSchedules(schedules).join("");
   const scheduleNames = document.querySelectorAll(".schedule-name");
   const scheduleDescriptions = document.querySelectorAll(
     ".schedule-description"
@@ -257,7 +303,7 @@ postSchedualAdd.onclick = () => {
     button.onclick = () => {
       const id = button.dataset.id;
       schedules = schedules.filter((schedule) => schedule.id !== id);
-      postSchedualInput.innerHTML = renderSchedules().join("");
+      postSchedualInput.innerHTML = renderSchedules(schedules).join("");
     };
   });
 };
@@ -331,13 +377,6 @@ function handleDelete(id) {
 }
 
 // --------- validate form ----------
-const nameTrip = document.querySelector(".nameTrip");
-const startPlace = document.querySelector(".startPlace");
-const fromDate = document.querySelector(".fromDate");
-const toDate = document.querySelector(".toDate");
-const cost = document.querySelector(".cost");
-const numberPeople = document.querySelector(".numberPeople");
-
 function validateMaxlength(e, length) {
   if (e.target.value.length > length) {
     e.target.classList.add("error");
@@ -441,34 +480,6 @@ fromDate.onchange = (e) => validateDateFrom(e);
 toDate.onchange = (e) => validateDateTo(e);
 cost.onchange = (e) => checkCost(e);
 numberPeople.onchange = (e) => checkNumberPeople(e);
-
-// const dataShow = document.querySelector(".drop-input");
-// const avatarShow = document.querySelector(".img_listTour");
-// // const avatarInputFile = document.querySelector('.drop-input')
-// console.log(avatarShow);
-// var aaaa = document.querySelectorAll(".img_listTour")
-// dataShow.onchange = (e) => {
-//   var listImg = e.target.files;
-//   for(var i=0 ; i<listImg.length ; i++){
-//     const formdata = new FormData()
-//     formdata.append('directory', 'avatarShow')
-//     console.log(listImg[i]);
-//     formdata.append('file',listImg[i])
-//     fetch('http://localhost:3000/upload', {
-//       method: 'post',
-//       body: formdata
-//     })
-//       .then(res => res.json())
-//       .then(data => {
-//         for(var i=0 ; i<listImg.length ; i++){
-//           aaaa[i].src = data.data.fileUrl;
-//           countImages.push(data.data.fileUrl)
-//         }
-//         console.log();
-//       })
-
-//     }console.log(formdata);
-//   }
 
 const notifications = document.querySelector(".notifications");
 // Object containing details for different types of toasts
