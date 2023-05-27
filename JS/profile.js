@@ -26,6 +26,12 @@ const avatar = document.querySelector(".avatar_user_header");
 const targetProfileId = localStorage.getItem("target-profile-id");
 const avatarInputFile = document.querySelector(".avatar-input-file");
 
+const btnStartUpdate = document.querySelector('.btn-update-profile')
+console.log(typeof targetProfileId, typeof login.user_info.user_profile[0].user_id)
+if (Number(targetProfileId) !== login.user_info.user_profile[0].user_id) {
+    btnStartUpdate.style.display = 'none'
+}
+
 avatar.onclick = () => {
   avatarInputFile.click();
 };
@@ -240,38 +246,45 @@ fetch(`http://localhost:8000/api/user/${targetProfileId}`)
 // // -----------------------  update profile user ------------------------------------
 
 const apiUserProfile = "http://127.0.0.1:8000/api/user/profile/update";
+let valid;
 
 function getInfoUser() {
-  fetch(apiUserProfile, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      // id: login.user_info.user_profile[0].user_id,
-      id: targetProfileId,
-      name: inputUserName.value,
-      phone_number: inputPhoneNumber.value,
-      gender: inputGender.value,
-      about: inputAbout.value,
-      avatar: avatar.src,
-    }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.status === 200) {
-        console.log(data.user_info);
-        window.localStorage.setItem("login", JSON.stringify(data));
-        var datas = JSON.parse(window.localStorage.getItem("login"));
-        console.log(datas);
-        createToast("success");
-        setTimeout(() => {
-          window.location.reload();
-          renderUserInfo(datas);
-        }, 5000);
-      }
-    })
-    .catch((error) => alert(error));
+    var keyupEvent = new Event("keyup");
+  controlList.forEach((control) => {
+    control.dispatchEvent(keyupEvent);
+  });
+  if (valid) { 
+      fetch(apiUserProfile, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          // id: login.user_info.user_profile[0].user_id,
+          id: targetProfileId,
+          name: inputUserName.value,
+          phone_number: inputPhoneNumber.value,
+          gender: inputGender.value,
+          about: inputAbout.value,
+          avatar: avatar.src,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.status === 200) {
+            console.log(data.user_info);
+            window.localStorage.setItem("login", JSON.stringify(data));
+            var datas = JSON.parse(window.localStorage.getItem("login"));
+            console.log(datas);
+            createToast("success");
+            setTimeout(() => {
+              window.location.reload();
+              renderUserInfo(datas);
+            }, 5000);
+          }
+        })
+        .catch((error) => alert(error));
+  }
 }
 
 var html_UserInfo = $(".profile-genaral");
@@ -503,7 +516,6 @@ const listError = [
   "emoji",
   "specialCharacter",
 ];
-let valid;
 function validateForm(control, listError) {
   let warning = [];
   valid = listError.every((error) => {
@@ -524,48 +536,4 @@ function validateForm(control, listError) {
   document.querySelector(
     `.${[...control.classList].join(".")} ~ small`
   ).innerText = warning.join(", ");
-}
-
-// // -----------------------  update profile user ------------------------------------
-
-inputUserName.value = login.user_info.name;
-inputPhoneNumber.value = login.user_info.phone_number;
-inputAbout.value = login.user_info.about;
-
-function getInfoUser() {
-  var keyupEvent = new Event("keyup");
-  controlList.forEach((control) => {
-    control.dispatchEvent(keyupEvent);
-  });
-  if (valid) {
-    fetch(apiUserProfile, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: login.user_info.user_profile[0].user_id,
-        name: inputUserName.value,
-        phone_number: inputPhoneNumber.value,
-        gender: inputGender.value,
-        about: inputAbout.value,
-        avatar: avatar.src,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.status === 200) {
-          console.log(data.user_info);
-          window.localStorage.setItem("login", JSON.stringify(data));
-          var datas = JSON.parse(window.localStorage.getItem("login"));
-          console.log(datas);
-          createToast("success");
-          setTimeout(() => {
-            window.location.reload();
-            renderUserInfo(datas);
-          }, 5000);
-        }
-      })
-      .catch((error) => alert(error));
-  }
 }
