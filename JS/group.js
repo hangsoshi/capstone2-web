@@ -78,10 +78,10 @@ roomDescription.onblur = (e) => {
 if (login) {
   createRoom.onclick = (e) => {
     e.preventDefault();
-    var keyupEvent = new Event('keyup');
+    var keyupEvent = new Event("keyup");
     controlLists.forEach((control) => {
       control.dispatchEvent(keyupEvent);
-    })
+    });
     if (valid) {
       e.preventDefault();
       const inputs = document.querySelectorAll(".form-control");
@@ -148,7 +148,6 @@ function getTours() {
 getTours();
 
 function joinRoom(idRoom) {
-  console.log(1);
   socketRoom.emit("join-room", {
     roomId: idRoom,
     joiner: login.user_info.user_profile[0].user_id,
@@ -212,56 +211,59 @@ const numberPeople = document.querySelector(".numberPeople");
 const description = document.querySelector(".description");
 const nameGroup = document.querySelector(".nameGroup");
 
-
-
-const listError = ["required", "numberInvalid", "maxLength", "email", "emoji", "specialCharacter"]
+const listError = [
+  "required",
+  "numberInvalid",
+  "maxLength",
+  "email",
+  "emoji",
+  "specialCharacter",
+];
 let valid;
 function validateForm(control, listError) {
   let warning = [];
   valid = listError.every((error) => {
-    if (error === 'required' && !control.value) {
-      warning.push('Không được để trống');
+    if (error === "required" && !control.value) {
+      warning.push("Không được để trống");
       return false;
     }
-    if (error === 'numberInvalid' && (control.value > 100 || control.value <= 0)) {
-      warning.push('Số người phải >0 và <100');
+    if (
+      error === "numberInvalid" &&
+      (control.value > 100 || control.value <= 0)
+    ) {
+      warning.push("Số người phải >0 và <100");
       return false;
     }
-    if (error === 'maxLength' && control.value.length > 200) {
-      warning.push('Không vượt quá 200 kí tự');
+    if (error === "maxLength" && control.value.length > 200) {
+      warning.push("Không vượt quá 200 kí tự");
       return false;
     }
     return true;
-  })
+  });
   document.querySelector(
     `.${[...control.classList].join(".")} ~ small`
-  ).innerText = warning.join(', ');
+  ).innerText = warning.join(", ");
 }
 
-
-var controlLists = document.querySelectorAll('.form-control')
+var controlLists = document.querySelectorAll(".form-control");
 controlLists.forEach((control) => {
   control.onkeyup = (e) => {
     switch (e.target.classList[1]) {
-
-      case 'nameGroup': {
+      case "nameGroup": {
         validateForm(e.target, ["required"]);
         break;
       }
-      case 'numberPeople': {
+      case "numberPeople": {
         validateForm(e.target, ["required", "numberInvalid"]);
         break;
       }
-      case 'description': {
+      case "description": {
         validateForm(e.target, ["required", "maxLength"]);
         break;
       }
     }
-  }
-})
-
-
-
+  };
+});
 
 // function checkNumberPeople(e) {
 //   let peopleValue = Number(e.target.value);
