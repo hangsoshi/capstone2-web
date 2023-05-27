@@ -18,7 +18,6 @@ if (tsTourUpdate) {
     .then((res) => res.json())
     .then((data) => {
       const target = data.data;
-      console.log(target);
       nameTrip.value = target.name;
       startPlace.value = target.address;
       fromDate.value = target.from_date;
@@ -27,7 +26,9 @@ if (tsTourUpdate) {
       numberPeople.value = target.slot;
       postSchedualInput.innerHTML = renderSchedules(target.schedule).join("");
       schedules = target.schedule;
-      updateImages = target.images.map((item) => item.image_url);
+      updateImages = target.images.map((item) =>{
+        return item.image_url.slice(1,item.image_url.length - 1)});
+      console.log(updateImages)
     });
 }
 createTourButton.onclick = () => {
@@ -246,7 +247,7 @@ const searching = (value, listdom, itemclass) => {
             ".destination-schedules"
           );
           scheduleNames.forEach((input) => {
-            input.onkeydown = (e) => {
+            input.addEventListener('change', (e) => {
               const id = input.dataset.id;
               if (e.key === "Enter") {
                 const targetList = [...listSearchDestination].find(
@@ -254,10 +255,10 @@ const searching = (value, listdom, itemclass) => {
                 );
                 searching(e.target.value, targetList, "destination-schedule");
               }
-            };
+            })
           });
           scheduleDescriptions.forEach((input) => {
-            input.onchange = (e) => {
+            input.addEventListener('change', (e) => {
               const id = input.dataset.id;
               schedules = schedules.map((schedule) =>
                 schedule.id === id
@@ -265,7 +266,7 @@ const searching = (value, listdom, itemclass) => {
                   : schedule
               );
               console.log(schedules);
-            };
+            })
           });
           const removeScheduleButton =
             document.querySelectorAll(".remove-schedule");
@@ -309,7 +310,7 @@ postSchedualAdd.onclick = () => {
     };
   });
   scheduleDescriptions.forEach((input) => {
-    input.onchange = (e) => {
+    input.addEventListener('change', (e) => {
       const id = input.dataset.id;
       schedules = schedules.map((schedule) =>
         schedule.id === id
@@ -317,7 +318,7 @@ postSchedualAdd.onclick = () => {
           : schedule
       );
       console.log(schedules);
-    };
+    })
   });
   const removeScheduleButton = document.querySelectorAll(".remove-schedule");
   removeScheduleButton.forEach((button) => {
@@ -495,12 +496,12 @@ function checkNumberPeople(e) {
   }
 }
 
-nameTrip.onchange = (e) => validateMaxlength(e, 40);
-startPlace.onchange = (e) => emptyValue(e);
-fromDate.onchange = (e) => validateDateFrom(e);
-toDate.onchange = (e) => validateDateTo(e);
-cost.onchange = (e) => checkCost(e);
-numberPeople.onchange = (e) => checkNumberPeople(e);
+// nameTrip.onchange = (e) => validateMaxlength(e, 40);
+// startPlace.onchange = (e) => emptyValue(e);
+// fromDate.onchange = (e) => validateDateFrom(e);
+// toDate.onchange = (e) => validateDateTo(e);
+// cost.onchange = (e) => checkCost(e);
+// numberPeople.onchange = (e) => checkNumberPeople(e);
 
 const notifications = document.querySelector(".notifications");
 // Object containing details for different types of toasts
