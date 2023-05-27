@@ -168,7 +168,6 @@ const userLoginId = localStorage.getItem("id");
       button.addEventListener("click", () => {
         const id = button.dataset.verifyid;
         const noti = button.dataset.notiid;
-        verfiyJoinRoom(Number(id), true);
         fetch(`http://localhost:3002/api/client/notifications`, {
           method: "put",
           headers: {
@@ -181,13 +180,13 @@ const userLoginId = localStorage.getItem("id");
         })
           .then((res) => res.json())
           .then((data) => console.log(data));
+        verfiyJoinRoom(Number(id), true);
       });
     });
     deniedButtons.forEach((button) => {
       button.addEventListener("click", () => {
         const id = button.dataset.verifyid;
         const noti = button.dataset.notiid;
-        verfiyJoinRoom(Number(id), false);
         fetch(`http://localhost:3002/api/client/notifications`, {
           method: "put",
           headers: {
@@ -200,6 +199,7 @@ const userLoginId = localStorage.getItem("id");
         })
           .then((res) => res.json())
           .then((data) => console.log(data));
+        verfiyJoinRoom(Number(id), false);
       });
     });
     notificationNoActions.forEach((item) => {
@@ -229,7 +229,6 @@ const userLoginId = localStorage.getItem("id");
           <div class="show-content">
               <div class="show-content-top">
                   <p>${message}<b> ${room}</b></p>
-                  <p class="show-content-top-time">2 giờ trước</p>
               </div>
           </div>
         </div>`;
@@ -238,6 +237,7 @@ const userLoginId = localStorage.getItem("id");
   });
 
   socket.on("join-room", (data) => {
+    console.log(data);
     const notification = `<div class="wrap-show-content">
         <div class="show-avatar">
             <img src="IMAGES/slides/slide-1.jpg" alt="">
@@ -259,12 +259,32 @@ const userLoginId = localStorage.getItem("id");
     html.innerHTML = notification;
     const confirmButton = html.querySelector(".confirm");
     const deniedButton = html.querySelector(".denied");
-    confirmButton.addEventListener("click", () =>
-      verfiyJoinRoom(data.verifyId, true)
-    );
-    deniedButton.addEventListener("click", () =>
-      verfiyJoinRoom(data.verifyId, false)
-    );
+    confirmButton.addEventListener("click", () => {
+      verfiyJoinRoom(data.verifyId, true);
+      fetch(`http://localhost:3002/api/client/notifications`, {
+        method: "put",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: data.notiid,
+          value: true,
+        }),
+      });
+    });
+    deniedButton.addEventListener("click", () => {
+      verfiyJoinRoom(data.verifyId, false);
+      fetch(`http://localhost:3002/api/client/notifications`, {
+        method: "put",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: data.notiid,
+          value: true,
+        }),
+      });
+    });
     notificationContainer.appendChild(html);
   });
 
