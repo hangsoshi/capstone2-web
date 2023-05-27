@@ -26,6 +26,12 @@ const avatar = document.querySelector(".avatar_user_header");
 const targetProfileId = localStorage.getItem("target-profile-id");
 const avatarInputFile = document.querySelector(".avatar-input-file");
 
+const btnStartUpdate = document.querySelector('.btn-update-profile')
+console.log(typeof targetProfileId, typeof login.user_info.user_profile[0].user_id)
+if (Number(targetProfileId) !== login.user_info.user_profile[0].user_id) {
+    btnStartUpdate.style.display = 'none'
+}
+
 avatar.onclick = () => {
   avatarInputFile.click();
 };
@@ -211,14 +217,13 @@ fetch(`http://localhost:8000/api/user/${targetProfileId}`)
   .then((data) => {
     console.log(data);
     const user_info = data.user_info;
-    console.log(info);
-    userName[0].innerText = user_info.user.name;
-    userName[1].innerText = user_info.user.name;
-    userPhone.innerText = user_info.user.phone_number;
-    userEmail.innerText = user_info.user.email;
-    userGender.innerText = user_info.gender;
-    userAbout.innerText = user_info.user.about;
-    avatar.src = user_info.avatar;
+    userName[0].innerText = user_info[0].name;
+    userName[1].innerText = user_info[0].name;
+    userPhone.innerText = user_info[0].phone_number;
+    userEmail.innerText = user_info[0].email;
+    userGender.innerText = user_info[0].gender;
+    userAbout.innerText = user_info[0].about;
+    avatar.src = user_info[0].avatar;
   });
 
 // if (login.status === 200) {
@@ -241,38 +246,45 @@ fetch(`http://localhost:8000/api/user/${targetProfileId}`)
 // // -----------------------  update profile user ------------------------------------
 
 const apiUserProfile = "http://127.0.0.1:8000/api/user/profile/update";
+let valid;
 
 function getInfoUser() {
-  fetch(apiUserProfile, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      // id: login.user_info.user_profile[0].user_id,
-      id: targetProfileId,
-      name: inputUserName.value,
-      phone_number: inputPhoneNumber.value,
-      gender: inputGender.value,
-      about: inputAbout.value,
-      avatar: avatar.src,
-    }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.status === 200) {
-        console.log(data.user_info);
-        window.localStorage.setItem("login", JSON.stringify(data));
-        var datas = JSON.parse(window.localStorage.getItem("login"));
-        console.log(datas);
-        createToast("success");
-        setTimeout(() => {
-          window.location.reload();
-          renderUserInfo(datas);
-        }, 5000);
-      }
-    })
-    .catch((error) => alert(error));
+    var keyupEvent = new Event("keyup");
+  controlList.forEach((control) => {
+    control.dispatchEvent(keyupEvent);
+  });
+  if (valid) { 
+      fetch(apiUserProfile, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          // id: login.user_info.user_profile[0].user_id,
+          id: targetProfileId,
+          name: inputUserName.value,
+          phone_number: inputPhoneNumber.value,
+          gender: inputGender.value,
+          about: inputAbout.value,
+          avatar: avatar.src,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.status === 200) {
+            console.log(data.user_info);
+            window.localStorage.setItem("login", JSON.stringify(data));
+            var datas = JSON.parse(window.localStorage.getItem("login"));
+            console.log(datas);
+            createToast("success");
+            setTimeout(() => {
+              window.location.reload();
+              renderUserInfo(datas);
+            }, 5000);
+          }
+        })
+        .catch((error) => alert(error));
+  }
 }
 
 var html_UserInfo = $(".profile-genaral");
@@ -465,106 +477,63 @@ fetch(
           <p>Host: ${item.host_name}</p>
       </div>
   </div>`
-        groups.innerHTML += htmls.join("");
-    });
-
+    );
+    groups.innerHTML += htmls.join("");
+  });
 
 // ----------------------------------------------------------------------------
 
-
-
-const controlList = document.querySelectorAll('.form-profile-text')
+const controlList = document.querySelectorAll(".form-profile-text");
 controlList.forEach((control) => {
   control.onkeyup = (e) => {
     console.log(e.target.classList[1]);
     switch (e.target.classList[1]) {
-      case 'input-username': {
+      case "input-username": {
         validateForm(e.target, ["required"]);
         break;
       }
-      case 'form-bio': {
+      case "form-bio": {
         validateForm(e.target, ["required"]);
         break;
       }
-      case 'input-phonenumber': {
+      case "input-phonenumber": {
         validateForm(e.target, ["required", "phone"]);
         break;
       }
-      default: break;
+      default:
+        break;
     }
-  }
-})
-const phoneRegex =
-  /^\(?[0]{1}?([0-9]{2})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+  };
+});
+const phoneRegex = /^\(?[0]{1}?([0-9]{2})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 const regexEmail =
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-const listError = ["required", "maxLength", "phone", "email", "emoji", "specialCharacter"]
-let valid;
+const listError = [
+  "required",
+  "maxLength",
+  "phone",
+  "email",
+  "emoji",
+  "specialCharacter",
+];
 function validateForm(control, listError) {
   let warning = [];
   valid = listError.every((error) => {
-    if (error === 'required' && !control.value) {
-      warning.push('Không được để trống');
+    if (error === "required" && !control.value) {
+      warning.push("Không được để trống");
       return false;
     }
-    if (error === 'phone' && !phoneRegex.test(control.value)) {
-      warning.push('sdt không hợp lệ');
+    if (error === "phone" && !phoneRegex.test(control.value)) {
+      warning.push("sdt không hợp lệ");
       return false;
     }
-    if (error === 'email' && !regexEmail.test(control.value)) {
-      warning.push('Email k hợp lệ');
+    if (error === "email" && !regexEmail.test(control.value)) {
+      warning.push("Email k hợp lệ");
       return false;
     }
     return true;
-  })
+  });
   document.querySelector(
     `.${[...control.classList].join(".")} ~ small`
-  ).innerText = warning.join(', ');
-}
-
-
-
-// // -----------------------  update profile user ------------------------------------
-
-const apiUserProfile = "http://127.0.0.1:8000/api/user/profile/update";
-inputUserName.value = login.user_info.name;
-inputPhoneNumber.value = login.user_info.phone_number;
-inputAbout.value = login.user_info.about;
-
-function getInfoUser() {
-    var keyupEvent = new Event('keyup');
-    controlList.forEach((control) => {
-      control.dispatchEvent(keyupEvent);
-    })
-    if (valid) {
-        fetch(apiUserProfile, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                id: login.user_info.user_profile[0].user_id,
-                name: inputUserName.value,
-                phone_number: inputPhoneNumber.value,
-                gender: inputGender.value,
-                about: inputAbout.value,
-                avatar: avatar.src
-            }),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.status === 200) {
-                    console.log(data.user_info);
-                    window.localStorage.setItem("login", JSON.stringify(data));
-                    var datas = JSON.parse(window.localStorage.getItem("login"));
-                    console.log(datas);
-                    createToast("success");
-                    setTimeout(() => {
-                        window.location.reload();
-                        renderUserInfo(datas);
-                    }, 5000)
-                }
-            })
-            .catch((error) => alert(error));
-    }
+  ).innerText = warning.join(", ");
 }
