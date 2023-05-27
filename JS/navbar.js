@@ -6,10 +6,10 @@ const userLoginId = localStorage.getItem("id");
         <a href="home.html" class="logo"> <img src="IMAGES/logo/logo-removebg-preview.png" alt=""> </a>
   
         <ul class="nav-menu">
-            <li> <a href="home.html" class="nav-link">Home</a> </li>
+            <li> <a href="home.html" class="nav-link">Trang chủ</a> </li>
             <li> <a href="bookTour.html" class="nav-link">Tours</a> </li>
             <li> <a href="createTrip.html" class="nav-link">Tạo chuyến đi</a> </li>
-            <li> <a href="group.html" class="nav-link">Group</a> </li>
+            <li> <a href="group.html" class="nav-link">Nhóm</a> </li>
             <li> <a href="TS-register.html" class="nav-link">Trở thành nhà cung cấp</a> </li>
             <li><i class="fa-solid fa-bell"></i>
                 <div style="display: none;" class="container-notification">
