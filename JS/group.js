@@ -78,29 +78,36 @@ roomDescription.onblur = (e) => {
 if (login) {
   createRoom.onclick = (e) => {
     e.preventDefault();
-    const inputs = document.querySelectorAll(".form-control");
-    const requestValues = {};
-
-    inputs.forEach((item) => {
-      requestValues[item.attributes.name.value] = item.value;
-    });
-    fetch("http://127.0.0.1:8000/api/personal/room/create", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(createGroup),
+    var keyupEvent = new Event('keyup');
+    controlLists.forEach((control) => {
+      control.dispatchEvent(keyupEvent);
     })
-      .then((response) => response.json())
-      .then((val) => {
-        createToast("success");
-        setTimeout(() => {
-          window.location.reload(true);
-        }, 5000);
-      })
-      .catch((error) => {
-        createToast("error");
+    if (valid) {
+      e.preventDefault();
+      const inputs = document.querySelectorAll(".form-control");
+      const requestValues = {};
+
+      inputs.forEach((item) => {
+        requestValues[item.attributes.name.value] = item.value;
       });
+      fetch("http://127.0.0.1:8000/api/personal/room/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(createGroup),
+      })
+        .then((response) => response.json())
+        .then((val) => {
+          createToast("success");
+          setTimeout(() => {
+            window.location.reload(true);
+          }, 5000);
+        })
+        .catch((error) => {
+          createToast("error");
+        });
+    }
   };
 }
 
@@ -123,11 +130,11 @@ function getTours() {
         .map((tour) => {
           return `<div class="group-item">
            <div class="group-img">
-               <img src="../IMAGES/slides/slide-5.png" alt="">
+               <img src=${tour.image}>
            </div>
            <div class="group-info">
                <h4 class="group-info-name">${tour.name}</h4>
-               <p>30 thành viên</p>
+               <p>${tour.slot} thành viên</p>
                <p class="host">host:${tour.room_owner_name}</p>
                <button onclick="joinRoom(${tour.id})">Tham gia</button>
            </div>
@@ -205,40 +212,91 @@ const numberPeople = document.querySelector(".numberPeople");
 const description = document.querySelector(".description");
 const nameGroup = document.querySelector(".nameGroup");
 
-function checkNumberPeople(e) {
-  let peopleValue = Number(e.target.value);
-  if (peopleValue <= 0) {
-    e.target.classList.add("error");
-    document.querySelector(
-      `.${[...e.target.classList].join(".")} ~ p`
-    ).innerText = `Số người không hợp lệ`;
-  } else if (peopleValue > 100) {
-    e.target.classList.add("error");
-    document.querySelector(
-      `.${[...e.target.classList].join(".")} ~ p`
-    ).innerText = `không được nhập quá 100 người`;
-  } else {
-    e.target.classList.remove("error");
-    document.querySelector(
-      `.${[...e.target.classList].join(".")} ~ p`
-    ).innerText = "";
-  }
+
+
+const listError = ["required", "numberInvalid", "maxLength", "email", "emoji", "specialCharacter"]
+let valid;
+function validateForm(control, listError) {
+  let warning = [];
+  valid = listError.every((error) => {
+    if (error === 'required' && !control.value) {
+      warning.push('Không được để trống');
+      return false;
+    }
+    if (error === 'numberInvalid' && (control.value > 100 || control.value <= 0)) {
+      warning.push('Số người phải >0 và <100');
+      return false;
+    }
+    if (error === 'maxLength' && control.value.length > 200) {
+      warning.push('Không vượt quá 200 kí tự');
+      return false;
+    }
+    return true;
+  })
+  document.querySelector(
+    `.${[...control.classList].join(".")} ~ small`
+  ).innerText = warning.join(', ');
 }
 
-function validateMaxlength(e, length) {
-  if (e.target.value.length > length) {
-    e.target.classList.add("error");
-    document.querySelector(
-      `.${[...e.target.classList].join(".")} ~ p`
-    ).innerText = `Không quá ${length} kí tự`;
-  } else {
-    e.target.classList.remove("error");
-    document.querySelector(
-      `.${[...e.target.classList].join(".")} ~ p`
-    ).innerText = "";
-  }
-}
 
-numberPeople.onchange = (e) => checkNumberPeople(e);
-description.onchange = (e) => validateMaxlength(e, 50);
-nameGroup.onchange = (e) => validateMaxlength(e, 40);
+var controlLists = document.querySelectorAll('.form-control')
+controlLists.forEach((control) => {
+  control.onkeyup = (e) => {
+    switch (e.target.classList[1]) {
+
+      case 'nameGroup': {
+        validateForm(e.target, ["required"]);
+        break;
+      }
+      case 'numberPeople': {
+        validateForm(e.target, ["required", "numberInvalid"]);
+        break;
+      }
+      case 'description': {
+        validateForm(e.target, ["required", "maxLength"]);
+        break;
+      }
+    }
+  }
+})
+
+
+
+
+// function checkNumberPeople(e) {
+//   let peopleValue = Number(e.target.value);
+//   if (peopleValue <= 0) {
+//     e.target.classList.add("error");
+//     document.querySelector(
+//       `.${[...e.target.classList].join(".")} ~ p`
+//     ).innerText = `Số người không hợp lệ`;
+//   } else if (peopleValue > 100) {
+//     e.target.classList.add("error");
+//     document.querySelector(
+//       `.${[...e.target.classList].join(".")} ~ p`
+//     ).innerText = `không được nhập quá 100 người`;
+//   } else {
+//     e.target.classList.remove("error");
+//     document.querySelector(
+//       `.${[...e.target.classList].join(".")} ~ p`
+//     ).innerText = "";
+//   }
+// }
+
+// function validateMaxlength(e, length) {
+//   if (e.target.value.length > length) {
+//     e.target.classList.add("error");
+//     document.querySelector(
+//       `.${[...e.target.classList].join(".")} ~ p`
+//     ).innerText = `Không quá ${length} kí tự`;
+//   } else {
+//     e.target.classList.remove("error");
+//     document.querySelector(
+//       `.${[...e.target.classList].join(".")} ~ p`
+//     ).innerText = "";
+//   }
+// }
+
+// numberPeople.onchange = (e) => checkNumberPeople(e);
+// description.onchange = (e) => validateMaxlength(e, 50);
+// nameGroup.onchange = (e) => validateMaxlength(e, 40);

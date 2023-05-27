@@ -1,147 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
-    />
-    <link rel="stylesheet" href="CSS/root.css" />
-    <link rel="stylesheet" href="CSS/createTrip.css" />
-    <link rel="stylesheet" href="CSS/navbar.css" />
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
-      integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
-      crossorigin=""
-    />
-    <script
-      src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
-      integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
-      crossorigin=""
-    ></script>
-    <title>CJB</title>
-    <script
-      src="https://cdn.socket.io/4.6.0/socket.io.min.js"
-      integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+"
-      crossorigin="anonymous"
-    ></script>
-  </head>
 
-  <body>
-    <div class="main">
-      <div id="render-nav"></div>
-      <div class="container-create-trip">
-        <div class="create-trip-container">
-          <h1>Bắt đầu chuyến đi</h1>
-          <p>
-            Hãy tạo những chuyến đi của bạn và chúc bạn có 1 chuyến đi vui vẻ
-          </p>
-        </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" />
+  <link rel="stylesheet" href="CSS/root.css" />
+  <link rel="stylesheet" href="CSS/createTrip.css" />
+  <link rel="stylesheet" href="CSS/navbar.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+    integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+    integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+  <title>CJB</title>
+  <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"
+    integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+"
+    crossorigin="anonymous"></script>
+</head>
 
-        <div class="form-trip">
-          <div class="form-trip-1">
-            <form action="">
-              <div class="form-1">
-                <div class="trip-2-img upload_image" style="cursor: pointer">
-                  Upload ảnh
-                  <input
-                    name="img"
-                    class="input_image"
-                    type="file"
-                    accept="image/png, image/jpg"
-                    hidden
-                    class="form-control"
-                  />
-                </div>
-                <div class="form-content">
-                  <div class="form-info-wrap">
-                    <div class="form-info">
-                      <label for="">Nhóm</label>
-                      <div class="form-input">
-                        <select
-                          class="form-control what-room"
-                          style="
+<body>
+  <div class="main">
+    <div id="render-nav"></div>
+    <div class="container-create-trip">
+      <div class="create-trip-container">
+        <h1>Bắt đầu chuyến đi</h1>
+        <p>
+          Hãy tạo những chuyến đi của bạn và chúc bạn có 1 chuyến đi vui vẻ
+        </p>
+      </div>
+
+      <div class="form-trip">
+        <div class="form-trip-1">
+          <form action="">
+            <div class="form-1">
+              <div class="trip-2-img upload_image" style="cursor: pointer">
+                Upload ảnh
+                <input name="img" class="input_image" type="file" accept="image/png, image/jpg" hidden
+                  class="form-control" />
+              </div>
+              <div class="form-content">
+                <div class="form-info-wrap">
+                  <div class="form-info">
+                    <label for="">Nhóm</label>
+                    <div class="form-input">
+                      <select class="form-control what-room" style="
                             width: 100%;
                             background-color: white;
                             border: 1px solid #999;
                             border-radius: 10px;
                             padding: 10px;
-                          "
-                        ></select>
-                      </div>
+                          "></select>
                     </div>
                   </div>
-                  <div class="form-info-wrap">
-                    <div class="form-info">
-                      <label for="">Tên chuyến đi</label>
-                      <div class="form-input">
-                        <input
-                          name="name" 
-                          type="text"
-                          placeholder="Nhập tên chuyến đi của bạn"
-                          class="form-control tenchuyendi"
-                        />
-                        <p></p>
-                      </div>
+                </div>
+                <div class="form-info-wrap">
+                  <div class="form-info">
+                    <label for="">Tên chuyến đi</label>
+                    <div class="form-input">
+                      <input name="name" type="text" placeholder="Nhập tên chuyến đi của bạn"
+                        class="form-control tenchuyendi" />
+                      <small></small>
                     </div>
                   </div>
-                  <div class="form-info-wrap1">
-                    <div class="form-info form-info-0">
-                      <label for="">Từ ngày</label>
-                      <div class="form-input">
-                        <input
-                          name="from_date"
-                          type="date"
-                          class="form-control tungay"
-                        />
-                        <p></p>
-                      </div>
-                    </div>
-                    <div class="form-info">
-                      <label for="">Đến ngày</label>
-                      <div class="form-input">
-                        <input
-                          name="to_date"
-                          type="date"
-                          class="form-control denngay"
-                        />
-                        <p></p>
-                      </div>
+                </div>
+                <div class="form-info-wrap1">
+                  <div class="form-info form-info-0">
+                    <label for="">Từ ngày</label>
+                    <div class="form-input">
+                      <input name="from_date" type="date" class="form-control tungay" />
+                      <small></small>
                     </div>
                   </div>
-                  <div class="form-info-wrap1">
-                    <div class="form-info">
-                      <label for="">Điểm đến</label>
-                      <div class="form-input">
-                        <input
-                          name="to_where"
-                          type="text"
-                          placeholder="Nhập điểm đến"
-                          class="form-control diemden"
-                        />
-                      </div>
-                      <div>
-                        <ul
-                          class="destination-list destination-location-suggestion"
-                          style="display: none"
-                        ></ul>
-                      </div>
+                  <div class="form-info">
+                    <label for="">Đến ngày</label>
+                    <div class="form-input">
+                      <input name="to_date" type="date" class="form-control denngay" />
+                      <small></small>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-info-wrap1">
+                  <div class="form-info">
+                    <label for="">Điểm đến</label>
+                    <div class="form-input">
+                      <input name="to_where" type="text" placeholder="Nhập điểm đến" class="form-control diemden" />
+                      <small></small>
+                    </div>
+                    <div>
+                      <ul class="destination-list destination-location-suggestion" style="display: none"></ul>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="form-trip-2">
-                <div class="form-2">
-                  <div class="form-content-2">
-                    <!-- <div class="form-info-wrap1">
+            </div>
+            <div class="form-trip-2">
+              <div class="form-2">
+                <div class="form-content-2">
+                  <!-- <div class="form-info-wrap1">
                                     <div class="form-info form-info-0">
                                         <label for="">Kinh độ</label>
                                         <div class="form-input form-input-0">
@@ -155,45 +112,41 @@
                                         </div>
                                     </div>
                                 </div> -->
-                    <div class="form-info form-info1">
-                      <label for="">Mô tả ngắn về chuyến đi</label>
-                      <div class="form-input1">
-                        <textarea
-                          name="description"
-                          id=""
-                          cols="30"
-                          rows="11"
-                          placeholder="Mô tả chuyến đi của bạn"
-                          class="form-control description"
-                        ></textarea>
-                        <p></p>
-                      </div>
+                  <div class="form-info form-info1">
+                    <label for="">Mô tả ngắn về chuyến đi</label>
+                    <div class="form-input1">
+                      <textarea name="description" id="" cols="30" rows="11" placeholder="Mô tả chuyến đi của bạn"
+                        class="form-control description"></textarea>
+
+                      <small></small>
                     </div>
                   </div>
-                  <div class="form-map" id="form-map"></div>
                 </div>
-                <div class="form-back-start">
-                  <button type="button" class="create-trip">
-                    Tạo chuyến đi
-                  </button>
-                  <!-- <button class="goBack">Quay lại</button>
-                            <button class="startCreateTrip">Bắt đầu</button> -->
-                </div>
+                <div class="form-map" id="form-map"></div>
               </div>
-            </form>
-          </div>
+              <div class="form-back-start">
+                <button type="button" class="create-trip">
+                  Tạo chuyến đi
+                </button>
+                <!-- <button class="goBack">Quay lại</button>
+                            <button class="startCreateTrip">Bắt đầu</button> -->
+              </div>
+            </div>
+          </form>
         </div>
       </div>
-      <ul class="notifications"></ul>
-      <div class="buttons">
-        <button class="btn" id="success">Success</button>
-        <button class="btn" id="error">Error</button>
-        <button class="btn" id="warning">Warning</button>
-        <button class="btn" id="info">Info</button>
-      </div>
     </div>
+    <ul class="notifications"></ul>
+    <div class="buttons">
+      <button class="btn" id="success">Success</button>
+      <button class="btn" id="error">Error</button>
+      <button class="btn" id="warning">Warning</button>
+      <button class="btn" id="info">Info</button>
+    </div>
+  </div>
 
-    <script src="JS/createTrip.js"></script>
-    <script src="JS/navbar.js"></script>
-  </body>
+  <script src="JS/createTrip.js"></script>
+  <script src="JS/navbar.js"></script>
+</body>
+
 </html>
