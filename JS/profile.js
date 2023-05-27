@@ -26,10 +26,24 @@ const avatar = document.querySelector(".avatar_user_header");
 const targetProfileId = localStorage.getItem("target-profile-id");
 const avatarInputFile = document.querySelector(".avatar-input-file");
 
-const btnStartUpdate = document.querySelector('.btn-update-profile')
-console.log(typeof targetProfileId, typeof login.user_info.user_profile[0].user_id)
+const avatarRoomUpdate = document.querySelector(".file-update-avatar");
+const inputRoomUpdateAvatar = document.querySelector(".file-update-room");
+const formUpdateTour = document.querySelector(".form-update-room");
+const inputNameRoomUpdate = document.querySelector(".room-name-update");
+const inputNumberRoomUpdate = document.querySelector(".number-room-update");
+const inputDescriptionRoomUpdate = document.querySelector(
+  ".description-room-update"
+);
+const submitUpdateRoom = document.querySelector(".submit-room-update");
+const cancelUpdateRoom = document.querySelector(".cancel-room-update");
+
+const btnStartUpdate = document.querySelector(".btn-update-profile");
+console.log(
+  typeof targetProfileId,
+  typeof login.user_info.user_profile[0].user_id
+);
 if (Number(targetProfileId) !== login.user_info.user_profile[0].user_id) {
-    btnStartUpdate.style.display = 'none'
+  btnStartUpdate.style.display = "none";
 }
 
 avatar.onclick = () => {
@@ -249,41 +263,41 @@ const apiUserProfile = "http://127.0.0.1:8000/api/user/profile/update";
 let valid;
 
 function getInfoUser() {
-    var keyupEvent = new Event("keyup");
+  var keyupEvent = new Event("keyup");
   controlList.forEach((control) => {
     control.dispatchEvent(keyupEvent);
   });
-  if (valid) { 
-      fetch(apiUserProfile, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          // id: login.user_info.user_profile[0].user_id,
-          id: targetProfileId,
-          name: inputUserName.value,
-          phone_number: inputPhoneNumber.value,
-          gender: inputGender.value,
-          about: inputAbout.value,
-          avatar: avatar.src,
-        }),
+  if (valid) {
+    fetch(apiUserProfile, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        // id: login.user_info.user_profile[0].user_id,
+        id: targetProfileId,
+        name: inputUserName.value,
+        phone_number: inputPhoneNumber.value,
+        gender: inputGender.value,
+        about: inputAbout.value,
+        avatar: avatar.src,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === 200) {
+          console.log(data.user_info);
+          window.localStorage.setItem("login", JSON.stringify(data));
+          var datas = JSON.parse(window.localStorage.getItem("login"));
+          console.log(datas);
+          createToast("success");
+          setTimeout(() => {
+            window.location.reload();
+            renderUserInfo(datas);
+          }, 5000);
+        }
       })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.status === 200) {
-            console.log(data.user_info);
-            window.localStorage.setItem("login", JSON.stringify(data));
-            var datas = JSON.parse(window.localStorage.getItem("login"));
-            console.log(datas);
-            createToast("success");
-            setTimeout(() => {
-              window.location.reload();
-              renderUserInfo(datas);
-            }, 5000);
-          }
-        })
-        .catch((error) => alert(error));
+      .catch((error) => alert(error));
   }
 }
 
@@ -469,17 +483,86 @@ fetch(
                 item.image || "IMAGES/slides/slide-5.png"
               }" alt="" class="card-img">
           </div>
-      </div>
-  
-      <div class="card-content">
-          <h3 class="name-group">${item.name}</h3>
-          <p>${item.members} thành viên</p>
-          <p>Host: ${item.host_name}</p>
-      </div>
+          </div>
+          
+          <div class="card-content">
+            <h3 class="name-group">${item.name}</h3>
+            <p>${item.members} thành viên</p>
+            <p>Host: ${item.host_name}</p>
+            <button onclick="updateHandler(${
+              item.id
+            })" style="border-radius: 10px; border: none; background-color: #4070F4; color: white; padding: 10px; cursor: pointer">Cập nhật</buton>
+          </div>
   </div>`
     );
+
     groups.innerHTML += htmls.join("");
   });
+function updateHandler(id) {
+  fetch(`http://localhost:8000/api/personal/room/show/${id}`)
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      const updateRequest = {
+        room_owner: login.user_info.user_profile[0].user_id,
+        name: data.room.name,
+        description: data.room.description,
+        image: data.room.image,
+        slot: data.room.slot,
+      };
+      avatarRoomUpdate.src = updateRequest.image;
+      inputNameRoomUpdate.value = updateRequest.name;
+      inputDescriptionRoomUpdate.value = updateRequest.description;
+      inputNumberRoomUpdate.value = updateRequest.slot;
+      formUpdateTour.style.display = "block";
+      avatarRoomUpdate.onclick = () => {
+        inputRoomUpdateAvatar.click();
+        inputRoomUpdateAvatar.addEventListener("change", (e) => {
+          const formdata = new FormData();
+          formdata.append("directory", "avatar");
+          formdata.append("file", e.target.files[0]);
+          fetch("http://localhost:3000/upload", {
+            method: "post",
+            body: formdata,
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              avatarRoomUpdate.src = data.data.fileUrl;
+              updateRequest.image = data.data.fileUrl;
+            });
+        });
+      };
+      inputNameRoomUpdate.addEventListener("change", (e) => {
+        updateRequest.name = e.target.value;
+      });
+      inputNumberRoomUpdate.addEventListener("change", (e) => {
+        updateRequest.slot = e.target.value;
+      });
+      inputDescriptionRoomUpdate.addEventListener("change", (e) => {
+        updateRequest.description = e.target.value;
+      });
+      submitUpdateRoom.onclick = () => {
+        const query = Object.keys(updateRequest).reduce((prev, next) => {
+          return prev + next + "=" + updateRequest[next] + "&";
+        }, "");
+        fetch(`http://localhost:8000/api/personal/room/update/${id}`, {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updateRequest),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log(data);
+            location.reload();
+          });
+      };
+      cancelUpdateRoom.onclick = () => {
+        formUpdateTour.style.display = "none";
+      };
+    });
+}
 
 // ----------------------------------------------------------------------------
 
