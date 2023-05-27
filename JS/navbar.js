@@ -1,3 +1,4 @@
+const userLoginId = localStorage.getItem("id");
 (() => {
   const navbar = () => {
     return `<header class="header">
@@ -46,7 +47,7 @@
                     </div>
                     <div class="header-form-logout">
                         <div class="content-logout">
-                            <a href="profile.html" class="avatar-login">
+                            <div href="profile.html" class="avatar-login" data-id="${userLoginId}">
                                 <div class="header-form-avatar">
                                     <img src="" alt="" id="avatar_user">
                                     <div class="header-name">
@@ -54,7 +55,7 @@
                                         <p>Xem hồ sơ</p>
                                     </div>
                                 </div>
-                            </a>
+                            </div>
                             <span class="drop-line"></span>
                             <div class="header-form-booked">
                                 <i class="fa-sharp fa-solid fa-clock-rotate-left"></i>
@@ -76,6 +77,12 @@
 
   const renderNav = document.getElementById("render-nav");
   renderNav.innerHTML = navbar();
+  const userInfo = document.querySelector(".avatar-login");
+  userInfo.addEventListener("click", () => {
+    const id = userInfo.dataset.id;
+    localStorage.setItem("target-profile-id", id);
+    location.href = "profile.html";
+  });
 
   const notificationContainer = document.querySelector(
     ".content-notication-show"
