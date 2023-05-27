@@ -81,7 +81,7 @@ function RenderTourDetail(obj) {
         <div class="detail-host">
             <h4 style="font-size: 22px; display: flex; align-items: center;">Chuyến đi được tạo bởi: <span style="color: #000; margin-left: 10px;">${target.owner_name}</span></h4>
             <div class="detail-host-inf">
-                <div class="detail-host-img">
+                <div class="detail-host-img" data-id="${target.owner_id}">
                     <img src="${target.owner_avatar}" alt="avatar" style="border-radius: 50%;">
                 </div>
                 <div class="detail-confirm" style="position: relative">
@@ -128,7 +128,12 @@ function RenderTourDetail(obj) {
   });
 
   htmlPersonTour.innerHTML = htmls;
-  console.log(target);
+  const hostAvatar = document.querySelector(".detail-host-img");
+  hostAvatar.addEventListener("click", () => {
+    const id = hostAvatar.dataset.id;
+    localStorage.setItem("target-profile-id", id);
+    location.href = "profile.html";
+  });
 
   const memberContainer = document.querySelector(".detail-member");
 
