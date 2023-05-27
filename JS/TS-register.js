@@ -30,6 +30,10 @@ loginButton.onclick = () => {
     .then((data) => {
       if (data.status === 200) {
         window.localStorage.setItem("login", JSON.stringify(data));
+        localStorage.setItem(
+          "login-ts-id",
+          data.user_info.user_profile[0].user_id
+        );
         window.location.href = "http://localhost:3000/TS-home.html";
       } else {
         alert(data.msg);
