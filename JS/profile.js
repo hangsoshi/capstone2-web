@@ -542,9 +542,6 @@ function updateHandler(id) {
         updateRequest.description = e.target.value;
       });
       submitUpdateRoom.onclick = () => {
-        const query = Object.keys(updateRequest).reduce((prev, next) => {
-          return prev + next + "=" + updateRequest[next] + "&";
-        }, "");
         fetch(`http://localhost:8000/api/personal/room/update/${id}`, {
           method: "post",
           headers: {

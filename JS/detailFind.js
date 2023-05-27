@@ -54,6 +54,10 @@ var htmlPersonTour = z(".detail-container");
 function RenderTourDetail(obj) {
   const target = obj[0];
   console.log(target);
+  const from_date = new Date(target.from_date).getTime();
+  const to_date = new Date(target.to_date).getTime();
+  const now = new Date().getTime();
+  const compare = now < from_date || now < to_date;
   const htmls = `
     <div class="detail-inf-tour">
     <div class="detail-inf-wraper">
