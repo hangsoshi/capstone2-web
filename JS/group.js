@@ -1,12 +1,15 @@
 const login = JSON.parse(window.localStorage.getItem("login"));
 const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document);
+const buttonCreateRoom = document.querySelector(".group-add-new");
 
-console.log(login);
+if (!login) {
+  buttonCreateRoom.style.display = "none";
+}
 
 const socketRoom = io("http://localhost:3002/room", {
   auth: {
-    token: login.user_info.user_profile[0].user_id,
+    token: login?.user_info.user_profile[0].user_id,
   },
 });
 
@@ -14,7 +17,7 @@ socketRoom.on("connect", () => {
   localStorage.setItem("socketId", socketRoom.id);
 });
 const createGroup = {
-  owner_id: login.user_info.user_profile[0].user_id,
+  owner_id: login?.user_info.user_profile[0].user_id,
   name: "",
   description: "",
   image: "",
@@ -110,7 +113,6 @@ if (login) {
     }
   };
 }
-
 // ------------------------- render room --------------------------------------
 
 const api = "http://127.0.0.1:8000/api/personal/room/all";
@@ -136,7 +138,10 @@ function getTours() {
                <h4 class="group-info-name">${tour.name}</h4>
                <p>${tour.slot} thành viên</p>
                <p class="host">host:${tour.room_owner_name}</p>
-               <button onclick="joinRoom(${tour.id})">Tham gia</button>
+               <button ${
+                 tour.room_owner === Number(localStorage.getItem("id")) &&
+                 'style="display: none"'
+               } onclick="joinRoom(${tour.id})">Tham gia</button>
            </div>
        </div>`;
         })
@@ -231,7 +236,7 @@ function validateForm(control, listError) {
       error === "numberInvalid" &&
       (control.value > 100 || control.value <= 0)
     ) {
-      warning.push("Số người phải >0 và <100");
+      warning.push("Số người không hợp lệ");
       return false;
     }
     if (error === "maxLength" && control.value.length > 200) {

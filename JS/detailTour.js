@@ -4,6 +4,11 @@ const apiPersonTourDetail = "http://127.0.0.1:8000/api/ts/tour/";
 var htmlPersonTour = document.querySelector(".detail-tours-container");
 
 function RenderTourDetail(obj) {
+  console.log(obj);
+  const from_date = new Date(obj.from_date).getTime();
+  const to_date = new Date(obj.to_date).getTime();
+  const now = new Date().getTime();
+  const compare = now < from_date || now < to_date;
   const htmls = `
     <div class="detail-tour-image">
     <div class="detail-tour-header">
@@ -11,7 +16,7 @@ function RenderTourDetail(obj) {
             <i class="fa-solid fa-location-dot"></i>
             <h1>${obj.name}</h1>
         </div>
-        <div class="book-tour">
+        <div class="book-tour" ${compare || 'style="display: none"'}>
             <button onclick="handlePayment(${obj.price})">ĐẶT TOUR</button>
         </div>
     </div>
@@ -32,7 +37,9 @@ function RenderTourDetail(obj) {
         <div class="conveniences">
             <li>
                 <i class="fa-regular fa-clock"></i>
-                <span><b>Thời Gian : </b>${obj.from_date} - ${obj.to_date}</span>
+                <span><b>Thời Gian : </b>${obj.from_date} - ${
+    obj.to_date
+  }</span>
             </li>
             <li>
                 <i class="fa-solid fa-money-bill"></i>
