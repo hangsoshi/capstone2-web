@@ -84,10 +84,14 @@ function RenderTourDetail(obj) {
         </div>
 
         <div class="detail-host">
-            <h4 style="font-size: 22px; display: flex; align-items: center;">Chuyến đi được tạo bởi: <span style="color: #000; margin-left: 10px;">${target.owner_name}</span></h4>
+            <h4 style="font-size: 22px; display: flex; align-items: center;">Chuyến đi được tạo bởi: <span style="color: #000; margin-left: 10px;">${
+              target.owner_name
+            }</span></h4>
             <div class="detail-host-inf">
                 <div class="detail-host-img" data-id="${target.owner_id}">
-                    <img src="${target.owner_avatar}" alt="avatar" style="border-radius: 50%;">
+                    <img src="${
+                      target.owner_avatar
+                    }" alt="avatar" style="border-radius: 50%;">
                 </div>
                 <div class="detail-confirm" style="position: relative">
                     <div class="detail-confirm-icon detail-confirm-email">
@@ -115,7 +119,9 @@ function RenderTourDetail(obj) {
         </div>
         <div class="detail-inf-action" style="padding-bottom: 25px">
             <div class="detail-action detail-book">
-                <button style="font-size: 18px;" class="join-button">Tham gia</button>
+                <button style="font-size: 18px; ${
+                  compare || "display: none"
+                }" class="join-button">Tham gia</button>
             </div>
         </div>
 

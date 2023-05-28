@@ -5,7 +5,7 @@
         <a href="home.html" class="logo"> <img src="IMAGES/logo/logo-removebg-preview.png" alt=""> </a>
   
         <ul class="nav-menu">
-            <li> <a href="TS-home.html" class="nav-link">Home</a> </li>
+            <li> <a href="TS-home.html" class="nav-link">Trang chủ</a> </li>
             <li> <a href="TS-postTour.html" class="nav-link">Đăng tours</a> </li>
             <li> <a href="TS-managerTours.html" class="nav-link">Quản lý tours</a> </li>
             <li> <a href="TS-managerBooked.html" class="nav-link">Quản lý đặt tours</a> </li>
@@ -206,5 +206,4 @@
 
 function transformUserPage() {
   window.localStorage.clear();
-  
 }
