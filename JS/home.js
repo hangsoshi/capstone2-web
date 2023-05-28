@@ -7,6 +7,7 @@ const findSlickNext = document.getElementsByClassName(" find-slick-right");
 
 const pre1 = document.getElementsByClassName(" slick-prev");
 const next1 = document.getElementsByClassName(" slick-next");
+localStorage.removeItem("search-tour");
 
 // ---------------------------------------------------
 

@@ -40,7 +40,7 @@ fetch(
       )
       .join("");
     rooms.onchange = (e) => {
-      createTourState.room_id = e.target.value;
+      createTourState.room_id = Number(e.target.value);
     };
   });
 
@@ -278,6 +278,7 @@ function validateForm(control, listError) {
       (dateFromValue < dateNow)
     ) {
       warning.push("Ngày đi không hợp lệ");
+      control.value = null;
       return false;
     }
     if (
@@ -285,6 +286,7 @@ function validateForm(control, listError) {
       (dateToValue < dateNow || dateToValue < dateFromValue)
     ) {
       warning.push("Ngày đến không hợp lệ");
+      control.value = null;
       return false;
     }
     if (error === "maxLength" && control.value.length > 50) {
@@ -347,15 +349,15 @@ if (updateTour) {
     .then((res) => res.json())
     .then((data) => {
       createTourState.name = data.name;
-      createTourState.owner_id = data.owner_id;
+      createTourState.owner_id = Number(data.owner_id);
       createTourState.description = data.description;
       createTourState.from_date = data.from_date;
       createTourState.to_date = data.to_date;
-      createTourState.lat = data.lat;
-      createTourState.lon = data.lon;
+      createTourState.lat = Number(data.lat);
+      createTourState.lon = Number(data.lon);
       createTourState.to_where = data.to_where;
-      createTourState.room_id = data.room_id;
-      rooms.value = createTourState.room_id;
+      createTourState.room_id = Number(data.room_id);
+      rooms.value = Number(createTourState.room_id);
       tenchuyendi.value = createTourState.name;
       tungay.value = new Date(createTourState.from_date)
         .toISOString()

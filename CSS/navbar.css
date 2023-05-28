@@ -151,6 +151,8 @@ header .container>ul {
   justify-content: space-evenly;
   align-items: center;
   width: 65%;
+  white-space: nowrap;
+  gap: 20px;
 }
 
 header ul li a {

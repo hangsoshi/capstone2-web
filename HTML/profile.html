@@ -391,6 +391,23 @@
             <button class="btn" id="info">Info</button>
         </div>
 
+      <div class="form-update-room" style="display: none; position: fixed; z-index: 100;; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 10px; box-shadow: 0 1px 5px rgba(0,0,0,0.25), 0 0 50px rgba(0,0,0,0.1); background-color: white; border-radius: 10px;
+      ">
+        <h3>Cập nhật</h3>
+        <div style="display: flex; align-items: center; gap: 10px">
+          <img src="../IMAGES/Users-create-room/icon-upload-image.png" style="width: 100px; height: 100px; border-radius: 100%; cursor: pointer;" class="file-update-avatar">
+          <input type="file" style="display: none;" class="file-update-room">
+          <div>
+            <input type="text" style="height: 50px; border: 1px solid; border-radius: 10px; width: 100%; padding: 5px" placeholder="Tên nhóm" class="room-name-update">
+          </div>
+        </div>
+        <div>
+          <input type="number" style="height: 50px; width: 100%; border: 1px solid; border-radius: 10px; padding: 5px" placeholder="Số lượng người" class="number-room-update">
+          <textarea cols="30" rows="10" style="margin-top: 10px; width: 100%; padding: 10px" class="description-room-update"></textarea>
+          <button style="padding: 10px; border-radius: 10px; border: none; background-color: #4070F4; color: white; cursor: pointer;" class="submit-room-update">Cập nhật</button>
+          <button style="padding: 10px; border-radius: 10px; border: none; background-color: red; color: white; cursor: pointer;" class="cancel-room-update">Thoát</button>
+        </div>
+      </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
         integrity="sha512-+NqPlbbtM1QqiK8ZAo4Yrj2c4lNQoGv8P79DPtKzj++l5jnN39rHA/xsqn8zE9l0uSoxaCdrOgFs6yjyfbBxSg=="

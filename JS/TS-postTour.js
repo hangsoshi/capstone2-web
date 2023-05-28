@@ -28,9 +28,10 @@ if (tsTourUpdate) {
       numberPeople.value = target.slot;
       postSchedualInput.innerHTML = renderSchedules(target.schedule).join("");
       schedules = target.schedule;
-      updateImages = target.images.map((item) =>{
-        return item.image_url.slice(1,item.image_url.length - 1)});
-      console.log(updateImages)
+      updateImages = target.images.map((item) => {
+        return item.image_url.slice(1, item.image_url.length - 1);
+      });
+      console.log(updateImages);
     });
 }
 createTourButton.onclick = (e) => {
@@ -257,7 +258,7 @@ const searching = (value, listdom, itemclass) => {
             ".destination-schedules"
           );
           scheduleNames.forEach((input) => {
-            input.addEventListener('change', (e) => {
+            input.addEventListener("change", (e) => {
               const id = input.dataset.id;
               if (e.key === "Enter") {
                 const targetList = [...listSearchDestination].find(
@@ -265,10 +266,10 @@ const searching = (value, listdom, itemclass) => {
                 );
                 searching(e.target.value, targetList, "destination-schedule");
               }
-            })
+            });
           });
           scheduleDescriptions.forEach((input) => {
-            input.addEventListener('change', (e) => {
+            input.addEventListener("change", (e) => {
               const id = input.dataset.id;
               schedules = schedules.map((schedule) =>
                 schedule.id === id
@@ -276,7 +277,7 @@ const searching = (value, listdom, itemclass) => {
                   : schedule
               );
               console.log(schedules);
-            })
+            });
           });
           const removeScheduleButton =
             document.querySelectorAll(".remove-schedule");
@@ -320,7 +321,7 @@ postSchedualAdd.onclick = () => {
     };
   });
   scheduleDescriptions.forEach((input) => {
-    input.addEventListener('change', (e) => {
+    input.addEventListener("change", (e) => {
       const id = input.dataset.id;
       schedules = schedules.map((schedule) =>
         schedule.id === id
@@ -328,7 +329,7 @@ postSchedualAdd.onclick = () => {
           : schedule
       );
       console.log(schedules);
-    })
+    });
   });
   const removeScheduleButton = document.querySelectorAll(".remove-schedule");
   removeScheduleButton.forEach((button) => {
@@ -506,7 +507,15 @@ function handleDelete(id) {
 //   }
 // }
 
-// nameTrip.onchange = (e) => validateMaxlength(e, 40);
+// nameTrip.onchange = (e) => {
+//   validateMaxlength(e, 40);
+// };
+// nameTrip.onblur = (e) => {
+//   emptyValue(e);
+// };
+// startPlace.onblur = (e) => {
+//   emptyValue(e);
+// };
 // startPlace.onchange = (e) => emptyValue(e);
 // fromDate.onchange = (e) => validateDateFrom(e);
 // toDate.onchange = (e) => validateDateTo(e);

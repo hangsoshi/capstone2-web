@@ -53,6 +53,17 @@ var htmlPersonTour = z(".detail-container");
 
 function RenderTourDetail(obj) {
   const target = obj[0];
+  console.log(target);
+  const from_date = new Date(target.from_date).getTime();
+  const to_date = new Date(target.to_date).getTime();
+  const now = new Date().getTime();
+  let compare = true
+  if (now > from_date) {
+    compare = false
+  }
+  if (now > to_date) {
+    compare = false
+  }
   const htmls = `
     <div class="detail-inf-tour">
     <div class="detail-inf-wraper">
@@ -79,10 +90,14 @@ function RenderTourDetail(obj) {
         </div>
 
         <div class="detail-host">
-            <h4 style="font-size: 22px; display: flex; align-items: center;">Chuyến đi được tạo bởi: <span style="color: #000; margin-left: 10px;">${target.owner_name}</span></h4>
+            <h4 style="font-size: 22px; display: flex; align-items: center;">Chuyến đi được tạo bởi: <span style="color: #000; margin-left: 10px;">${
+              target.owner_name
+            }</span></h4>
             <div class="detail-host-inf">
                 <div class="detail-host-img" data-id="${target.owner_id}">
-                    <img src="${target.owner_avatar}" alt="avatar" style="border-radius: 50%;">
+                    <img src="${
+                      target.owner_avatar
+                    }" alt="avatar" style="border-radius: 50%;">
                 </div>
                 <div class="detail-confirm" style="position: relative">
                     <div class="detail-confirm-icon detail-confirm-email">
@@ -110,7 +125,9 @@ function RenderTourDetail(obj) {
         </div>
         <div class="detail-inf-action" style="padding-bottom: 25px">
             <div class="detail-action detail-book">
-                <button style="font-size: 18px;" class="join-button">Tham gia</button>
+                <button style="font-size: 18px; ${
+                  compare ? "" : 'display: none'
+                }" class="join-button">Tham gia</button>
             </div>
         </div>
 
@@ -170,32 +187,22 @@ function RenderTourDetail(obj) {
 
   const joinButton = document.querySelector(".join-button");
   function joinRoom(idRoom) {
-    fetch("http://127.0.0.1:8000/api/personal/room/join", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        user_id: login.user_info.user_profile[0].user_id,
-        room_id: idRoom,
-      }),
-    })
-      .then((response) => response.json())
-      .then((val) => {
-        createToast("success", val.msg);
         socketRoom.emit("join-room", {
           roomId: idRoom,
           joiner: login.user_info.user_profile[0].user_id,
         });
-      })
-      .catch((error) => {
-        createToast("error");
-      });
   }
+  
+  socketRoom.on("join-room-response", (response) => {
+    createToast(response.status, response.message);
+  });
+  
   joinButton.onclick = () => {
     joinRoom(target.room_id);
   };
 }
+
+
 
 const handleAddFriend = (id) => {
   fetch(

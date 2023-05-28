@@ -153,6 +153,7 @@ const renderMessages = async (id) => {
       }
     })
     .join("");
+  targetMessageInfo.querySelector("p").innerText = `${mess.length} tin nhắn`;
 };
 const renderRoomMessages = async (id) => {
   const currentUser = Number(localStorage.getItem("id"));
@@ -192,7 +193,7 @@ const renderRoomMessages = async (id) => {
 };
 
 sendButton.onclick = () => {
-  if (messageInput.value) {
+  if (messageInput.value.trim()) {
     if (targetMessage.t === "friend") {
       const message = `
       <div class="d-flex justify-content-end mb-4">
