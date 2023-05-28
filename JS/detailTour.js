@@ -2,6 +2,7 @@ const pageDetail = window.localStorage.getItem("detail-tour");
 
 const apiPersonTourDetail = "http://127.0.0.1:8000/api/ts/tour/";
 var htmlPersonTour = document.querySelector(".detail-tours-container");
+var btnPayment = document.querySelector(".btn-payment");
 
 function RenderTourDetail(obj) {
   const htmls = `

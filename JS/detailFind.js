@@ -53,7 +53,6 @@ var htmlPersonTour = z(".detail-container");
 
 function RenderTourDetail(obj) {
   const target = obj[0];
-  console.log(target);
   const htmls = `
     <div class="detail-inf-tour">
     <div class="detail-inf-wraper">
@@ -171,18 +170,31 @@ function RenderTourDetail(obj) {
 
   const joinButton = document.querySelector(".join-button");
   function joinRoom(idRoom) {
-    //     createToast("success", val.msg);
-    socketRoom.emit("join-room", {
-      roomId: idRoom,
-      joiner: login.user_info.user_profile[0].user_id,
-    });
+    fetch("http://127.0.0.1:8000/api/personal/room/join", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user_id: login.user_info.user_profile[0].user_id,
+        room_id: idRoom,
+      }),
+    })
+      .then((response) => response.json())
+      .then((val) => {
+        createToast("success", val.msg);
+        socketRoom.emit("join-room", {
+          roomId: idRoom,
+          joiner: login.user_info.user_profile[0].user_id,
+        });
+      })
+      .catch((error) => {
+        createToast("error");
+      });
   }
   joinButton.onclick = () => {
     joinRoom(target.room_id);
   };
-  socketRoom.on("join-room-response", (response) => {
-    createToast(response.status, response.message);
-  });
 }
 
 const handleAddFriend = (id) => {

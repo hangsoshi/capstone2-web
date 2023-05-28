@@ -744,3 +744,7 @@ button {
 .toast i:last-child:hover {
   color: var(--dark);
 }
+
+.post-information small {
+  color: red;
+}

@@ -26,10 +26,11 @@ function getTours() {
       htmls = tours
         .map((tour) => ({ ...tour, type: "ts" }))
         .map((tour) => {
+          console.log(tour);
           return `
           <div class="find-container" data-type="${tour.type}" data-id="${tour.id}" style="cursor: pointer">
                 <div class="find-container-top">
-                    <img src="../IMAGES/slides/slide-5.png" alt="">
+                    <img src=${tour.images[1].image_url}>
                 </div>
                 <div class="find-container-bottom">
                     <h4 class="find-bottom-name">${tour.name}</h4>

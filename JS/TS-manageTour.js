@@ -201,7 +201,7 @@ function getSearchTours(api) {
         <tr class="list-residence">
                         <td class="list-content list-info data-id="${index}">
                             <div class="list-info-img">
-                                <img src="" alt="">
+                                <img src=${tour.images[1].image_url}>
                             </div>
                             <div class="list-info-content">
                                 <h3>${tour.name}</h3>

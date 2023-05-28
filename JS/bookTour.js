@@ -75,7 +75,7 @@ const renderTSTour = (tours) => {
     return `
       <div class="find-container data-id='${tour.id}'" onclick="tranFormPage(${tour.id})">
       <div class="find-container-top">
-          <img src="../IMAGES/slides/slide-0.png" alt="">
+          <img src=${tour.images[0].image_url}>
       </div>
       <div class="find-container-bottom">
           <h4 class="find-bottom-name">${tour.name}</h4>
@@ -120,15 +120,15 @@ const renderPSTour = (tours) => {
     <div>
       <div class="popular-container">
         <div class="popular-container-left">
-            <img src="../IMAGES/slides/slide-0.png" alt="">
+            <img src=${tour.image}>
             <div class="popular-container-host">
                 <p><b>Host:</b> ${tour.host}</p>
             </div>
         </div>
         <div class="popular-container-center">
             <h1 class="ps-tour-name" data-id="${tour.id}">${tour.name}</h1>
-            <p><b>Thành viên:</b> ${tour.room.member}</p>
-            <p><b>Từ:</b> ${tour.from_where} - <b>Đến:</b> ${tour.to_where}</p>
+            <p><b>Thành viên:</b> ${tour.members}</p>
+            <p class="to-where"><b>Đến:</b> ${tour.to_where}</p>
             <p><b>Ngày xuất phát:</b> ${tour.from_date}</p>
         </div>
         <div class="popular-container-right">

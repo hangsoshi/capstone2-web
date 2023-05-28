@@ -7,6 +7,8 @@ const fromDate = document.querySelector(".fromDate");
 const toDate = document.querySelector(".toDate");
 const cost = document.querySelector(".cost");
 const numberPeople = document.querySelector(".numberPeople");
+let valid;
+var controlLists = document.querySelectorAll(".request");
 
 const requestInputs = document.querySelectorAll(".request");
 const createTourButton = document.querySelector(".create-tour-submit");
@@ -31,107 +33,115 @@ if (tsTourUpdate) {
       console.log(updateImages)
     });
 }
-createTourButton.onclick = () => {
-  if (tsTourUpdate) {
-    const request = {
-      name: "",
-      ts_id: Number(login.user_info.user_profile[0].id),
-      description: "",
-      address: "",
-      from_date: "",
-      to_date: "",
-      price: 0,
-      slot: 0,
-      schedule: [],
-      images: [],
-    };
-    requestInputs.forEach((input) => {
-      const { key } = input.dataset;
-      if (key === "price" || key === "slot") {
-        request[key] = Number(input.value);
-      } else {
-        request[key] = input.value;
-      }
-    });
-    fetch(`http://localhost:8000/api/ts/tour/update/${tsTourUpdate}`, {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        ...request,
-        schedule: JSON.stringify(
-          schedules.map((item, index) => {
-            delete item.id;
-            return {
-              ...item,
-              order: index + 1,
-            };
-          })
-        ),
-        images: JSON.stringify(updateImages),
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.msg && data.status !== 200) {
-          createToast("error", data.msg);
+createTourButton.onclick = (e) => {
+  e.preventDefault();
+  var keyupEvent = new Event("keyup");
+  controlLists.forEach((control) => {
+    control.dispatchEvent(keyupEvent);
+  });
+  if (valid) {
+    e.preventDefault();
+    if (tsTourUpdate) {
+      const request = {
+        name: "",
+        ts_id: Number(login.user_info.user_profile[0].id),
+        description: "",
+        address: "",
+        from_date: "",
+        to_date: "",
+        price: 0,
+        slot: 0,
+        schedule: [],
+        images: [],
+      };
+      requestInputs.forEach((input) => {
+        const { key } = input.dataset;
+        if (key === "price" || key === "slot") {
+          request[key] = Number(input.value);
         } else {
-          localStorage.removeItem("ts-tour-update");
-          createToast("success", data.msg);
-          setTimeout(() => {
-            location.href = "TS-managerTours.html";
-          }, 5000);
+          request[key] = input.value;
         }
       });
-  } else {
-    const request = {
-      name: "",
-      ts_id: Number(login.user_info.user_profile[0].id),
-      description: "",
-      address: "",
-      from_date: "",
-      to_date: "",
-      price: 0,
-      slot: 0,
-      schedule: [],
-      images: [],
-    };
-    requestInputs.forEach((input) => {
-      const { key } = input.dataset;
-      if (key === "price" || key === "slot") {
-        request[key] = Number(input.value);
-      } else {
-        request[key] = input.value;
-      }
-    });
-    fetch("http://127.0.0.1:8000/api/ts/tour/create", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        ...request,
-        images: JSON.stringify(countImages),
-        schedule: JSON.stringify(
-          schedules.map((item, index) => {
-            delete item.id;
-            return {
-              ...item,
-              order: index + 1,
-            };
-          })
-        ),
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        createToast("success", data.msg);
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
+      fetch(`http://localhost:8000/api/ts/tour/update/${tsTourUpdate}`, {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...request,
+          schedule: JSON.stringify(
+            schedules.map((item, index) => {
+              delete item.id;
+              return {
+                ...item,
+                order: index + 1,
+              };
+            })
+          ),
+          images: JSON.stringify(updateImages),
+        }),
       })
-      .catch((error) => createToast("error"));
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.msg && data.status !== 200) {
+            createToast("error", data.msg);
+          } else {
+            localStorage.removeItem("ts-tour-update");
+            createToast("success", data.msg);
+            setTimeout(() => {
+              location.href = "TS-managerTours.html";
+            }, 5000);
+          }
+        });
+    } else {
+      const request = {
+        name: "",
+        ts_id: Number(login.user_info.user_profile[0].id),
+        description: "",
+        address: "",
+        from_date: "",
+        to_date: "",
+        price: 0,
+        slot: 0,
+        schedule: [],
+        images: [],
+      };
+      requestInputs.forEach((input) => {
+        const { key } = input.dataset;
+        if (key === "price" || key === "slot") {
+          request[key] = Number(input.value);
+        } else {
+          request[key] = input.value;
+        }
+      });
+      fetch("http://127.0.0.1:8000/api/ts/tour/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...request,
+          images: JSON.stringify(countImages),
+          schedule: JSON.stringify(
+            schedules.map((item, index) => {
+              delete item.id;
+              return {
+                ...item,
+                order: index + 1,
+              };
+            })
+          ),
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          createToast("success", data.msg);
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+        })
+        .catch((error) => createToast("error"));
+    }
   }
 };
 
@@ -399,102 +409,102 @@ function handleDelete(id) {
 }
 
 // --------- validate form ----------
-function validateMaxlength(e, length) {
-  if (e.target.value.length > length) {
-    e.target.classList.add("error");
-    document.querySelector(
-      `.${[...e.target.classList].join(".")} ~ p`
-    ).innerText = `Không quá ${length} kí tự`;
-  } else {
-    e.target.classList.remove("error");
-    document.querySelector(
-      `.${[...e.target.classList].join(".")} ~ p`
-    ).innerText = "";
-  }
-}
+// function validateMaxlength(e, length) {
+//   if (e.target.value.length > length) {
+//     e.target.classList.add("error");
+//     document.querySelector(
+//       `.${[...e.target.classList].join(".")} ~ p`
+//     ).innerText = `Không quá ${length} kí tự`;
+//   } else {
+//     e.target.classList.remove("error");
+//     document.querySelector(
+//       `.${[...e.target.classList].join(".")} ~ p`
+//     ).innerText = "";
+//   }
+// }
 
-function emptyValue(e) {
-  if (e.target.value == "") {
-    e.target.classList.add("error");
-    document.querySelector(
-      `.${[...e.target.classList].join(".")} ~ p`
-    ).innerText = `Bạn không được để trống`;
-  } else {
-    e.target.classList.remove("error");
-    document.querySelector(
-      `.${[...e.target.classList].join(".")} ~ p`
-    ).innerText = "";
-  }
-}
+// function emptyValue(e) {
+//   if (e.target.value == "") {
+//     e.target.classList.add("error");
+//     document.querySelector(
+//       `.${[...e.target.classList].join(".")} ~ p`
+//     ).innerText = `Bạn không được để trống`;
+//   } else {
+//     e.target.classList.remove("error");
+//     document.querySelector(
+//       `.${[...e.target.classList].join(".")} ~ p`
+//     ).innerText = "";
+//   }
+// }
 
-function validateDateFrom(e) {
-  var dateValue = new Date(e.target.value);
-  var dateNow = new Date();
+// function validateDateFrom(e) {
+//   var dateValue = new Date(e.target.value);
+//   var dateNow = new Date();
 
-  if (dateNow >= dateValue) {
-    e.target.classList.add("error");
-    document.querySelector(
-      `.${[...e.target.classList].join(".")} ~ p`
-    ).innerText = `Ngày không hợp lệ`;
-  } else {
-    e.target.classList.remove("error");
-    document.querySelector(
-      `.${[...e.target.classList].join(".")} ~ p`
-    ).innerText = "";
-  }
-}
+//   if (dateNow >= dateValue) {
+//     e.target.classList.add("error");
+//     document.querySelector(
+//       `.${[...e.target.classList].join(".")} ~ p`
+//     ).innerText = `Ngày không hợp lệ`;
+//   } else {
+//     e.target.classList.remove("error");
+//     document.querySelector(
+//       `.${[...e.target.classList].join(".")} ~ p`
+//     ).innerText = "";
+//   }
+// }
 
-function validateDateTo(e) {
-  let dateFrom = document.querySelector(".fromDate").value;
-  let dateFromValue = new Date(dateFrom);
-  let dateToValue = new Date(e.target.value);
+// function validateDateTo(e) {
+//   let dateFrom = document.querySelector(".fromDate").value;
+//   let dateFromValue = new Date(dateFrom);
+//   let dateToValue = new Date(e.target.value);
 
-  if (dateToValue < dateFromValue) {
-    e.target.classList.add("error");
-    document.querySelector(
-      `.${[...e.target.classList].join(".")} ~ p`
-    ).innerText = `Ngày không hợp lệ`;
-  } else {
-    e.target.classList.remove("error");
-    document.querySelector(
-      `.${[...e.target.classList].join(".")} ~ p`
-    ).innerText = "";
-  }
-}
+//   if (dateToValue < dateFromValue) {
+//     e.target.classList.add("error");
+//     document.querySelector(
+//       `.${[...e.target.classList].join(".")} ~ p`
+//     ).innerText = `Ngày không hợp lệ`;
+//   } else {
+//     e.target.classList.remove("error");
+//     document.querySelector(
+//       `.${[...e.target.classList].join(".")} ~ p`
+//     ).innerText = "";
+//   }
+// }
 
-function checkCost(e) {
-  if (e.target.value <= 0) {
-    e.target.classList.add("error");
-    document.querySelector(
-      `.${[...e.target.classList].join(".")} ~ p`
-    ).innerText = `Số tiền không hợp lệ`;
-  } else {
-    e.target.classList.remove("error");
-    document.querySelector(
-      `.${[...e.target.classList].join(".")} ~ p`
-    ).innerText = "";
-  }
-}
+// function checkCost(e) {
+//   if (e.target.value <= 0) {
+//     e.target.classList.add("error");
+//     document.querySelector(
+//       `.${[...e.target.classList].join(".")} ~ p`
+//     ).innerText = `Số tiền không hợp lệ`;
+//   } else {
+//     e.target.classList.remove("error");
+//     document.querySelector(
+//       `.${[...e.target.classList].join(".")} ~ p`
+//     ).innerText = "";
+//   }
+// }
 
-function checkNumberPeople(e) {
-  let peopleValue = Number(e.target.value);
-  if (peopleValue <= 0) {
-    e.target.classList.add("error");
-    document.querySelector(
-      `.${[...e.target.classList].join(".")} ~ p`
-    ).innerText = `Số người không hợp lệ`;
-  } else if (peopleValue > 100) {
-    e.target.classList.add("error");
-    document.querySelector(
-      `.${[...e.target.classList].join(".")} ~ p`
-    ).innerText = `không được nhập quá 100 người`;
-  } else {
-    e.target.classList.remove("error");
-    document.querySelector(
-      `.${[...e.target.classList].join(".")} ~ p`
-    ).innerText = "";
-  }
-}
+// function checkNumberPeople(e) {
+//   let peopleValue = Number(e.target.value);
+//   if (peopleValue <= 0) {
+//     e.target.classList.add("error");
+//     document.querySelector(
+//       `.${[...e.target.classList].join(".")} ~ p`
+//     ).innerText = `Số người không hợp lệ`;
+//   } else if (peopleValue > 100) {
+//     e.target.classList.add("error");
+//     document.querySelector(
+//       `.${[...e.target.classList].join(".")} ~ p`
+//     ).innerText = `không được nhập quá 100 người`;
+//   } else {
+//     e.target.classList.remove("error");
+//     document.querySelector(
+//       `.${[...e.target.classList].join(".")} ~ p`
+//     ).innerText = "";
+//   }
+// }
 
 // nameTrip.onchange = (e) => validateMaxlength(e, 40);
 // startPlace.onchange = (e) => emptyValue(e);
@@ -544,3 +554,113 @@ const createToast = (id, message) => {
   // Setting a timeout to remove the toast after the specified duration
   toast.timeoutId = setTimeout(() => removeToast(toast), toastDetails.timer);
 };
+
+
+
+
+
+// ----------- Validate form ---------------
+
+
+
+// nameTrip
+// startPlace
+// fromDate
+// toDate
+// cost
+// numberPeople
+
+const EmojiRegex = /^(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/;
+
+const listError = [
+  "required",
+  "maxLength",
+  "dateFrom",
+  "dateTo",
+  "emoji",
+  "specialCharacter",
+];
+function validateForm(control, listError) {
+  var dateFromValue = new Date(fromDate.value);
+  var dateToValue = new Date(toDate.value);
+  var dateNow = new Date();
+  let warning = [];
+  valid = listError.every((error) => {
+    if (error === "required" && !control.value) {
+      warning.push("Không được để trống");
+      return false;
+    }
+    if (error === "emoji" && EmojiRegex.test(control.value)) {
+      warning.push("Không được nhập biểu tượng cảm xúc");
+      return false;
+    }
+    if (
+      error === "dateFrom" 
+      &&
+      (dateFromValue < dateNow)
+      ) {
+      warning.push("Ngày đi không hợp lệ");
+      control.value = null;
+      return false;
+    }
+    if (
+      error === "dateTo" &&
+      (dateToValue < dateNow || dateToValue < dateFromValue)
+    ) {
+      warning.push("Ngày đến không hợp lệ");
+      control.value = null;
+      return false;
+    }
+    if (error === "maxLength" && control.value.length > 50) {
+      warning.push("Không quá 50 kí tự");
+      return false;
+    }
+    return true;
+  });
+  document.querySelector(
+    `.${[...control.classList].join(".")} ~ small`
+  ).innerText = warning.join(", ");
+}
+
+console.log(controlLists);
+controlLists.forEach((control) => {
+  // console.log(control);
+  const classs = control.classList[1];
+  if (classs === "fromDate" || classs === "toDate") {
+    control.onblur = (e) => {
+      switch (e.target.classList[1]) {
+        case "fromDate": {
+          validateForm(e.target, ["dateFrom"]);
+          break;
+        }
+        case "toDate": {
+          validateForm(e.target, ["dateTo"]);
+          break;
+        }
+      }
+    };
+  } else {
+    control.onkeyup = (e) => {
+      console.log(e.target.classList[1]);
+      console.log(e.target.classList[1]);
+      switch (e.target.classList[1]) {
+        case "nameTrip": {
+          validateForm(e.target, ["required","emoji"]);
+          break;
+        }
+        case "startPlace": {
+          validateForm(e.target, ["required","emoji"]);
+          break;
+        }
+        case "cost": {
+          validateForm(e.target, ["required","emoji"]);
+          break;
+        }
+        case "numberPeople": {
+          validateForm(e.target, ["required","emoji"]);
+          break;
+        }
+      }
+    };
+  }
+});
